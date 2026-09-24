@@ -1,16 +1,6 @@
 {
   "headers": [
-    {
-      "source": "/status.json",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=60, must-revalidate" }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
-      ]
-    }
+    {"source": "/status.json", "headers": [{"key": "Cache-Control", "value": "public, max-age=60, must-revalidate"}]},
+    {"source": "/(.*)", "headers": [{"key": "X-Content-Type-Options", "value": "nosniff"}]}
   ]
 }

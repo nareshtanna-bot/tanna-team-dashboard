@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
-  <rect width="192" height="192" rx="40" fill="#0b0d12"/>
-  <circle cx="96" cy="96" r="70" fill="none" stroke="#5ea8ff" stroke-width="8"/>
-  <text x="96" y="118" text-anchor="middle" font-family="-apple-system,system-ui,sans-serif" font-size="88" font-weight="700" fill="#5ea8ff">T</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#0b0d12"/><circle cx="96" cy="96" r="70" fill="none" stroke="#5ea8ff" stroke-width="8"/><path d="M64 72h64M96 72v56" stroke="#5ea8ff" stroke-width="14" stroke-linecap="round"/></svg>
