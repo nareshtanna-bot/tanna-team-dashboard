@@ -1,5 +1,13 @@
-const CACHE = 'tanna-team-v1';
-const ASSETS = ['./', './index.html', './status.json', './manifest.json', './icon-192.svg'];
+const CACHE = 'tanna-team-v2';
+const ASSETS = [
+  './',
+  './index.html',
+  './styles.css',
+  './app.js',
+  './status.json',
+  './manifest.json',
+  './icon-192.svg'
+];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
