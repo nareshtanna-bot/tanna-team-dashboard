@@ -1,0 +1,147 @@
+{
+  "updated": "2026-09-23T20:32:00-04:00",
+  "updatedLabel": "Sep 23, 2026 · 8:32 PM ET",
+  "priorities": [
+    {
+      "rank": 1,
+      "title": "NYC weekend Fri decision",
+      "detail": "Which Sat outbound flight (morning award UA1525 vs afternoon UA407); Hotel Seville KEEP; cancel nothing until named"
+    },
+    {
+      "rank": 2,
+      "title": "Scout calendar clean pending",
+      "detail": "Gmail says NYC with boys; Grappler Fall Classic still on Family cal (stale?); Sat Cary kids conflicts if traveling"
+    },
+    {
+      "rank": 3,
+      "title": "Porter near renewals",
+      "detail": "Cal AI expired today; Readwise Sep 30; iCloud+ Oct 2; Greenergy Oct 6; Travelers Auto premium not in mail (need MyTravelers/Evelyn)"
+    },
+    {
+      "rank": 4,
+      "title": "Reed blocked",
+      "detail": "Outlook Calendar needsAuth (work meetings)"
+    },
+    {
+      "rank": 5,
+      "title": "Liv Live More stack live",
+      "detail": "F45 2–3x, sleep, protein, sauna 2–3x, vitamins, creatine; rebook F45 after NYC"
+    },
+    {
+      "rank": 6,
+      "title": "Ledger Phase 1 ON TRACK",
+      "detail": "$2.3k vs $2k/mo; need my529 PDF / Monarch CSV for v2"
+    },
+    {
+      "rank": 7,
+      "title": "Still need goal locks",
+      "detail": "Reed Work EA, Sage kids education"
+    }
+  ],
+  "bots": [
+    {
+      "id": "sylvia",
+      "name": "Sylvia",
+      "role": "Chief of Staff / orchestrator",
+      "status": "active",
+      "working_on": "Building this dashboard; routing Tanna Team",
+      "next": "Keep fleet status current"
+    },
+    {
+      "id": "porter",
+      "name": "Porter",
+      "role": "Home & Admin",
+      "status": "active",
+      "working_on": "Renewals living list v1.2; Travelers premium gap; 14d/3d alerts",
+      "next": "MyTravelers / Evelyn for premium"
+    },
+    {
+      "id": "scout",
+      "name": "Scout",
+      "role": "Family Ops",
+      "status": "active",
+      "working_on": "Conflict brief delivered; HOLDING calendar edits until Naresh names NYC clean",
+      "next": "Apply calendar clean once named"
+    },
+    {
+      "id": "liv",
+      "name": "Liv",
+      "role": "Live More / wellness under Moore",
+      "status": "active",
+      "working_on": "6-habit stack; daily 8:31 nudge; weekly Mon pulse; F45 rebook post-NYC",
+      "next": "Rebook F45 after NYC"
+    },
+    {
+      "id": "ledger",
+      "name": "Ledger",
+      "role": "Wealth Ops under DeNiro",
+      "status": "active",
+      "working_on": "Scoreboard v1.1 ON TRACK; cadence watch ~Oct 22",
+      "next": "my529 PDF / Monarch CSV for v2"
+    },
+    {
+      "id": "deniro",
+      "name": "DeNiro",
+      "role": "CFO",
+      "status": "idle",
+      "working_on": "Phase 1 target set; will ask once on May My529 1099-Q intent",
+      "next": "Standby for May My529 ask"
+    },
+    {
+      "id": "reed",
+      "name": "Reed",
+      "role": "Work EA",
+      "status": "blocked",
+      "working_on": "Outlook Calendar needsAuth",
+      "next": "Reconnect Outlook Calendar"
+    },
+    {
+      "id": "sage",
+      "name": "Sage",
+      "role": "Kids education",
+      "status": "pending_goals",
+      "working_on": "Goals not locked yet",
+      "next": "Lock education goals with Naresh"
+    },
+    {
+      "id": "nomad",
+      "name": "Nomad",
+      "role": "Travel",
+      "status": "active",
+      "working_on": "NYC weekend held; Fri AM flight decision pack routine",
+      "next": "Sat UA1525 vs UA407 decision"
+    },
+    {
+      "id": "timmy",
+      "name": "Timmy",
+      "role": "CTO",
+      "status": "idle",
+      "working_on": "GitHub KB / infra when routed",
+      "next": "Standby for infra routing"
+    },
+    {
+      "id": "moore",
+      "name": "Dr. Moore",
+      "role": "Senior medical",
+      "status": "idle",
+      "working_on": "Clinical; Liv escalates via Sylvia",
+      "next": "Standby for clinical escalations"
+    },
+    {
+      "id": "rick",
+      "name": "Rick",
+      "role": "Research",
+      "status": "idle",
+      "working_on": "On call for deep dives",
+      "next": "Standby"
+    },
+    {
+      "id": "qualy",
+      "name": "Dr. Qualy",
+      "role": "Quality",
+      "status": "idle",
+      "working_on": "Fleet quality",
+      "next": "Standby"
+    }
+  ]
+}
