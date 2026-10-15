@@ -1,0 +1,40 @@
+name: Merge agent status
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'agents/**'
+      - 'lib/**'
+      - 'scripts/merge-status.mjs'
+      - 'scripts/privacy-check.mjs'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: merge-agent-status
+  cancel-in-progress: false
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Privacy check
+        run: node scripts/privacy-check.mjs
+      - name: Merge agents into status.json
+        run: node scripts/merge-status.mjs
+      - name: Privacy check after merge
+        run: node scripts/privacy-check.mjs
+      - name: Commit status.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add status.json
+          if git diff --cached --quiet; then
+            echo "status.json already current"
+            exit 0
+          fi
+          git commit -m "Merge agent status files"
+          git push

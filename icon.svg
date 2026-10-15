@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#0b0d12"/><circle cx="96" cy="96" r="70" fill="none" stroke="#5ea8ff" stroke-width="8"/><path d="M64 72h64M96 72v56" stroke="#5ea8ff" stroke-width="14" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mission Control">
+  <rect width="64" height="64" rx="16" fill="#164a3a"/>
+  <circle cx="32" cy="32" r="16" fill="none" stroke="#f3efe6" stroke-width="3"/>
+  <circle cx="32" cy="32" r="4" fill="#c46a3a"/>
+</svg>

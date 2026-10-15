@@ -1,28 +1,579 @@
 {
-  "updated": "2026-09-23T20:32:00-04:00",
-  "updatedLabel": "Sep 23, 2026 · 8:32 PM ET",
-  "priorities": [
-    {"rank": 1, "title": "NYC weekend Fri decision", "detail": "Which Sat outbound flight (morning award UA1525 vs afternoon UA407); Hotel Seville KEEP; cancel nothing until named"},
-    {"rank": 2, "title": "Scout calendar clean pending", "detail": "Gmail says NYC with boys; Grappler Fall Classic still on Family cal (stale?); Sat Cary kids conflicts if traveling"},
-    {"rank": 3, "title": "Porter near renewals", "detail": "Cal AI expired today; Readwise Sep 30; iCloud+ Oct 2; Greenergy Oct 6; Travelers Auto premium not in mail (need MyTravelers/Evelyn)"},
-    {"rank": 4, "title": "Reed blocked", "detail": "Outlook Calendar needsAuth (work meetings)"},
-    {"rank": 5, "title": "Liv Live More stack live", "detail": "F45 2–3x, sleep, protein, sauna 2–3x, vitamins, creatine; rebook F45 after NYC"},
-    {"rank": 6, "title": "Ledger Phase 1 ON TRACK", "detail": "$2.3k vs $2k/mo; need my529 PDF / Monarch CSV for v2"},
-    {"rank": 7, "title": "Still need goal locks", "detail": "Reed Work EA, Sage kids education"}
+  "updated": "2026-10-15T19:05:00-04:00",
+  "updatedLabel": "Oct 15, 2026 · 7:05 PM ET",
+  "source": "seed",
+  "needsYou": [
+    {
+      "id": "nyc-flight",
+      "title": "Pick the Saturday NYC outbound",
+      "detail": "Morning award or the afternoon flight. Hotel Seville stays. Cancel nothing until you name the choice.",
+      "bot": "Nomad",
+      "output": ""
+    },
+    {
+      "id": "calendar-clean",
+      "title": "Name the NYC calendar clean",
+      "detail": "Scout is holding edits. Family calendar still shows events that may conflict with that weekend.",
+      "bot": "Scout",
+      "output": ""
+    },
+    {
+      "id": "outlook",
+      "title": "Reconnect Outlook Calendar",
+      "detail": "Reed is blocked on work meetings until the calendar account is connected again.",
+      "bot": "Reed",
+      "output": ""
+    },
+    {
+      "id": "goals",
+      "title": "Lock the open goals",
+      "detail": "Reed still needs the work-EA lane locked. Sage still needs the education goals locked.",
+      "bot": "Sylvia",
+      "output": ""
+    },
+    {
+      "id": "porter-doc",
+      "title": "Find the missing auto-policy document",
+      "detail": "Porter’s renewal list is otherwise current. One document was not in the mail.",
+      "bot": "Porter",
+      "output": ""
+    },
+    {
+      "id": "pinehurst-weekend",
+      "title": "Confirm the Pinehurst weekend",
+      "detail": "Draft is Sat Nov 28, nothing booked. Say whether Holiday Havoc that morning is mandatory.",
+      "bot": "Nomad",
+      "output": "outputs/2026-10-15-pinehurst.md"
+    },
+    {
+      "id": "sunroom-path",
+      "title": "Choose a sunroom path",
+      "detail": "The setback memo is filed. The next step is which question to take to the town, after a survey.",
+      "bot": "Rick",
+      "output": "outputs/2026-10-14-cary-sunroom-setback.md"
+    },
+    {
+      "id": "ledger-files",
+      "title": "Ledger scoreboard",
+      "detail": "Title only. The next version is waiting on files from you. Figures stay off this board.",
+      "bot": "Ledger",
+      "output": ""
+    }
+  ],
+  "requests": [
+    {
+      "id": "nyc-flight",
+      "title": "NYC weekend flight choice",
+      "request": "Which Saturday outbound to hold. Morning award or afternoon. Hotel stays. Cancel nothing until named.",
+      "date": "2026-09-23",
+      "owner": "Nomad",
+      "status": "waiting",
+      "category": "travel",
+      "output": ""
+    },
+    {
+      "id": "calendar-clean",
+      "title": "NYC calendar clean",
+      "request": "Clear the family-calendar conflicts for the NYC weekend, but only after Naresh names what goes.",
+      "date": "2026-09-23",
+      "owner": "Scout",
+      "status": "waiting",
+      "category": "school",
+      "output": ""
+    },
+    {
+      "id": "education-goals",
+      "title": "Education goals",
+      "request": "Lock the kids’ education goals so Sage can leave the blocked state.",
+      "date": "2026-09-23",
+      "owner": "Sage",
+      "status": "queued",
+      "category": "school",
+      "output": ""
+    },
+    {
+      "id": "outlook",
+      "title": "Reconnect work calendar",
+      "request": "Outlook Calendar needs to be connected again before Reed can see work meetings.",
+      "date": "2026-09-23",
+      "owner": "Reed",
+      "status": "waiting",
+      "category": "home",
+      "output": ""
+    },
+    {
+      "id": "renewals",
+      "title": "Renewal list",
+      "request": "Keep the living renewal list current. One auto-policy document is still missing.",
+      "date": "2026-09-23",
+      "owner": "Porter",
+      "status": "waiting",
+      "category": "home",
+      "output": ""
+    },
+    {
+      "id": "sunroom",
+      "title": "Sunroom rear setback",
+      "request": "What the town rules allow for enclosing the rear terrace, and which relief path is realistic.",
+      "date": "2026-10-14",
+      "owner": "Rick",
+      "status": "done",
+      "category": "home",
+      "output": "outputs/2026-10-14-cary-sunroom-setback.md"
+    },
+    {
+      "id": "pinehurst",
+      "title": "Pinehurst one-night plan",
+      "request": "A one-night family golf plan. Nothing booked and nobody contacted.",
+      "date": "2026-10-15",
+      "owner": "Nomad",
+      "status": "done",
+      "category": "golf",
+      "output": "outputs/2026-10-15-pinehurst.md"
+    },
+    {
+      "id": "bermuda",
+      "title": "Bermuda golf and beach",
+      "request": "A six-night day-by-day plan from RDU. No dates set. Nothing booked.",
+      "date": "2026-10-15",
+      "owner": "Nomad",
+      "status": "done",
+      "category": "travel",
+      "output": "outputs/2026-10-15-bermuda.md"
+    },
+    {
+      "id": "future-trips",
+      "title": "Future family trips",
+      "request": "A living wishlist. Add ideas here as they come up.",
+      "date": "2026-10-15",
+      "owner": "Nomad",
+      "status": "working",
+      "category": "travel",
+      "output": "outputs/2026-10-15-future-family-trips.md"
+    },
+    {
+      "id": "business-ideas",
+      "title": "Online business ideas",
+      "request": "Re-rank low-touch side ideas. Research only. Nothing bought or signed.",
+      "date": "2026-10-15",
+      "owner": "Rick",
+      "status": "done",
+      "category": "business",
+      "output": "outputs/2026-10-15-business-ideas.md"
+    },
+    {
+      "id": "rdu-shortlist",
+      "title": "RDU nonstop golf and park shortlist",
+      "request": "Top 10 family golf and national-park trips that work nonstop or by car from RDU.",
+      "date": "2026-10-15",
+      "owner": "Nomad",
+      "status": "done",
+      "category": "research",
+      "output": "outputs/2026-10-15-rdu-golf-park-shortlist.md"
+    }
+  ],
+  "trips": [
+    {
+      "id": "puerto-rico",
+      "name": "Puerto Rico",
+      "place": "Dorado and El Yunque",
+      "window": "Family is there now",
+      "summary": "Nonstop from RDU. Dorado golf plus the rainforest. A repeat depends on the debrief.",
+      "plan": "outputs/2026-10-15-puerto-rico.md",
+      "mapsLabel": "San Juan + Dorado Eats (Sylvia)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "orlando-2027",
+      "name": "Orlando 2027",
+      "place": "Orlando",
+      "window": "2027",
+      "summary": "No plan has been filed yet.",
+      "plan": "outputs/2026-10-15-orlando-2027.md",
+      "mapsLabel": "Orlando 2027 (Sylvia)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "london",
+      "name": "London",
+      "place": "London",
+      "window": "Wishlist",
+      "summary": "No plan has been filed yet.",
+      "plan": "outputs/2026-10-15-london.md",
+      "mapsLabel": "London (Sylvia)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "st-louis",
+      "name": "St. Louis",
+      "place": "St. Louis",
+      "window": "Wishlist",
+      "summary": "No plan has been filed yet.",
+      "plan": "outputs/2026-10-15-st-louis.md",
+      "mapsLabel": "St. Louis (Sylvia)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "pinehurst",
+      "name": "Pinehurst",
+      "place": "Pinehurst, North Carolina",
+      "window": "Draft weekend Sat Nov 28",
+      "summary": "One-night family golf draft. Nothing booked. Carolina Hotel is the lodging pick.",
+      "plan": "outputs/2026-10-15-pinehurst.md",
+      "mapsLabel": "Pinehurst (Nomad)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "bermuda",
+      "name": "Bermuda",
+      "place": "Tucker’s Point",
+      "window": "Late May–June or late Sept–Oct",
+      "summary": "Six nights at Rosewood Bermuda, with Mid Ocean and a beach club. Nothing booked.",
+      "plan": "outputs/2026-10-15-bermuda.md",
+      "mapsLabel": "Bermuda golf and beach (Nomad)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "mexico-city",
+      "name": "Mexico City",
+      "place": "Reforma and Polanco",
+      "window": "Wishlist",
+      "summary": "Ritz-Carlton Mexico City is the named stay. Four Seasons and Camino Real are the alternates.",
+      "plan": "outputs/2026-10-15-mexico-city.md",
+      "mapsLabel": "Mexico City (Sylvia)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "ski",
+      "name": "Ski",
+      "place": "Beaver Creek",
+      "window": "March 2027",
+      "summary": "The golf research notes a Beaver Creek trip already on the calendar. A ski plan is not filed yet.",
+      "plan": "outputs/2026-10-15-ski.md",
+      "mapsLabel": "Beaver Creek ski (Sylvia)",
+      "mapsUrl": ""
+    },
+    {
+      "id": "rdu-top-10",
+      "name": "RDU nonstop golf & parks",
+      "place": "Ten trips from RDU",
+      "window": "Ranked Oct 15, 2026",
+      "summary": "Pinehurst through Cancún, checked against RDU’s nonstop list. Research only.",
+      "plan": "outputs/2026-10-15-rdu-golf-park-shortlist.md",
+      "mapsLabel": "Top 10 from RDU (Nomad)",
+      "mapsUrl": ""
+    }
   ],
   "bots": [
-    {"id": "sylvia", "name": "Sylvia", "role": "Chief of Staff / orchestrator", "status": "active", "working_on": "Building this dashboard; routing Tanna Team", "next": "Keep fleet status current"},
-    {"id": "porter", "name": "Porter", "role": "Home & Admin", "status": "active", "working_on": "Renewals living list v1.2; Travelers premium gap; 14d/3d alerts", "next": "MyTravelers / Evelyn for premium"},
-    {"id": "scout", "name": "Scout", "role": "Family Ops", "status": "active", "working_on": "Conflict brief delivered; HOLDING calendar edits until Naresh names NYC clean", "next": "Apply calendar clean once named"},
-    {"id": "liv", "name": "Liv", "role": "Live More / wellness under Moore", "status": "active", "working_on": "6-habit stack; daily 8:31 nudge; weekly Mon pulse; F45 rebook post-NYC", "next": "Rebook F45 after NYC"},
-    {"id": "ledger", "name": "Ledger", "role": "Wealth Ops under DeNiro", "status": "active", "working_on": "Scoreboard v1.1 ON TRACK; cadence watch ~Oct 22", "next": "my529 PDF / Monarch CSV for v2"},
-    {"id": "deniro", "name": "DeNiro", "role": "CFO", "status": "idle", "working_on": "Phase 1 target set; will ask once on May My529 1099-Q intent", "next": "Standby for May My529 ask"},
-    {"id": "reed", "name": "Reed", "role": "Work EA", "status": "blocked", "working_on": "Outlook Calendar needsAuth", "next": "Reconnect Outlook Calendar"},
-    {"id": "sage", "name": "Sage", "role": "Kids education", "status": "pending_goals", "working_on": "Goals not locked yet", "next": "Lock education goals with Naresh"},
-    {"id": "nomad", "name": "Nomad", "role": "Travel", "status": "active", "working_on": "NYC weekend held; Fri AM flight decision pack routine", "next": "Sat UA1525 vs UA407 decision"},
-    {"id": "timmy", "name": "Timmy", "role": "CTO", "status": "idle", "working_on": "GitHub KB / infra when routed", "next": "Standby for infra routing"},
-    {"id": "moore", "name": "Dr. Moore", "role": "Senior medical", "status": "idle", "working_on": "Clinical; Liv escalates via Sylvia", "next": "Standby for clinical escalations"},
-    {"id": "rick", "name": "Rick", "role": "Research", "status": "idle", "working_on": "On call for deep dives", "next": "Standby"},
-    {"id": "qualy", "name": "Dr. Qualy", "role": "Quality", "status": "idle", "working_on": "Fleet quality", "next": "Standby"}
+    {
+      "id": "sylvia",
+      "name": "Sylvia",
+      "role": "Chief of Staff",
+      "does": "Orchestrates the fleet, routes asks, and keeps this board current.",
+      "status": "working",
+      "task": "Filing the Oct 15 research and holding the decisions that still need Naresh.",
+      "next": "Keep the board current as bots post.",
+      "lastActivity": "2026-10-15T19:05:00-04:00"
+    },
+    {
+      "id": "timmy",
+      "name": "Timmy",
+      "role": "CTO",
+      "does": "Builds the sites and infra the fleet asks for.",
+      "status": "idle",
+      "task": "Standing by for a build.",
+      "next": "Wait until a site or tool is routed over.",
+      "lastActivity": "2026-09-23T20:00:00-04:00"
+    },
+    {
+      "id": "nomad",
+      "name": "Nomad",
+      "role": "Travel",
+      "does": "Plans family trips and holds bookings until Naresh decides.",
+      "status": "working",
+      "task": "Pinehurst, Bermuda, and the RDU shortlist are filed. The NYC Saturday flight is still open.",
+      "next": "Wait for the Saturday outbound choice.",
+      "lastActivity": "2026-10-15T18:45:00-04:00"
+    },
+    {
+      "id": "rick",
+      "name": "Rick",
+      "role": "Research",
+      "does": "Does cited deep dives. Nothing gets booked or contacted from a research pass.",
+      "status": "working",
+      "task": "Sunroom memo and the business re-rank are filed.",
+      "next": "Stand by for the next deep dive.",
+      "lastActivity": "2026-10-15T19:00:00-04:00"
+    },
+    {
+      "id": "deniro",
+      "name": "DeNiro",
+      "role": "CFO",
+      "does": "Owns money questions. Figures stay off this board.",
+      "status": "idle",
+      "task": "Standing by.",
+      "next": "Wait for a titled ask.",
+      "lastActivity": "2026-09-23T18:00:00-04:00"
+    },
+    {
+      "id": "ledger",
+      "name": "Ledger",
+      "role": "Wealth ops",
+      "does": "Keeps the household scoreboard under DeNiro. Figures stay off this board.",
+      "status": "idle",
+      "task": "Scoreboard title is current. The next version is waiting on files from Naresh.",
+      "next": "Wait for those files.",
+      "lastActivity": "2026-09-23T19:10:00-04:00"
+    },
+    {
+      "id": "moore",
+      "name": "Dr. Moore",
+      "role": "Senior medical",
+      "does": "Takes escalations from Sylvia. Case detail stays off this board except as a title.",
+      "status": "idle",
+      "task": "Standing by.",
+      "next": "Wait for an escalation Sylvia routes.",
+      "lastActivity": "2026-09-20T12:00:00-04:00"
+    },
+    {
+      "id": "liv",
+      "name": "Liv",
+      "role": "Live More",
+      "does": "Runs the check-in routine under Dr. Moore. Detail stays off this board.",
+      "status": "idle",
+      "task": "Check-in routine is on the calendar.",
+      "next": "Next check-in on the usual cadence.",
+      "lastActivity": "2026-09-23T08:31:00-04:00"
+    },
+    {
+      "id": "qualy",
+      "name": "Dr. Qualy",
+      "role": "Quality",
+      "does": "Reviews fleet output before it is treated as final.",
+      "status": "idle",
+      "task": "Standing by.",
+      "next": "Review the next pack Sylvia sends.",
+      "lastActivity": "2026-09-18T15:00:00-04:00"
+    },
+    {
+      "id": "gadget",
+      "name": "Inspector Gadget",
+      "role": "Devices and gear",
+      "does": "Troubleshoots household devices and gear when a job is routed over.",
+      "status": "idle",
+      "task": "No live post yet.",
+      "next": "Wait for a device job.",
+      "lastActivity": null
+    },
+    {
+      "id": "sage",
+      "name": "Sage",
+      "role": "Kids education",
+      "does": "Holds the education plan once the goals are locked.",
+      "status": "blocked",
+      "task": "Goals are not locked yet.",
+      "next": "Lock the education goals with Naresh.",
+      "lastActivity": "2026-09-23T12:00:00-04:00"
+    },
+    {
+      "id": "reed",
+      "name": "Reed",
+      "role": "Work EA",
+      "does": "Keeps the work calendar and meeting prep.",
+      "status": "blocked",
+      "task": "Outlook Calendar still needs a reconnect.",
+      "next": "Reconnect Outlook, then lock the work-EA lane.",
+      "lastActivity": "2026-09-23T14:00:00-04:00"
+    },
+    {
+      "id": "porter",
+      "name": "Porter",
+      "role": "Home and admin",
+      "does": "Runs renewals, the house list, and admin follow-ups.",
+      "status": "working",
+      "task": "Renewal list was in progress. One document is still missing.",
+      "next": "File the missing auto-policy document.",
+      "lastActivity": "2026-09-23T17:20:00-04:00"
+    },
+    {
+      "id": "scout",
+      "name": "Scout",
+      "role": "Family ops",
+      "does": "Watches the family calendar and school logistics.",
+      "status": "blocked",
+      "task": "Holding calendar edits until Naresh names the NYC clean.",
+      "next": "Apply the clean once it is named.",
+      "lastActivity": "2026-09-23T16:00:00-04:00"
+    }
+  ],
+  "routines": [
+    {
+      "id": "sylvia-rollup",
+      "name": "Fleet rollup",
+      "owner": "Sylvia",
+      "schedule": "Daily, morning",
+      "lastRun": "2026-10-15T08:10:00-04:00",
+      "nextRun": "2026-10-16T08:00:00-04:00",
+      "lastResult": "ok",
+      "detail": "Example seed, not a live run. Rollup noted the Oct 15 research landing on the board.",
+      "example": true
+    },
+    {
+      "id": "porter-renewals",
+      "name": "Renewal watch",
+      "owner": "Porter",
+      "schedule": "Daily",
+      "lastRun": "2026-10-15T08:20:00-04:00",
+      "nextRun": "2026-10-16T08:20:00-04:00",
+      "lastResult": "attention",
+      "detail": "Example seed, not a live run. One document is still missing from the renewal list.",
+      "example": true
+    },
+    {
+      "id": "nomad-friday",
+      "name": "Friday flight decision pack",
+      "owner": "Nomad",
+      "schedule": "Fridays",
+      "lastRun": "2026-10-10T07:30:00-04:00",
+      "nextRun": "2026-10-17T07:30:00-04:00",
+      "lastResult": "ok",
+      "detail": "Example seed, not a live run. The open item is the NYC Saturday outbound.",
+      "example": true
+    },
+    {
+      "id": "scout-monday",
+      "name": "Family calendar scan",
+      "owner": "Scout",
+      "schedule": "Mondays",
+      "lastRun": "2026-10-13T07:00:00-04:00",
+      "nextRun": "2026-10-20T07:00:00-04:00",
+      "lastResult": "attention",
+      "detail": "Example seed, not a live run. Edits stay on hold until the NYC clean is named.",
+      "example": true
+    }
+  ],
+  "queue": [
+    {
+      "id": "q-nyc",
+      "title": "Naresh picks the Saturday NYC outbound",
+      "owner": "Nomad",
+      "after": "Then the flight can be held or released"
+    },
+    {
+      "id": "q-cal",
+      "title": "Naresh names the calendar clean",
+      "owner": "Scout",
+      "after": "Then Scout applies the edits"
+    },
+    {
+      "id": "q-outlook",
+      "title": "Reconnect Outlook Calendar",
+      "owner": "Reed",
+      "after": "Work meetings can show up again"
+    },
+    {
+      "id": "q-goals",
+      "title": "Lock education goals and the work-EA lane",
+      "owner": "Sylvia",
+      "after": "Sage and Reed can leave the blocked state"
+    },
+    {
+      "id": "q-porter",
+      "title": "Find the missing auto-policy document",
+      "owner": "Porter",
+      "after": "The renewal list is complete"
+    }
+  ],
+  "activity": [
+    {
+      "id": "act-business",
+      "at": "2026-10-15T19:00:00-04:00",
+      "bot": "Rick",
+      "title": "Filed the online business re-rank",
+      "detail": "Research only. Nothing bought or signed.",
+      "example": false,
+      "output": "outputs/2026-10-15-business-ideas.md"
+    },
+    {
+      "id": "act-shortlist",
+      "at": "2026-10-15T18:45:00-04:00",
+      "bot": "Nomad",
+      "title": "Filed the RDU golf and park shortlist",
+      "detail": "Ten trips, checked against the RDU nonstop page.",
+      "example": false,
+      "output": "outputs/2026-10-15-rdu-golf-park-shortlist.md"
+    },
+    {
+      "id": "act-pinehurst",
+      "at": "2026-10-15T17:10:00-04:00",
+      "bot": "Nomad",
+      "title": "Filed the Pinehurst one-night draft",
+      "detail": "Nothing booked and nobody contacted.",
+      "example": false,
+      "output": "outputs/2026-10-15-pinehurst.md"
+    },
+    {
+      "id": "act-bermuda",
+      "at": "2026-10-15T16:40:00-04:00",
+      "bot": "Nomad",
+      "title": "Filed the Bermuda day-by-day",
+      "detail": "Six nights, no dates set.",
+      "example": false,
+      "output": "outputs/2026-10-15-bermuda.md"
+    },
+    {
+      "id": "act-wishlist",
+      "at": "2026-10-15T15:30:00-04:00",
+      "bot": "Nomad",
+      "title": "Opened the future-trips wishlist",
+      "detail": "Mexico City and Bermuda are the first rows.",
+      "example": false,
+      "output": "outputs/2026-10-15-future-family-trips.md"
+    },
+    {
+      "id": "act-sunroom",
+      "at": "2026-10-14T21:00:00-04:00",
+      "bot": "Rick",
+      "title": "Filed the sunroom setback memo",
+      "detail": "Address, parcel identifiers, and prices removed before it was filed.",
+      "example": false,
+      "output": "outputs/2026-10-14-cary-sunroom-setback.md"
+    },
+    {
+      "id": "ex-sylvia",
+      "at": "2026-09-23T20:32:00-04:00",
+      "bot": "Sylvia",
+      "title": "Posted the evening fleet rollup",
+      "detail": "Example entry, seeded so the timeline has a shape before live posts arrive.",
+      "example": true,
+      "output": ""
+    },
+    {
+      "id": "ex-porter",
+      "at": "2026-09-23T16:10:00-04:00",
+      "bot": "Porter",
+      "title": "Touched the renewal list",
+      "detail": "Example entry. Not a live run.",
+      "example": true,
+      "output": ""
+    },
+    {
+      "id": "ex-scout",
+      "at": "2026-09-22T09:00:00-04:00",
+      "bot": "Scout",
+      "title": "Drafted a calendar conflict brief",
+      "detail": "Example entry. Edits were not applied.",
+      "example": true,
+      "output": ""
+    },
+    {
+      "id": "ex-timmy",
+      "at": "2026-09-21T11:00:00-04:00",
+      "bot": "Timmy",
+      "title": "Stood by for an infra job",
+      "detail": "Example entry. No build was started.",
+      "example": true,
+      "output": ""
+    }
   ]
 }

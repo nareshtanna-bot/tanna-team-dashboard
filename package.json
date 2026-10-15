@@ -1,0 +1,13 @@
+{
+  "name": "tanna-mission-control",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/dev-server.mjs",
+    "test": "node --test test/*.test.js",
+    "check": "node scripts/privacy-check.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.8.2"
+  }
+}
