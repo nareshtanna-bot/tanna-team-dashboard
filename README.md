@@ -16,7 +16,7 @@ The manifest, apple touch icon, and service worker are what make that install wo
 
 ## What the page is
 
-1. **Needs you** — everything waiting on Naresh.
+1. **Needs you** — open decisions only. An item whose status is `done` or `delivered`, or whose ask is already done, is left off this strip and filed on the timeline.
 2. **Requests & outputs** — one card per ask (queued, working, waiting on Naresh, done). Filter by travel, school, home, golf, business, or research, and search. Tap a card for the deliverable.
 3. **Trips** — Puerto Rico, Orlando 2027, London, St. Louis, Pinehurst, Bermuda, Mexico City, ski, and the RDU nonstop golf and park list. Each card opens a plan. The maps list has a URL field; it stays empty until a Google Maps link is known.
 4. **Fleet** — Sylvia, Timmy, Nomad, Rick, DeNiro, Ledger, Dr. Moore, Liv, Dr. Qualy, Inspector Gadget, Sage, Reed, Porter, and Scout. Each card has the role, the current task, the last activity, and working / idle / blocked. **Stale** means no activity time in the last 24 hours. Below that: routines for today and upcoming, the what’s-next queue, and a timeline of everything the fleet has done. Sample timeline rows and sample routines are marked **Example**.
@@ -82,6 +82,8 @@ curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
 `id` is 2–32 characters, lowercase letters, numbers, and hyphens. One file per bot. A later post from the same id replaces that bot and merges `needsYou`, `requests`, `routines`, `queue`, `trips`, and `activity` by id. `status` is `working`, `idle`, or `blocked` (`active` and `pending_goals` from older posts are still accepted). `task` may also be sent as `working_on`.
 
 The body is rejected when it contains a dollar amount, a health term (medication, diagnosis, and similar), a secret or long account-like number, a street address, or a parcel PIN / REID / plat book number. The error lists the rule names, not the matched text.
+
+A `needsYou` or `requests` entry with status `done` or `delivered` is a completion. It is removed from Needs you and added to the timeline when that id is not already there. `delivered` is shown as Done.
 
 If Blob is not configured the post returns `503` with `storage_unconfigured`. Commit `agents/<id>.json` instead. Pushing that path runs the merge action below. Do not commit a status file every minute.
 

@@ -1,62 +1,62 @@
 {
-  "updated": "2026-10-15T19:05:00-04:00",
-  "updatedLabel": "Oct 15, 2026 · 7:05 PM ET",
+  "updated": "2026-10-15T19:40:00-04:00",
+  "updatedLabel": "Oct 15, 2026 · 7:40 PM ET",
   "source": "seed",
   "needsYou": [
     {
-      "id": "nyc-flight",
-      "title": "Pick the Saturday NYC outbound",
-      "detail": "Morning award or the afternoon flight. Hotel Seville stays. Cancel nothing until you name the choice.",
-      "bot": "Nomad",
-      "output": ""
-    },
-    {
-      "id": "calendar-clean",
-      "title": "Name the NYC calendar clean",
-      "detail": "Scout is holding edits. Family calendar still shows events that may conflict with that weekend.",
-      "bot": "Scout",
-      "output": ""
-    },
-    {
-      "id": "outlook",
-      "title": "Reconnect Outlook Calendar",
-      "detail": "Reed is blocked on work meetings until the calendar account is connected again.",
-      "bot": "Reed",
-      "output": ""
-    },
-    {
-      "id": "goals",
-      "title": "Lock the open goals",
-      "detail": "Reed still needs the work-EA lane locked. Sage still needs the education goals locked.",
-      "bot": "Sylvia",
-      "output": ""
-    },
-    {
-      "id": "porter-doc",
-      "title": "Find the missing auto-policy document",
-      "detail": "Porter’s renewal list is otherwise current. One document was not in the mail.",
+      "id": "peopleconnect-dob",
+      "title": "Date of birth for the PeopleConnect opt-out, or skip it",
+      "detail": "PeopleConnect asks for a date of birth. Give it, or skip that opt-out. The date itself stays off this board.",
       "bot": "Porter",
+      "status": "waiting",
       "output": ""
     },
     {
-      "id": "pinehurst-weekend",
-      "title": "Confirm the Pinehurst weekend",
-      "detail": "Draft is Sat Nov 28, nothing booked. Say whether Holiday Havoc that morning is mandatory.",
+      "id": "data-broker-opt-outs",
+      "title": "Remaining data-broker opt-outs",
+      "detail": "The other broker opt-outs are still open. PeopleConnect is the one that needs a date of birth or a skip.",
+      "bot": "Porter",
+      "status": "waiting",
+      "output": ""
+    },
+    {
+      "id": "pinehurst-dates",
+      "title": "Pinehurst dates",
+      "detail": "The one-night plan is filed and done. The weekend is not locked. The draft was Sat Nov 28. Nothing is booked.",
       "bot": "Nomad",
-      "output": "outputs/2026-10-15-pinehurst.md"
+      "status": "waiting",
+      "output": ""
     },
     {
-      "id": "sunroom-path",
-      "title": "Choose a sunroom path",
-      "detail": "The setback memo is filed. The next step is which question to take to the town, after a survey.",
+      "id": "top10-window",
+      "title": "Top-10 trip window",
+      "detail": "The RDU shortlist is filed. Pick the window for the first trip on that list.",
+      "bot": "Nomad",
+      "status": "waiting",
+      "output": ""
+    },
+    {
+      "id": "business-direction",
+      "title": "Business direction / Alpaca",
+      "detail": "The online-business re-rank is delivered. Pick a direction. Alpaca stays a title here. No account numbers on this board.",
       "bot": "Rick",
-      "output": "outputs/2026-10-14-cary-sunroom-setback.md"
+      "status": "waiting",
+      "output": ""
     },
     {
-      "id": "ledger-files",
-      "title": "Ledger scoreboard",
-      "detail": "Title only. The next version is waiting on files from you. Figures stay off this board.",
-      "bot": "Ledger",
+      "id": "shaan-reading-list",
+      "title": "A Shaan version of the reading list",
+      "detail": "Write the reading list as a version for Shaan. The current list is not that version yet.",
+      "bot": "Sage",
+      "status": "waiting",
+      "output": ""
+    },
+    {
+      "id": "merge-pr-1",
+      "title": "Merge PR #1 (Mission Control)",
+      "detail": "The Mission Control pull request is open. Merging it is the remaining step. GitHub access for the repo is already done.",
+      "bot": "Sylvia",
+      "status": "waiting",
       "output": ""
     }
   ],
@@ -67,7 +67,7 @@
       "request": "Which Saturday outbound to hold. Morning award or afternoon. Hotel stays. Cancel nothing until named.",
       "date": "2026-09-23",
       "owner": "Nomad",
-      "status": "waiting",
+      "status": "queued",
       "category": "travel",
       "output": ""
     },
@@ -77,7 +77,7 @@
       "request": "Clear the family-calendar conflicts for the NYC weekend, but only after Naresh names what goes.",
       "date": "2026-09-23",
       "owner": "Scout",
-      "status": "waiting",
+      "status": "queued",
       "category": "school",
       "output": ""
     },
@@ -97,7 +97,7 @@
       "request": "Outlook Calendar needs to be connected again before Reed can see work meetings.",
       "date": "2026-09-23",
       "owner": "Reed",
-      "status": "waiting",
+      "status": "queued",
       "category": "home",
       "output": ""
     },
@@ -107,7 +107,7 @@
       "request": "Keep the living renewal list current. One auto-policy document is still missing.",
       "date": "2026-09-23",
       "owner": "Porter",
-      "status": "waiting",
+      "status": "queued",
       "category": "home",
       "output": ""
     },
@@ -154,7 +154,7 @@
     {
       "id": "business-ideas",
       "title": "Online business ideas",
-      "request": "Re-rank low-touch side ideas. Research only. Nothing bought or signed.",
+      "request": "Re-rank low-touch side ideas. Delivered. Research only. Nothing bought or signed.",
       "date": "2026-10-15",
       "owner": "Rick",
       "status": "done",
@@ -170,6 +170,126 @@
       "status": "done",
       "category": "research",
       "output": "outputs/2026-10-15-rdu-golf-park-shortlist.md"
+    },
+    {
+      "id": "peopleconnect-dob",
+      "title": "Date of birth for the PeopleConnect opt-out, or skip it",
+      "request": "PeopleConnect asks for a date of birth. Give it, or skip that opt-out. The date stays off this board.",
+      "date": "2026-10-15",
+      "owner": "Porter",
+      "status": "waiting",
+      "category": "home",
+      "output": ""
+    },
+    {
+      "id": "data-broker-opt-outs",
+      "title": "Remaining data-broker opt-outs",
+      "request": "Finish the broker opt-outs that are still open.",
+      "date": "2026-10-15",
+      "owner": "Porter",
+      "status": "waiting",
+      "category": "home",
+      "output": ""
+    },
+    {
+      "id": "pinehurst-dates",
+      "title": "Pinehurst dates",
+      "request": "Lock the weekend. The plan is already filed. Nothing is booked.",
+      "date": "2026-10-15",
+      "owner": "Nomad",
+      "status": "waiting",
+      "category": "golf",
+      "output": ""
+    },
+    {
+      "id": "top10-window",
+      "title": "Top-10 trip window",
+      "request": "Pick the window for the first trip on the RDU shortlist.",
+      "date": "2026-10-15",
+      "owner": "Nomad",
+      "status": "waiting",
+      "category": "travel",
+      "output": ""
+    },
+    {
+      "id": "business-direction",
+      "title": "Business direction / Alpaca",
+      "request": "Pick a direction now that the re-rank is delivered. Alpaca stays a title. No account numbers on this board.",
+      "date": "2026-10-15",
+      "owner": "Rick",
+      "status": "waiting",
+      "category": "business",
+      "output": ""
+    },
+    {
+      "id": "shaan-reading-list",
+      "title": "A Shaan version of the reading list",
+      "request": "Write the reading list as a version for Shaan.",
+      "date": "2026-10-15",
+      "owner": "Sage",
+      "status": "waiting",
+      "category": "school",
+      "output": ""
+    },
+    {
+      "id": "merge-pr-1",
+      "title": "Merge PR #1 (Mission Control)",
+      "request": "Merge the Mission Control pull request. GitHub access is already done.",
+      "date": "2026-10-15",
+      "owner": "Sylvia",
+      "status": "waiting",
+      "category": "research",
+      "output": ""
+    },
+    {
+      "id": "pr-maps",
+      "title": "Puerto Rico Google Maps list",
+      "request": "San Juan + Dorado Eats list. Done. The trip card URL stays empty until a link is pasted.",
+      "date": "2026-10-15",
+      "owner": "Nomad",
+      "status": "done",
+      "category": "travel",
+      "output": ""
+    },
+    {
+      "id": "rayban-order",
+      "title": "Ray-Ban glasses order",
+      "request": "The glasses order is placed. Order and confirmation numbers stay off this board.",
+      "date": "2026-10-15",
+      "owner": "Inspector Gadget",
+      "status": "done",
+      "category": "home",
+      "output": ""
+    },
+    {
+      "id": "dnc-registry",
+      "title": "Do Not Call registry",
+      "request": "The registry request is filed. Phone numbers stay off this board.",
+      "date": "2026-10-15",
+      "owner": "Porter",
+      "status": "done",
+      "category": "home",
+      "output": ""
+    },
+    {
+      "id": "mc-github-access",
+      "title": "Mission Control GitHub access",
+      "request": "Access to the Mission Control repository is in place.",
+      "date": "2026-10-15",
+      "owner": "Timmy",
+      "status": "done",
+      "category": "research",
+      "output": ""
+    },
+    {
+      "id": "grok-plan",
+      "title": "Grok plan question",
+      "request": "Decision: keep the current plan. No price is stored on this board.",
+      "date": "2026-10-15",
+      "owner": "Sylvia",
+      "status": "done",
+      "category": "business",
+      "output": ""
     }
   ],
   "trips": [
@@ -271,9 +391,9 @@
       "role": "Chief of Staff",
       "does": "Orchestrates the fleet, routes asks, and keeps this board current.",
       "status": "working",
-      "task": "Filing the Oct 15 research and holding the decisions that still need Naresh.",
-      "next": "Keep the board current as bots post.",
-      "lastActivity": "2026-10-15T19:05:00-04:00"
+      "task": "Holding the open decisions. Finished items are on the timeline.",
+      "next": "Merge of PR #1 is the board item still waiting on Naresh.",
+      "lastActivity": "2026-10-15T19:40:00-04:00"
     },
     {
       "id": "timmy",
@@ -283,7 +403,7 @@
       "status": "idle",
       "task": "Standing by for a build.",
       "next": "Wait until a site or tool is routed over.",
-      "lastActivity": "2026-09-23T20:00:00-04:00"
+      "lastActivity": "2026-10-15T19:25:00-04:00"
     },
     {
       "id": "nomad",
@@ -291,8 +411,8 @@
       "role": "Travel",
       "does": "Plans family trips and holds bookings until Naresh decides.",
       "status": "working",
-      "task": "Pinehurst, Bermuda, and the RDU shortlist are filed. The NYC Saturday flight is still open.",
-      "next": "Wait for the Saturday outbound choice.",
+      "task": "Pinehurst, Bermuda, and the RDU shortlist are filed. Pinehurst dates and the top-10 window are still open.",
+      "next": "Wait for those two decisions.",
       "lastActivity": "2026-10-15T18:45:00-04:00"
     },
     {
@@ -301,8 +421,8 @@
       "role": "Research",
       "does": "Does cited deep dives. Nothing gets booked or contacted from a research pass.",
       "status": "working",
-      "task": "Sunroom memo and the business re-rank are filed.",
-      "next": "Stand by for the next deep dive.",
+      "task": "Sunroom memo is filed. The online-business re-rank is delivered.",
+      "next": "Wait for a business direction.",
       "lastActivity": "2026-10-15T19:00:00-04:00"
     },
     {
@@ -321,8 +441,8 @@
       "role": "Wealth ops",
       "does": "Keeps the household scoreboard under DeNiro. Figures stay off this board.",
       "status": "idle",
-      "task": "Scoreboard title is current. The next version is waiting on files from Naresh.",
-      "next": "Wait for those files.",
+      "task": "Scoreboard title is current. Figures stay off this board.",
+      "next": "Wait for a titled ask.",
       "lastActivity": "2026-09-23T19:10:00-04:00"
     },
     {
@@ -361,9 +481,9 @@
       "role": "Devices and gear",
       "does": "Troubleshoots household devices and gear when a job is routed over.",
       "status": "idle",
-      "task": "No live post yet.",
-      "next": "Wait for a device job.",
-      "lastActivity": null
+      "task": "Ray-Ban glasses order is placed. Confirmation numbers stay off this board.",
+      "next": "Wait for the next gear job.",
+      "lastActivity": "2026-10-15T19:35:00-04:00"
     },
     {
       "id": "sage",
@@ -371,8 +491,8 @@
       "role": "Kids education",
       "does": "Holds the education plan once the goals are locked.",
       "status": "blocked",
-      "task": "Goals are not locked yet.",
-      "next": "Lock the education goals with Naresh.",
+      "task": "A Shaan version of the reading list is still open.",
+      "next": "Write that version once Naresh asks for the pass.",
       "lastActivity": "2026-09-23T12:00:00-04:00"
     },
     {
@@ -393,7 +513,7 @@
       "status": "working",
       "task": "Renewal list was in progress. One document is still missing.",
       "next": "File the missing auto-policy document.",
-      "lastActivity": "2026-09-23T17:20:00-04:00"
+      "lastActivity": "2026-10-15T19:30:00-04:00"
     },
     {
       "id": "scout",
@@ -401,8 +521,8 @@
       "role": "Family ops",
       "does": "Watches the family calendar and school logistics.",
       "status": "blocked",
-      "task": "Holding calendar edits until Naresh names the NYC clean.",
-      "next": "Apply the clean once it is named.",
+      "task": "Calendar clean is queued. It is not on the decision strip.",
+      "next": "Apply edits when a clean is named.",
       "lastActivity": "2026-09-23T16:00:00-04:00"
     }
   ],
@@ -437,7 +557,7 @@
       "lastRun": "2026-10-10T07:30:00-04:00",
       "nextRun": "2026-10-17T07:30:00-04:00",
       "lastResult": "ok",
-      "detail": "Example seed, not a live run. The open item is the NYC Saturday outbound.",
+      "detail": "Example seed, not a live run. The open trip items are Pinehurst dates and the top-10 window.",
       "example": true
     },
     {
@@ -448,49 +568,111 @@
       "lastRun": "2026-10-13T07:00:00-04:00",
       "nextRun": "2026-10-20T07:00:00-04:00",
       "lastResult": "attention",
-      "detail": "Example seed, not a live run. Edits stay on hold until the NYC clean is named.",
+      "detail": "Example seed, not a live run. The calendar clean is queued and is not on the decision strip.",
       "example": true
     }
   ],
   "queue": [
     {
-      "id": "q-nyc",
-      "title": "Naresh picks the Saturday NYC outbound",
-      "owner": "Nomad",
-      "after": "Then the flight can be held or released"
-    },
-    {
-      "id": "q-cal",
-      "title": "Naresh names the calendar clean",
-      "owner": "Scout",
-      "after": "Then Scout applies the edits"
-    },
-    {
-      "id": "q-outlook",
-      "title": "Reconnect Outlook Calendar",
-      "owner": "Reed",
-      "after": "Work meetings can show up again"
-    },
-    {
-      "id": "q-goals",
-      "title": "Lock education goals and the work-EA lane",
-      "owner": "Sylvia",
-      "after": "Sage and Reed can leave the blocked state"
-    },
-    {
-      "id": "q-porter",
-      "title": "Find the missing auto-policy document",
+      "id": "q-dob",
+      "title": "Date of birth for the PeopleConnect opt-out, or skip it",
       "owner": "Porter",
-      "after": "The renewal list is complete"
+      "after": "Then that opt-out can be filed or dropped"
+    },
+    {
+      "id": "q-brokers",
+      "title": "Remaining data-broker opt-outs",
+      "owner": "Porter",
+      "after": "The broker list can close"
+    },
+    {
+      "id": "q-pinehurst",
+      "title": "Pinehurst dates",
+      "owner": "Nomad",
+      "after": "The filed plan can be held or dropped"
+    },
+    {
+      "id": "q-window",
+      "title": "Top-10 trip window",
+      "owner": "Nomad",
+      "after": "The first shortlist trip can be planned"
+    },
+    {
+      "id": "q-direction",
+      "title": "Business direction / Alpaca",
+      "owner": "Rick",
+      "after": "The delivered re-rank has a direction"
+    },
+    {
+      "id": "q-shaan",
+      "title": "A Shaan version of the reading list",
+      "owner": "Sage",
+      "after": "That version can be filed"
+    },
+    {
+      "id": "q-pr",
+      "title": "Merge PR #1 (Mission Control)",
+      "owner": "Sylvia",
+      "after": "The new board can replace the live site"
     }
   ],
   "activity": [
+    {
+      "id": "done:pr-maps",
+      "at": "2026-10-15T19:40:00-04:00",
+      "bot": "Nomad",
+      "title": "Puerto Rico Google Maps list",
+      "detail": "Done. San Juan + Dorado Eats is filed. The trip card URL stays empty until a link is pasted.",
+      "example": false,
+      "output": "",
+      "status": "done"
+    },
+    {
+      "id": "done:rayban-order",
+      "at": "2026-10-15T19:35:00-04:00",
+      "bot": "Inspector Gadget",
+      "title": "Ray-Ban glasses order",
+      "detail": "Delivered. The order is placed. Confirmation numbers stay off this board.",
+      "example": false,
+      "output": "",
+      "status": "done"
+    },
+    {
+      "id": "done:dnc-registry",
+      "at": "2026-10-15T19:30:00-04:00",
+      "bot": "Porter",
+      "title": "Do Not Call registry",
+      "detail": "Done. The registry request is filed. Phone numbers stay off this board.",
+      "example": false,
+      "output": "",
+      "status": "done"
+    },
+    {
+      "id": "done:mc-github-access",
+      "at": "2026-10-15T19:25:00-04:00",
+      "bot": "Timmy",
+      "title": "Mission Control GitHub access",
+      "detail": "Done. Repository access is in place.",
+      "example": false,
+      "output": "",
+      "status": "done"
+    },
+    {
+      "id": "done:grok-plan",
+      "at": "2026-10-15T19:22:00-04:00",
+      "bot": "Sylvia",
+      "title": "Grok plan question",
+      "detail": "Done. Decision: keep the current plan. No price is stored on this board.",
+      "example": false,
+      "output": "",
+      "status": "done"
+    },
     {
       "id": "act-business",
       "at": "2026-10-15T19:00:00-04:00",
       "bot": "Rick",
       "title": "Filed the online business re-rank",
-      "detail": "Research only. Nothing bought or signed.",
+      "detail": "Delivered. Research only. Nothing bought or signed.",
       "example": false,
       "output": "outputs/2026-10-15-business-ideas.md"
     },

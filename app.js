@@ -214,8 +214,22 @@ function routineBucket(item) {
   return 'upcoming';
 }
 
+function isClosedStatus(status) {
+  const value = String(status || '').trim().toLowerCase();
+  return value === 'done' || value === 'delivered';
+}
+
+function openNeeds(data) {
+  const closedIds = new Set(
+    (data?.requests || []).filter((item) => item?.id && isClosedStatus(item.status)).map((item) => item.id)
+  );
+  return (data?.needsYou || []).filter(
+    (item) => item && !isClosedStatus(item.status) && !(item.id && closedIds.has(item.id))
+  );
+}
+
 function renderNeeds() {
-  const items = state.data?.needsYou || [];
+  const items = openNeeds(state.data);
   $('needs-ring').innerHTML = ring(Math.min(items.length / 6, 1), String(items.length), `${items.length} waiting on Naresh`);
   if (!items.length) {
     $('needs-list').innerHTML = '<p class="empty">Nothing is waiting on you.</p>';
@@ -352,7 +366,7 @@ function renderTimeline() {
     return `<li class="${item.example ? 'example' : ''}">
       <article class="event">
         <time datetime="${escapeHtml(item.at || '')}">${item.at ? escapeHtml(formatET(item.at)) : ''}</time>
-        <div class="row"><span class="who">${escapeHtml(item.bot || '')}</span>${item.example ? '<span class="chip example">Example</span>' : ''}</div>
+        <div class="row"><span class="who">${escapeHtml(item.bot || '')}</span>${item.example ? '<span class="chip example">Example</span>' : chip('done', 'Done')}</div>
         <h3>${escapeHtml(item.title || '')}</h3>
         <p class="detail">${escapeHtml(item.detail || '')}</p>
         ${doc ? `<button type="button" class="text-btn" data-doc="${escapeHtml(doc)}">Open output</button>` : ''}
