@@ -177,7 +177,7 @@ test('money posts keep figures on the API and out of git', () => {
     updated: '2026-10-16T12:00:00-04:00',
     goal: { amount: 100, target_date: '2036-01-01' },
     net_worth_trend: [{ date: '2026-10-16', value: 100 }],
-    progress_pct: 42,
+    progress_pct: 12,
     notes: 'High level only'
   });
   assert.equal(posted.example, false);
@@ -203,7 +203,7 @@ test('money posts keep figures on the API and out of git', () => {
     updated: '2026-10-16T12:00:00-04:00',
     goal: { amount: 100, target_date: '2036-01-01' },
     net_worth_trend: [{ date: '2026-10-16', value: 100 }],
-    progress_pct: 42,
+    progress_pct: 12,
     nickname: 'personal'
   }), (error) => error.code === 'privacy' && error.hits.some((hit) => hit.rule === 'unknown_key'));
   assert.throws(() => validateSectionPost({
@@ -213,7 +213,7 @@ test('money posts keep figures on the API and out of git', () => {
     updated: '2026-10-16T12:00:00-04:00',
     goal: { amount: 100, target_date: '2036-01-01' },
     net_worth_trend: [{ date: '2026-10-16', value: 100 }],
-    progress_pct: 42,
+    progress_pct: 12,
     notes: `about ${String.fromCharCode(36)}100`
   }), (error) => error.code === 'privacy');
   const committed = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
@@ -221,7 +221,9 @@ test('money posts keep figures on the API and out of git', () => {
   assert.equal(committed.money.goal.amount, undefined);
   assert.equal(committed.money.net_worth_trend[0].value, undefined);
   const series = moneySeries(committed.money);
-  assert.deepEqual(series.data, [42]);
+  assert.equal(committed.money.progress_pct, 12);
+  assert.equal(committed.money.net_worth_trend.length, 1);
+  assert.deepEqual(series.data, [12]);
   assert.equal(series.currency, false);
   assert.equal(series.caption, 'More points coming');
   assert.ok(personalSeedHits({

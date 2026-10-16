@@ -395,6 +395,7 @@ function renderMoney() {
   const series = moneySeries(money);
   const pct = Math.max(0, Math.min(100, Number(money.progress_pct) || 0));
   $('money-example').textContent = exampleNote(money);
+  $('money-badge').hidden = money.example === false;
   $('money-ring').innerHTML = ring(pct / 100, `${Math.round(pct)}%`, `${Math.round(pct)} percent of the goal`);
   $('money-goal-title').textContent = formatGoalDate(money.goal?.target_date) || 'Goal';
   const figure = series.currency && Number.isFinite(Number(money.goal?.amount)) ? formatFigure(Number(money.goal.amount)) : '';

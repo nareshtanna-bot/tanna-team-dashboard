@@ -126,7 +126,7 @@ curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
     "updated": "2026-10-16T12:00:00-04:00",
     "goal": { "amount": 0, "target_date": "2036-01-01" },
     "net_worth_trend": [{ "date": "2026-10-16", "value": 0 }],
-    "progress_pct": 42,
+    "progress_pct": 12,
     "notes": ""
   }'
 ```
