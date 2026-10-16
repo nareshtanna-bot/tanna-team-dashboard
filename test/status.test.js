@@ -182,13 +182,30 @@ test('money posts keep figures on the API and out of git', () => {
   });
   assert.equal(posted.example, false);
   assert.equal(posted.schema, 'mission-control-money-card/v1');
-  assert.equal(posted.goal.amount, 100);
+  assert.equal(posted.goal.amount, undefined);
+  assert.equal(posted.goal.target_date, '2036-01-01');
+  assert.deepEqual(posted.net_worth_trend, [{ date: '2026-10-16', pct: 100 }]);
   assert.equal(moneySeries(posted).caption, 'More points coming');
+  assert.equal(moneySeries(posted).currency, false);
+  const feed = validateSectionPost({
+    section: 'money',
+    schema: 'mission-control-money-card/v1',
+    owner: 'DeNiro',
+    updated: '2026-10-16T12:00:00-04:00',
+    goal: { target_usd: 200, by: '2036-01 (Jan 01)' },
+    net_worth_trend: [{ as_of: '2026-10-16', net_worth_usd: 50, source: 'rollup' }],
+    progress_pct: 25,
+    notes: 'High level only'
+  });
+  assert.deepEqual(feed.goal, { target_date: '2036-01-01' });
+  assert.deepEqual(feed.net_worth_trend, [{ date: '2026-10-16', pct: 25 }]);
+  assert.equal(/target_usd|net_worth_usd|source|200|\b50\b/.test(JSON.stringify(feed)), false);
+  assert.equal(validateSectionPost(feed).net_worth_trend[0].pct, 25);
   assert.equal(moneySeries({
     example: false,
     net_worth_trend: [
-      { date: '2026-09-01', value: 80 },
-      { date: '2026-10-01', value: 90 }
+      { date: '2026-09-01', pct: 80 },
+      { date: '2026-10-01', pct: 90 }
     ]
   }).caption, '');
   assert.throws(() => validateSectionPost({
