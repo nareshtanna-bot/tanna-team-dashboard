@@ -524,6 +524,20 @@ body.lock { overflow: hidden; }
   padding: 12px;
 }
 .pipeline { align-items: start; }
+.money-card { display: grid; gap: 14px; align-items: stretch; }
+.money-goal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 6px;
+  text-align: center;
+}
+.money-goal h3 { margin: 0; font-family: var(--serif); font-weight: 560; }
 .stage { background: var(--bg-2); }
 .flag.failed, .result.failed { background: var(--danger-soft); color: var(--danger); border-color: transparent; }
 .flag.stalled { background: var(--copper-soft); color: var(--copper); border-color: transparent; }
@@ -531,7 +545,7 @@ body.lock { overflow: hidden; }
 @media (min-width: 800px) {
   .needs-grid { grid-template-columns: 1fr 1fr; }
   .requests, .habits, .schools { grid-template-columns: 1fr 1fr; }
-  .chart-row, .split, .home-grid { grid-template-columns: 1fr 1fr; }
+  .chart-row, .split, .home-grid, .money-card { grid-template-columns: 220px 1fr; }
   .week { grid-template-columns: 1fr 1fr; }
   .pipeline { grid-template-columns: 1fr 1fr; }
 }

@@ -2,6 +2,24 @@
   "updated": "2026-10-15T19:40:00-04:00",
   "updatedLabel": "Oct 15, 2026 · 7:40 PM ET",
   "source": "seed",
+  "money": {
+    "example": true,
+    "schema": "mission-control-money-card/v1",
+    "owner": "Example",
+    "updated": "2026-10-16T12:00:00-04:00",
+    "goal": {
+      "target_date": "2036-01-01",
+      "example": true
+    },
+    "net_worth_trend": [
+      {
+        "date": "2026-10-16",
+        "example": true
+      }
+    ],
+    "progress_pct": 42,
+    "notes": "Example. Percent only. No figures are stored in this file."
+  },
   "needsYou": [
     {
       "id": "peopleconnect-dob",

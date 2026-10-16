@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { personalSeedHits, scanText } from '../lib/privacy.js';
-import { validateSectionPost, withLiveSections } from '../lib/sections.js';
+import { moneySeries, validateSectionPost, withLiveSections } from '../lib/sections.js';
 import { isClosedStatus, isStale, mergeStatus, openNeedsYou, validateAgentPost } from '../lib/status.js';
 import handler from '../api/status.js';
 
@@ -167,6 +167,70 @@ test('the example week flags conflicts and stalled routines', () => {
   assert.equal(merged.routines.find((item) => item.id === 'example-failed').healthFlag, 'failed');
   assert.equal(merged.routines.find((item) => item.id === 'sylvia-rollup').healthFlag, 'ok');
   assert.equal(merged.needsYou.some((item) => isClosedStatus(item.status)), false);
+});
+
+test('money posts keep figures on the API and out of git', () => {
+  const posted = validateSectionPost({
+    section: 'money',
+    schema: 'mission-control-money-card/v1',
+    owner: 'Ledger',
+    updated: '2026-10-16T12:00:00-04:00',
+    goal: { amount: 100, target_date: '2036-01-01' },
+    net_worth_trend: [{ date: '2026-10-16', value: 100 }],
+    progress_pct: 42,
+    notes: 'High level only'
+  });
+  assert.equal(posted.example, false);
+  assert.equal(posted.schema, 'mission-control-money-card/v1');
+  assert.equal(posted.goal.amount, 100);
+  assert.equal(moneySeries(posted).caption, 'More points coming');
+  assert.equal(moneySeries({
+    example: false,
+    net_worth_trend: [
+      { date: '2026-09-01', value: 80 },
+      { date: '2026-10-01', value: 90 }
+    ]
+  }).caption, '');
+  assert.throws(() => validateSectionPost({
+    ...posted,
+    receivedAt: undefined,
+    holdings: [{ ticker: 'FUND' }]
+  }), (error) => error.code === 'privacy' && error.hits.some((hit) => hit.rule === 'account_detail'));
+  assert.throws(() => validateSectionPost({
+    section: 'money',
+    schema: 'mission-control-money-card/v1',
+    owner: 'Ledger',
+    updated: '2026-10-16T12:00:00-04:00',
+    goal: { amount: 100, target_date: '2036-01-01' },
+    net_worth_trend: [{ date: '2026-10-16', value: 100 }],
+    progress_pct: 42,
+    nickname: 'personal'
+  }), (error) => error.code === 'privacy' && error.hits.some((hit) => hit.rule === 'unknown_key'));
+  assert.throws(() => validateSectionPost({
+    section: 'money',
+    schema: 'mission-control-money-card/v1',
+    owner: 'Ledger',
+    updated: '2026-10-16T12:00:00-04:00',
+    goal: { amount: 100, target_date: '2036-01-01' },
+    net_worth_trend: [{ date: '2026-10-16', value: 100 }],
+    progress_pct: 42,
+    notes: `about ${String.fromCharCode(36)}100`
+  }), (error) => error.code === 'privacy');
+  const committed = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
+  assert.equal(personalSeedHits(committed).length, 0);
+  assert.equal(committed.money.goal.amount, undefined);
+  assert.equal(committed.money.net_worth_trend[0].value, undefined);
+  const series = moneySeries(committed.money);
+  assert.deepEqual(series.data, [42]);
+  assert.equal(series.currency, false);
+  assert.equal(series.caption, 'More points coming');
+  assert.ok(personalSeedHits({
+    money: {
+      example: true,
+      goal: { amount: 100, target_date: '2036-01-01', example: true },
+      net_worth_trend: [{ date: '2026-10-16', value: 100, example: true }]
+    }
+  }).some((hit) => hit.rule === 'committed_money_figure'));
 });
 
 test('posts with prices or health detail are rejected before storage', () => {

@@ -1,4 +1,4 @@
-const CACHE = 'mission-control-v2';
+const CACHE = 'mission-control-v3';
 const ASSETS = [
   './',
   './index.html',
