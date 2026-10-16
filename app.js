@@ -1,4 +1,4 @@
-import { routineHealth, withLiveSections } from './lib/sections.js';
+import { moneySeries, routineHealth, withLiveSections } from './lib/sections.js';
 
 const CATEGORIES = ['travel', 'school', 'home', 'golf', 'business', 'research'];
 const STAGES = [
@@ -374,6 +374,37 @@ function renderHome() {
     : '<p class="empty">No renewal dates.</p>';
 }
 
+function formatGoalDate(isoDay) {
+  if (!isoDay) return '';
+  const [year, month, date] = String(isoDay).split('-').map(Number);
+  if (!year || !month) return '';
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    month: 'short',
+    year: 'numeric'
+  }).format(new Date(Date.UTC(year, month - 1, date || 1, 16, 0, 0)));
+}
+
+function formatFigure(value) {
+  if (!Number.isFinite(value)) return '';
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
+}
+
+function renderMoney() {
+  const money = state.data?.money || {};
+  const series = moneySeries(money);
+  const pct = Math.max(0, Math.min(100, Number(money.progress_pct) || 0));
+  $('money-example').textContent = exampleNote(money);
+  $('money-badge').hidden = money.example === false;
+  $('money-ring').innerHTML = ring(pct / 100, `${Math.round(pct)}%`, `${Math.round(pct)} percent of the goal`);
+  $('money-goal-title').textContent = formatGoalDate(money.goal?.target_date) || 'Goal';
+  const figure = series.currency && Number.isFinite(Number(money.goal?.amount)) ? formatFigure(Number(money.goal.amount)) : '';
+  $('money-goal-copy').textContent = [figure, money.example !== false ? 'Example percent' : '', money.notes || ''].filter(Boolean).join(' · ');
+  const latest = series.data.length ? series.data[series.data.length - 1] : null;
+  const latestLabel = latest == null ? 'No points yet' : (series.currency ? formatFigure(latest) : `${latest}%`);
+  $('money-summary').textContent = [latestLabel, series.caption, money.example !== false ? 'Example' : ''].filter(Boolean).join(' · ');
+}
+
 function renderBusiness() {
   const business = state.data?.business || {};
   $('business-example').textContent = exampleNote(business);
@@ -569,7 +600,8 @@ function paintChartsNow() {
     categories: CATEGORIES.map((key) => requests.filter((item) => item.category === key).length),
     bots: ['working', 'idle', 'blocked'].map((key) => bots.filter((bot) => bot.status === key).length),
     days: activity.map((item) => etDay(item.at)),
-    weight: weight.map((point) => `${point.date}:${point.lb}`)
+    weight: weight.map((point) => `${point.date}:${point.lb}`),
+    money: moneySeries(state.data.money || {})
   });
   if (sig === chartSig) return;
   chartSig = sig;
@@ -622,6 +654,34 @@ function paintChartsNow() {
   $('activity-summary').textContent = days.length
     ? days.map((day) => `${day.slice(5)} · ${byDay.get(day)}`).join('  ')
     : 'No dated activity yet.';
+  const money = moneySeries(state.data.money || {});
+  const moneyNode = $('chart-money');
+  if (moneyNode) {
+    charts.push(new Chart(moneyNode, {
+      type: 'line',
+      data: {
+        labels: money.labels.map((label) => String(label).slice(5) || label),
+        datasets: [{
+          data: money.data,
+          borderColor: colors[1],
+          backgroundColor: colors[1],
+          tension: 0.25,
+          pointRadius: money.data.length < 2 ? 6 : 3,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false } },
+          y: { ticks: { precision: 0 }, grid: { color: grid } }
+        }
+      }
+    }));
+  }
+
   const weightNode = $('chart-weight');
   if (weightNode) {
     charts.push(new Chart(weightNode, {
@@ -672,6 +732,7 @@ function paint() {
   const when = data?.updatedLabel || (data?.updated ? formatET(data.updated) : 'No timestamp');
   $('updated-text').textContent = `Updated ${when} · ${sourceLabel(data)} · ${checkedLabel()}`;
   renderNeeds();
+  renderMoney();
   renderWeek();
   renderHealth();
   renderKids();

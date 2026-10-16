@@ -111,7 +111,7 @@ export default async function handler(req, res) {
             ok: false,
             error: 'storage_unconfigured',
             message: sectionPost
-              ? 'No Vercel Blob token is configured. Health, calendar, kids, home, and business posts stay in Blob only. Do not commit them.'
+              ? 'No Vercel Blob token is configured. Health, calendar, kids, home, business, and money posts stay in Blob only. Do not commit them.'
               : 'No Vercel Blob token is configured. Commit agents/<id>.json on main instead. GET /api/status reads GitHub when it can, and the committed status.json is always the fallback. Blob on the Hobby plan has a free allowance; do not turn on a paid plan for this.'
           });
           return;

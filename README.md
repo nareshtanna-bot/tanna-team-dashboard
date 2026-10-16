@@ -17,16 +17,17 @@ The manifest, apple touch icon, and service worker are what make that install wo
 ## What the page is
 
 1. **Needs you** — open decisions only. An item whose status is `done` or `delivered`, or whose ask is already done, is left off this strip and filed on the timeline.
-2. **Next 7 days** — Family and Work calendars, read only. Overlapping events are marked as conflicts.
-3. **Health** — weight trend, upcoming visits as calendar items, and habit streaks such as sauna. No lab values, medication names, doses, or diagnoses.
-4. **Kids** — application tracker for Cary Academy, Durham Academy, Ravenscroft, and Duke School, plus lessons and activities.
-5. **Home** — open issues (Town of Cary setback / survey, sunroom permit), deliveries and returns, and renewal names with dates.
-6. **Business** — pipeline status.
-7. **Requests & outputs** — one card per ask (queued, working, waiting on Naresh, done). Filter by travel, school, home, golf, business, or research, and search. Tap a card for the deliverable.
-8. **Trips** — Puerto Rico, Orlando 2027, London, St. Louis, Pinehurst, Bermuda, Mexico City, ski, and the RDU nonstop golf and park list. Each card opens a plan. The maps list has a URL field; it stays empty until a Google Maps link is known.
-9. **Fleet** — Sylvia, Timmy, Nomad, Rick, DeNiro, Ledger, Dr. Moore, Liv, Dr. Qualy, Inspector Gadget, Sage, Reed, Porter, and Scout. Each card has the role, the current task, the last activity, and working / idle / blocked. **Stale** means no post in 24 hours. A routine is **Failed** when its last result failed, and **Stalled** when it has no successful run in more than twice its interval. Sample timeline rows and sample routines are marked **Example**.
+2. **Money** — a net-worth trend and a ring for progress toward the goal. The committed card is an example percent, not a figure. A single point also says “More points coming.”
+3. **Next 7 days** — Family and Work calendars, read only. Overlapping events are marked as conflicts.
+4. **Health** — weight trend, upcoming visits as calendar items, and habit streaks such as sauna. No lab values, medication names, doses, or diagnoses.
+5. **Kids** — application tracker for Cary Academy, Durham Academy, Ravenscroft, and Duke School, plus lessons and activities.
+6. **Home** — open issues (Town of Cary setback / survey, sunroom permit), deliveries and returns, and renewal names with dates.
+7. **Business** — pipeline status.
+8. **Requests & outputs** — one card per ask (queued, working, waiting on Naresh, done). Filter by travel, school, home, golf, business, or research, and search. Tap a card for the deliverable.
+9. **Trips** — Puerto Rico, Orlando 2027, London, St. Louis, Pinehurst, Bermuda, Mexico City, ski, and the RDU nonstop golf and park list. Each card opens a plan. The maps list has a URL field; it stays empty until a Google Maps link is known.
+10. **Fleet** — Sylvia, Timmy, Nomad, Rick, DeNiro, Ledger, Dr. Moore, Liv, Dr. Qualy, Inspector Gadget, Sage, Reed, Porter, and Scout. Each card has the role, the current task, the last activity, and working / idle / blocked. **Stale** means no post in 24 hours. A routine is **Failed** when its last result failed, and **Stalled** when it has no successful run in more than twice its interval. Sample timeline rows and sample routines are marked **Example**.
 
-The health, calendar, kids, home, and business blocks in git are **Example** data so the page has a shape. Real records for those sections are not committed. Dollar amounts, street addresses, parcel ids, secrets, and clinical detail are rejected by the privacy check. `.github/workflows/privacy.yml` fails the check on a pull request.
+The health, calendar, kids, home, business, and money blocks in git are **Example** data so the page has a shape. Real records for those sections are not committed. Dollar amounts, street addresses, parcel ids, secrets, and clinical detail are rejected by the privacy check. A figure is allowed only on `POST /api/status` with `section` set to `money`, and it is stored at `sections/money.json` in Blob. `.github/workflows/privacy.yml` fails the check on a pull request if a dollar amount or a money figure is committed.
 
 Theme follows the phone, and the **Theme** control cycles Auto, Light, and Dark. Type is system fonts only. Chart.js and marked are stored in `vendor/` so the build does not download a font.
 
@@ -109,14 +110,35 @@ curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
   }'
 ```
 
-`section` is `health`, `calendar`, `kids`, `home`, or `business`.
+`section` is `health`, `calendar`, `kids`, `home`, `business`, or `money`.
+
+Money uses schema `mission-control-money-card/v1` and is stored only at `sections/money.json`. Allowed keys are `section`, `schema`, `owner`, `updated`, `goal` (`amount`, `target_date`), `net_worth_trend` (`date`, `value`), `progress_pct`, and `notes`. `amount` and `value` are numbers. Any other key is rejected, including account numbers, account names, per-account balances, transactions, and holdings. A dollar sign in a note is still rejected. The committed example keeps the percent and the goal date, and leaves the figures out.
+
+```bash
+curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
+  -H "content-type: application/json" \
+  -H "x-bot-secret: $BOT_STATUS_SECRET" \
+  -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+  -d '{
+    "section": "money",
+    "schema": "mission-control-money-card/v1",
+    "owner": "Ledger",
+    "updated": "2026-10-16T12:00:00-04:00",
+    "goal": { "amount": 0, "target_date": "2036-01-01" },
+    "net_worth_trend": [{ "date": "2026-10-16", "value": 0 }],
+    "progress_pct": 12,
+    "notes": ""
+  }'
+```
+
+Replace the zero placeholders with the live numbers before sending. Zero is not a valid amount.
 
 - `calendar.events[]`: `id`, `title`, `start`, `end`, `calendar` (`family` or `work`).
 - `kids.applications[]`: `id`, `school` (Cary Academy, Durham Academy, Ravenscroft, Duke School), `stage`, `dates[{label,date}]`. `kids.activities[]`: `id`, `name`, `when`.
 - `home.issues[]`: `id`, `title`, `status` (`open`, `waiting`, `done`), `detail`. `deliveries[]`: `id`, `name`, `kind` (`delivery` or `return`), `date`. `renewals[]`: `id`, `name`, `date`. No prices.
 - `business.pipeline[]`: `id`, `name`, `stage` (`research`, `direction`, `building`, `parked`), `detail`.
 
-The committed examples are labeled `"example": true`. The privacy check fails if a committed health, calendar, kids, home, or business row is missing that flag, or if clinical wording is in the repo.
+The committed examples are labeled `"example": true`. The privacy check fails if a committed health, calendar, kids, home, business, or money row is missing that flag, if a money figure is committed, or if clinical wording is in the repo.
 
 If Blob is not configured the post returns `503` with `storage_unconfigured`. Commit `agents/<id>.json` instead. Pushing that path runs the merge action below. Do not commit a status file every minute.
 

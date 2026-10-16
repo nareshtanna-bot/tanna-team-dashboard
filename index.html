@@ -54,6 +54,7 @@
 
     <nav class="jump" aria-label="Sections">
       <a href="#needs">Needs you</a>
+      <a href="#money">Money</a>
       <a href="#week">Week</a>
       <a href="#health">Health</a>
       <a href="#kids">Kids</a>
@@ -79,9 +80,34 @@
         </div>
       </section>
 
-      <section id="week" aria-labelledby="week-heading">
+      <section id="money" aria-labelledby="money-heading">
         <div class="section-head">
           <p class="index">02</p>
+          <div>
+            <h2 id="money-heading">Money</h2>
+            <p class="lede">Net worth trend and progress toward the goal. No accounts, holdings, or transactions. <span id="money-example"></span></p>
+          </div>
+        </div>
+        <div class="money-card">
+          <p id="money-badge" class="example-badge">EXAMPLE DATA</p>
+          <article class="money-goal">
+            <div id="money-ring" class="ring-slot"></div>
+            <h3 id="money-goal-title">Goal</h3>
+            <p id="money-goal-copy" class="meta"></p>
+          </article>
+          <div class="chart-card">
+            <div class="chart-copy">
+              <h3>Net worth trend</h3>
+              <p id="money-summary"></p>
+            </div>
+            <div class="chart-frame"><canvas id="chart-money" aria-hidden="true"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="week" aria-labelledby="week-heading">
+        <div class="section-head">
+          <p class="index">03</p>
           <div>
             <h2 id="week-heading">Next 7 days</h2>
             <p class="lede">Family and work, read only. Overlaps are marked as conflicts. <span id="week-example"></span></p>
@@ -92,7 +118,7 @@
 
       <section id="health" aria-labelledby="health-heading">
         <div class="section-head">
-          <p class="index">03</p>
+          <p class="index">04</p>
           <div>
             <h2 id="health-heading">Health</h2>
             <p class="lede">Weight, visits, and habits only. No labs, medications, or diagnoses. <span id="health-example"></span></p>
@@ -113,7 +139,7 @@
 
       <section id="kids" aria-labelledby="kids-heading">
         <div class="section-head">
-          <p class="index">04</p>
+          <p class="index">05</p>
           <div>
             <h2 id="kids-heading">Kids</h2>
             <p class="lede">School applications, golf lessons, and activities. <span id="kids-example"></span></p>
@@ -126,7 +152,7 @@
 
       <section id="home" aria-labelledby="home-heading">
         <div class="section-head">
-          <p class="index">05</p>
+          <p class="index">06</p>
           <div>
             <h2 id="home-heading">Home</h2>
             <p class="lede">Open issues, deliveries, and renewal names with dates. <span id="home-example"></span></p>
@@ -150,7 +176,7 @@
 
       <section id="business" aria-labelledby="business-heading">
         <div class="section-head">
-          <p class="index">06</p>
+          <p class="index">07</p>
           <div>
             <h2 id="business-heading">Business</h2>
             <p class="lede">Pipeline status. <span id="business-example"></span></p>
@@ -161,7 +187,7 @@
 
       <section id="requests" aria-labelledby="requests-heading">
         <div class="section-head">
-          <p class="index">07</p>
+          <p class="index">08</p>
           <div>
             <h2 id="requests-heading">Requests &amp; outputs</h2>
             <p class="lede">Each ask, who owns it, and the page they filed.</p>
@@ -187,7 +213,7 @@
 
       <section id="trips" aria-labelledby="trips-heading">
         <div class="section-head">
-          <p class="index">08</p>
+          <p class="index">09</p>
           <div>
             <h2 id="trips-heading">Trips</h2>
             <p class="lede">Open the plan, or the maps list when a URL is on file.</p>
@@ -198,7 +224,7 @@
 
       <section id="fleet" aria-labelledby="fleet-heading">
         <div class="section-head">
-          <p class="index">09</p>
+          <p class="index">10</p>
           <div>
             <h2 id="fleet-heading">Fleet</h2>
             <p class="lede">Who is working, idle, or blocked. Stale means no post in 24 hours. A routine is flagged when it failed, or when it has no successful run in more than twice its interval.</p>
