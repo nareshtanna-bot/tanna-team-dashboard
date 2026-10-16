@@ -3,59 +3,260 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0d12" />
+  <meta name="theme-color" content="#efeae2" />
+  <meta name="color-scheme" content="light dark" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Tanna Team" />
-  <meta name="description" content="Naresh Tanna — top priorities & Tanna Team fleet status" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Mission" />
+  <meta name="description" content="Mission Control for Naresh Tanna and the bot fleet." />
+  <meta name="robots" content="noindex" />
+  <title>Mission Control</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.svg" />
-  <link rel="icon" type="image/svg+xml" sizes="192x192" href="icon-192.svg" />
-  <title>Tanna Team</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="styles.css" />
+  <script>
+    (function () {
+      var q = new URLSearchParams(location.search).get('theme');
+      var mode = q || localStorage.getItem('mission-theme') || 'auto';
+      if (mode === 'light' || mode === 'dark') document.documentElement.dataset.theme = mode;
+      if (q === 'light' || q === 'dark' || q === 'auto') localStorage.setItem('mission-theme', q);
+      var dark = mode === 'dark' || (mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+      var theme = document.querySelector('meta[name="theme-color"]');
+      if (theme && dark) theme.content = '#141614';
+    })();
+  </script>
 </head>
 <body>
+  <div id="pull" class="pull" hidden>Pull to refresh</div>
   <div class="shell">
-    <header>
-      <div class="brand-row">
-        <div class="brand">
-          <div class="logo" aria-hidden="true">T</div>
-          <div>
-            <h1>Tanna Team</h1>
-            <p class="subtitle">Naresh · priorities &amp; fleet</p>
-          </div>
+    <header class="mast">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="16" fill="currentColor"/>
+          <circle cx="32" cy="32" r="16" fill="none" stroke="#f3efe6" stroke-width="3"/>
+          <circle cx="32" cy="32" r="4" fill="#c46a3a"/>
+        </svg>
+        <div>
+          <p class="eyebrow">Naresh Tanna</p>
+          <h1>Mission Control</h1>
         </div>
-        <div class="updated" id="updated" title="America/New_York">
-          <span class="dot" aria-hidden="true"></span>
-          <span id="updated-text">…</span>
+      </div>
+      <div class="mast-side">
+        <p class="updated" id="updated"><span class="live-dot" aria-hidden="true"></span><span id="updated-text">Loading the board…</span></p>
+        <div class="mast-actions">
+          <button type="button" id="theme-toggle" class="text-btn" aria-pressed="false">Theme · Auto</button>
+          <button type="button" id="refresh" class="text-btn">Refresh</button>
         </div>
       </div>
     </header>
 
-    <section aria-labelledby="priorities-heading">
-      <div class="section-head">
-        <h2 id="priorities-heading">Top Priorities</h2>
-        <span class="count" id="priority-count"></span>
-      </div>
-      <div class="priority-list" id="priorities">
-        <div class="loading">Loading status…</div>
-      </div>
-    </section>
+    <nav class="jump" aria-label="Sections">
+      <a href="#needs">Needs you</a>
+      <a href="#week">Week</a>
+      <a href="#health">Health</a>
+      <a href="#kids">Kids</a>
+      <a href="#home">Home</a>
+      <a href="#business">Business</a>
+      <a href="#requests">Requests</a>
+      <a href="#trips">Trips</a>
+      <a href="#fleet">Fleet</a>
+    </nav>
 
-    <section aria-labelledby="bots-heading">
-      <div class="section-head">
-        <h2 id="bots-heading">Fleet · Right Now</h2>
-        <span class="count" id="bot-count"></span>
-      </div>
-      <div class="filters" id="filters" role="tablist" aria-label="Filter by status"></div>
-      <div class="bot-grid" id="bots"></div>
-    </section>
+    <main>
+      <section id="needs" aria-labelledby="needs-heading">
+        <div class="section-head">
+          <p class="index">01</p>
+          <div>
+            <h2 id="needs-heading">Needs you</h2>
+            <p class="lede">Only open decisions. Anything done or delivered is on the timeline.</p>
+          </div>
+          <div id="needs-ring" class="ring-slot"></div>
+        </div>
+        <div id="needs-list" class="needs-grid">
+          <p class="loading">Loading…</p>
+        </div>
+      </section>
 
-    <footer>
-      Personal status · no login · America/New_York
+      <section id="week" aria-labelledby="week-heading">
+        <div class="section-head">
+          <p class="index">02</p>
+          <div>
+            <h2 id="week-heading">Next 7 days</h2>
+            <p class="lede">Family and work, read only. Overlaps are marked as conflicts. <span id="week-example"></span></p>
+          </div>
+        </div>
+        <div id="week-grid" class="week"></div>
+      </section>
+
+      <section id="health" aria-labelledby="health-heading">
+        <div class="section-head">
+          <p class="index">03</p>
+          <div>
+            <h2 id="health-heading">Health</h2>
+            <p class="lede">Weight, visits, and habits only. No labs, medications, or diagnoses. <span id="health-example"></span></p>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-copy">
+            <h3>Weight trend</h3>
+            <p id="weight-summary"></p>
+          </div>
+          <div class="chart-frame"><canvas id="chart-weight" aria-hidden="true"></canvas></div>
+        </div>
+        <h3 class="subhead">Habits</h3>
+        <div id="habit-grid" class="card-grid habits"></div>
+        <h3 class="subhead">Upcoming visits</h3>
+        <div id="visit-list" class="stack"></div>
+      </section>
+
+      <section id="kids" aria-labelledby="kids-heading">
+        <div class="section-head">
+          <p class="index">04</p>
+          <div>
+            <h2 id="kids-heading">Kids</h2>
+            <p class="lede">School applications, golf lessons, and activities. <span id="kids-example"></span></p>
+          </div>
+        </div>
+        <div id="school-grid" class="card-grid schools"></div>
+        <h3 class="subhead">Lessons and activities</h3>
+        <div id="activity-list" class="stack"></div>
+      </section>
+
+      <section id="home" aria-labelledby="home-heading">
+        <div class="section-head">
+          <p class="index">05</p>
+          <div>
+            <h2 id="home-heading">Home</h2>
+            <p class="lede">Open issues, deliveries, and renewal names with dates. <span id="home-example"></span></p>
+          </div>
+        </div>
+        <div class="home-grid">
+          <div>
+            <h3 class="subhead">Open issues</h3>
+            <div id="issue-list" class="stack"></div>
+          </div>
+          <div>
+            <h3 class="subhead">Deliveries and returns</h3>
+            <div id="delivery-list" class="stack"></div>
+          </div>
+          <div>
+            <h3 class="subhead">Renewals</h3>
+            <div id="renewal-list" class="stack"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="business" aria-labelledby="business-heading">
+        <div class="section-head">
+          <p class="index">06</p>
+          <div>
+            <h2 id="business-heading">Business</h2>
+            <p class="lede">Pipeline status. <span id="business-example"></span></p>
+          </div>
+        </div>
+        <div id="pipeline" class="pipeline"></div>
+      </section>
+
+      <section id="requests" aria-labelledby="requests-heading">
+        <div class="section-head">
+          <p class="index">07</p>
+          <div>
+            <h2 id="requests-heading">Requests &amp; outputs</h2>
+            <p class="lede">Each ask, who owns it, and the page they filed.</p>
+          </div>
+          <div id="done-ring" class="ring-slot"></div>
+        </div>
+        <div class="toolbar">
+          <label class="search">
+            <span class="sr">Search asks</span>
+            <input id="search" type="search" placeholder="Search asks, owners, places" enterkeyhint="search" autocomplete="off" />
+          </label>
+          <div id="filters" class="filters" role="tablist" aria-label="Filter by category"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-copy">
+            <h3>Asks by category</h3>
+            <p id="category-summary"></p>
+          </div>
+          <div class="chart-frame"><canvas id="chart-category" aria-hidden="true"></canvas></div>
+        </div>
+        <div id="request-grid" class="card-grid requests"></div>
+      </section>
+
+      <section id="trips" aria-labelledby="trips-heading">
+        <div class="section-head">
+          <p class="index">08</p>
+          <div>
+            <h2 id="trips-heading">Trips</h2>
+            <p class="lede">Open the plan, or the maps list when a URL is on file.</p>
+          </div>
+        </div>
+        <div id="trip-grid" class="card-grid trips"></div>
+      </section>
+
+      <section id="fleet" aria-labelledby="fleet-heading">
+        <div class="section-head">
+          <p class="index">09</p>
+          <div>
+            <h2 id="fleet-heading">Fleet</h2>
+            <p class="lede">Who is working, idle, or blocked. Stale means no post in 24 hours. A routine is flagged when it failed, or when it has no successful run in more than twice its interval.</p>
+          </div>
+          <div id="fleet-ring" class="ring-slot"></div>
+        </div>
+        <div class="chart-row">
+          <div class="chart-card">
+            <div class="chart-copy">
+              <h3>Fleet right now</h3>
+              <p id="fleet-summary"></p>
+            </div>
+            <div class="chart-frame short"><canvas id="chart-fleet" aria-hidden="true"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-copy">
+              <h3>Activity by day</h3>
+              <p id="activity-summary"></p>
+            </div>
+            <div class="chart-frame short"><canvas id="chart-activity" aria-hidden="true"></canvas></div>
+          </div>
+        </div>
+        <div id="bot-grid" class="card-grid fleet"></div>
+
+        <div class="split">
+          <div>
+            <h3 class="subhead">Routines</h3>
+            <h4 class="minor">Today</h4>
+            <div id="routines-today" class="stack"></div>
+            <h4 class="minor">Upcoming</h4>
+            <div id="routines-upcoming" class="stack"></div>
+          </div>
+          <div>
+            <h3 class="subhead">What’s next</h3>
+            <ol id="queue" class="queue"></ol>
+          </div>
+        </div>
+
+        <h3 class="subhead">Everything the fleet has done</h3>
+        <ol id="timeline" class="timeline"></ol>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      Mission Control · personal board · America/New_York
     </footer>
   </div>
 
-  <script src="app.js" defer></script>
+  <div id="reader" class="reader" hidden>
+    <div class="reader-bar">
+      <button type="button" id="reader-back">Back</button>
+      <p id="reader-kicker"></p>
+    </div>
+    <article id="reader-body" class="reader-body" tabindex="-1"></article>
+  </div>
+
+  <script src="vendor/chart.umd.min.js" defer></script>
+  <script src="vendor/marked.umd.js" defer></script>
+  <script src="app.js" type="module"></script>
 </body>
 </html>

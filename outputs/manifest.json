@@ -1,0 +1,114 @@
+{
+  "generated": "2026-10-15T19:05:00-04:00",
+  "convention": "outputs/<date>-<slug>.md",
+  "items": [
+    {
+      "path": "outputs/2026-10-15-rdu-golf-park-shortlist.md",
+      "slug": "rdu-golf-park-shortlist",
+      "title": "Top 10 family golf and national park trips from RDU",
+      "date": "2026-10-15",
+      "category": "research",
+      "owner": "Nomad",
+      "status": "done"
+    },
+    {
+      "path": "outputs/2026-10-15-pinehurst.md",
+      "slug": "pinehurst",
+      "title": "Pinehurst one-night family golf plan",
+      "date": "2026-10-15",
+      "category": "golf",
+      "owner": "Nomad",
+      "status": "done"
+    },
+    {
+      "path": "outputs/2026-10-15-bermuda.md",
+      "slug": "bermuda",
+      "title": "Bermuda family golf and beach plan",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "done"
+    },
+    {
+      "path": "outputs/2026-10-15-future-family-trips.md",
+      "slug": "future-family-trips",
+      "title": "Future family trips",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "working"
+    },
+    {
+      "path": "outputs/2026-10-15-business-ideas.md",
+      "slug": "business-ideas",
+      "title": "Online business ideas",
+      "date": "2026-10-15",
+      "category": "business",
+      "owner": "Rick",
+      "status": "done"
+    },
+    {
+      "path": "outputs/2026-10-14-cary-sunroom-setback.md",
+      "slug": "cary-sunroom-setback",
+      "title": "Sunroom rear setback",
+      "date": "2026-10-14",
+      "category": "home",
+      "owner": "Rick",
+      "status": "done"
+    },
+    {
+      "path": "outputs/2026-10-15-puerto-rico.md",
+      "slug": "puerto-rico",
+      "title": "Puerto Rico",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "done"
+    },
+    {
+      "path": "outputs/2026-10-15-orlando-2027.md",
+      "slug": "orlando-2027",
+      "title": "Orlando 2027",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "queued"
+    },
+    {
+      "path": "outputs/2026-10-15-london.md",
+      "slug": "london",
+      "title": "London",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "queued"
+    },
+    {
+      "path": "outputs/2026-10-15-st-louis.md",
+      "slug": "st-louis",
+      "title": "St. Louis",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "queued"
+    },
+    {
+      "path": "outputs/2026-10-15-mexico-city.md",
+      "slug": "mexico-city",
+      "title": "Mexico City",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "done"
+    },
+    {
+      "path": "outputs/2026-10-15-ski.md",
+      "slug": "ski",
+      "title": "Ski",
+      "date": "2026-10-15",
+      "category": "travel",
+      "owner": "Nomad",
+      "status": "queued"
+    }
+  ]
+}
