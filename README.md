@@ -112,7 +112,7 @@ curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
 
 `section` is `health`, `calendar`, `kids`, `home`, `business`, or `money`.
 
-Money uses schema `mission-control-money-card/v1` and is stored only at `sections/money.json`. Allowed keys are `section`, `schema`, `owner`, `updated`, `goal` (`amount`, `target_date`), `net_worth_trend` (`date`, `value`), `progress_pct`, and `notes`. `amount` and `value` are numbers. Any other key is rejected, including account numbers, account names, per-account balances, transactions, and holdings. A dollar sign in a note is still rejected. The committed example keeps the percent and the goal date, and leaves the figures out.
+Money uses schema `mission-control-money-card/v1` and is stored only at `sections/money.json`. Allowed keys are `section`, `schema`, `owner`, `updated`, `goal` (`target_usd` or `amount`, `by`, `target_date`), `net_worth_trend` (`as_of` or `date`, `net_worth_usd` or `value`, `source`), `progress_pct`, and `notes`. The server converts each point to a percent of the goal and stores only dates, percents, and `progress_pct`; dollar figures and `source` are never written to Blob or returned by `GET /api/status`. The goal date is fixed to Jan 2036. The card shows only the percent and an unlabeled trend line. Any other key is rejected, including account numbers, account names, per-account balances, transactions, and holdings. A dollar sign in a note is still rejected. The committed example keeps the percent and the goal date, and leaves the figures out.
 
 ```bash
 curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \

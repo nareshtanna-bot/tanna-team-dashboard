@@ -385,9 +385,9 @@ function formatGoalDate(isoDay) {
   }).format(new Date(Date.UTC(year, month - 1, date || 1, 16, 0, 0)));
 }
 
-function formatFigure(value) {
-  if (!Number.isFinite(value)) return '';
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
+function progressOr(money, latest) {
+  const pct = Number(money.progress_pct);
+  return Number.isFinite(pct) ? pct : latest;
 }
 
 function renderMoney() {
@@ -398,10 +398,9 @@ function renderMoney() {
   $('money-badge').hidden = money.example === false;
   $('money-ring').innerHTML = ring(pct / 100, `${Math.round(pct)}%`, `${Math.round(pct)} percent of the goal`);
   $('money-goal-title').textContent = formatGoalDate(money.goal?.target_date) || 'Goal';
-  const figure = series.currency && Number.isFinite(Number(money.goal?.amount)) ? formatFigure(Number(money.goal.amount)) : '';
-  $('money-goal-copy').textContent = [figure, money.example !== false ? 'Example percent' : '', money.notes || ''].filter(Boolean).join(' · ');
+  $('money-goal-copy').textContent = [money.example !== false ? 'Example percent' : '', money.notes || ''].filter(Boolean).join(' · ');
   const latest = series.data.length ? series.data[series.data.length - 1] : null;
-  const latestLabel = latest == null ? 'No points yet' : (series.currency ? formatFigure(latest) : `${latest}%`);
+  const latestLabel = latest == null ? 'No points yet' : `${Math.round(Number(progressOr(money, latest)))}% of goal`;
   $('money-summary').textContent = [latestLabel, series.caption, money.example !== false ? 'Example' : ''].filter(Boolean).join(' · ');
 }
 
@@ -673,10 +672,10 @@ function paintChartsNow() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
         scales: {
-          x: { grid: { display: false } },
-          y: { ticks: { precision: 0 }, grid: { color: grid } }
+          x: { display: false },
+          y: { display: false }
         }
       }
     }));
