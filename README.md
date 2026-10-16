@@ -17,11 +17,16 @@ The manifest, apple touch icon, and service worker are what make that install wo
 ## What the page is
 
 1. **Needs you** — open decisions only. An item whose status is `done` or `delivered`, or whose ask is already done, is left off this strip and filed on the timeline.
-2. **Requests & outputs** — one card per ask (queued, working, waiting on Naresh, done). Filter by travel, school, home, golf, business, or research, and search. Tap a card for the deliverable.
-3. **Trips** — Puerto Rico, Orlando 2027, London, St. Louis, Pinehurst, Bermuda, Mexico City, ski, and the RDU nonstop golf and park list. Each card opens a plan. The maps list has a URL field; it stays empty until a Google Maps link is known.
-4. **Fleet** — Sylvia, Timmy, Nomad, Rick, DeNiro, Ledger, Dr. Moore, Liv, Dr. Qualy, Inspector Gadget, Sage, Reed, Porter, and Scout. Each card has the role, the current task, the last activity, and working / idle / blocked. **Stale** means no activity time in the last 24 hours. Below that: routines for today and upcoming, the what’s-next queue, and a timeline of everything the fleet has done. Sample timeline rows and sample routines are marked **Example**.
+2. **Next 7 days** — Family and Work calendars, read only. Overlapping events are marked as conflicts.
+3. **Health** — weight trend, upcoming visits as calendar items, and habit streaks such as sauna. No lab values, medication names, doses, or diagnoses.
+4. **Kids** — application tracker for Cary Academy, Durham Academy, Ravenscroft, and Duke School, plus lessons and activities.
+5. **Home** — open issues (Town of Cary setback / survey, sunroom permit), deliveries and returns, and renewal names with dates.
+6. **Business** — pipeline status.
+7. **Requests & outputs** — one card per ask (queued, working, waiting on Naresh, done). Filter by travel, school, home, golf, business, or research, and search. Tap a card for the deliverable.
+8. **Trips** — Puerto Rico, Orlando 2027, London, St. Louis, Pinehurst, Bermuda, Mexico City, ski, and the RDU nonstop golf and park list. Each card opens a plan. The maps list has a URL field; it stays empty until a Google Maps link is known.
+9. **Fleet** — Sylvia, Timmy, Nomad, Rick, DeNiro, Ledger, Dr. Moore, Liv, Dr. Qualy, Inspector Gadget, Sage, Reed, Porter, and Scout. Each card has the role, the current task, the last activity, and working / idle / blocked. **Stale** means no post in 24 hours. A routine is **Failed** when its last result failed, and **Stalled** when it has no successful run in more than twice its interval. Sample timeline rows and sample routines are marked **Example**.
 
-Health and finance stay title-only. Dollar amounts, street addresses, parcel ids, and secrets are rejected by the privacy check.
+The health, calendar, kids, home, and business blocks in git are **Example** data so the page has a shape. Real records for those sections are not committed. Dollar amounts, street addresses, parcel ids, secrets, and clinical detail are rejected by the privacy check. `.github/workflows/privacy.yml` fails the check on a pull request.
 
 Theme follows the phone, and the **Theme** control cycles Auto, Light, and Dark. Type is system fonts only. Chart.js and marked are stored in `vendor/` so the build does not download a font.
 
@@ -29,7 +34,7 @@ Theme follows the phone, and the **Theme** control cycles Auto, Light, and Dark.
 
 `GET /api/status` builds the board in this order:
 
-1. Vercel Blob, when `BLOB_READ_WRITE_TOKEN` or `BLOB_STORE_ID` is set. One JSON file per bot at `agents/<id>.json`. This is the live path and it does not create a git commit.
+1. Vercel Blob, when `BLOB_READ_WRITE_TOKEN` or `BLOB_STORE_ID` is set. One JSON file per bot at `agents/<id>.json`, and one file per live section at `sections/<section>.json`. This is the live path and it does not create a git commit. A live section replaces that section’s example rows.
 2. The GitHub contents API for this repo, when that read works. A newer `status.json` on the default branch replaces the copy baked into the deployment. Files in `agents/` are merged on top.
 3. The committed `status.json` in this deployment. That file is the seed and the fallback.
 
@@ -83,7 +88,35 @@ curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
 
 The body is rejected when it contains a dollar amount, a health term (medication, diagnosis, and similar), a secret or long account-like number, a street address, or a parcel PIN / REID / plat book number. The error lists the rule names, not the matched text.
 
-A `needsYou` or `requests` entry with status `done` or `delivered` is a completion. It is removed from Needs you and added to the timeline when that id is not already there. `delivered` is shown as Done.
+A `needsYou`, `requests`, home issue, or pipeline entry with status `done` or `delivered` is a completion. It is removed from the open list and added to the timeline when that id is not already there. `delivered` is shown as Done.
+
+### Section posts
+
+Health, calendar, kids, home, and business use the same endpoint with `"section"` set. They are stored only in Blob, at `sections/<section>.json`. Do not commit the live payload. If Blob is not configured the post returns `storage_unconfigured`.
+
+Health posts are stricter. They reject drug names, lab names, diagnoses, doses, and fields such as `diagnosis`, `medication`, `dose`, or `notes`. A habit name like Sauna is allowed. Weight is a date plus a number of pounds. Visits are a title and a start time only.
+
+```bash
+curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
+  -H "content-type: application/json" \
+  -H "x-bot-secret: $BOT_STATUS_SECRET" \
+  -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+  -d '{
+    "section": "health",
+    "habits": [{ "id": "sauna", "name": "Sauna", "streak": 4, "cadence": "week" }],
+    "weight": [{ "date": "2026-10-16", "lb": 186 }],
+    "appointments": [{ "id": "visit", "title": "Annual visit", "start": "2026-11-02T09:00:00-05:00", "end": "2026-11-02T09:30:00-05:00" }]
+  }'
+```
+
+`section` is `health`, `calendar`, `kids`, `home`, or `business`.
+
+- `calendar.events[]`: `id`, `title`, `start`, `end`, `calendar` (`family` or `work`).
+- `kids.applications[]`: `id`, `school` (Cary Academy, Durham Academy, Ravenscroft, Duke School), `stage`, `dates[{label,date}]`. `kids.activities[]`: `id`, `name`, `when`.
+- `home.issues[]`: `id`, `title`, `status` (`open`, `waiting`, `done`), `detail`. `deliveries[]`: `id`, `name`, `kind` (`delivery` or `return`), `date`. `renewals[]`: `id`, `name`, `date`. No prices.
+- `business.pipeline[]`: `id`, `name`, `stage` (`research`, `direction`, `building`, `parked`), `detail`.
+
+The committed examples are labeled `"example": true`. The privacy check fails if a committed health, calendar, kids, home, or business row is missing that flag, or if clinical wording is in the repo.
 
 If Blob is not configured the post returns `503` with `storage_unconfigured`. Commit `agents/<id>.json` instead. Pushing that path runs the merge action below. Do not commit a status file every minute.
 

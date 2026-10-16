@@ -54,6 +54,11 @@
 
     <nav class="jump" aria-label="Sections">
       <a href="#needs">Needs you</a>
+      <a href="#week">Week</a>
+      <a href="#health">Health</a>
+      <a href="#kids">Kids</a>
+      <a href="#home">Home</a>
+      <a href="#business">Business</a>
       <a href="#requests">Requests</a>
       <a href="#trips">Trips</a>
       <a href="#fleet">Fleet</a>
@@ -74,9 +79,89 @@
         </div>
       </section>
 
-      <section id="requests" aria-labelledby="requests-heading">
+      <section id="week" aria-labelledby="week-heading">
         <div class="section-head">
           <p class="index">02</p>
+          <div>
+            <h2 id="week-heading">Next 7 days</h2>
+            <p class="lede">Family and work, read only. Overlaps are marked as conflicts. <span id="week-example"></span></p>
+          </div>
+        </div>
+        <div id="week-grid" class="week"></div>
+      </section>
+
+      <section id="health" aria-labelledby="health-heading">
+        <div class="section-head">
+          <p class="index">03</p>
+          <div>
+            <h2 id="health-heading">Health</h2>
+            <p class="lede">Weight, visits, and habits only. No labs, medications, or diagnoses. <span id="health-example"></span></p>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-copy">
+            <h3>Weight trend</h3>
+            <p id="weight-summary"></p>
+          </div>
+          <div class="chart-frame"><canvas id="chart-weight" aria-hidden="true"></canvas></div>
+        </div>
+        <h3 class="subhead">Habits</h3>
+        <div id="habit-grid" class="card-grid habits"></div>
+        <h3 class="subhead">Upcoming visits</h3>
+        <div id="visit-list" class="stack"></div>
+      </section>
+
+      <section id="kids" aria-labelledby="kids-heading">
+        <div class="section-head">
+          <p class="index">04</p>
+          <div>
+            <h2 id="kids-heading">Kids</h2>
+            <p class="lede">School applications, golf lessons, and activities. <span id="kids-example"></span></p>
+          </div>
+        </div>
+        <div id="school-grid" class="card-grid schools"></div>
+        <h3 class="subhead">Lessons and activities</h3>
+        <div id="activity-list" class="stack"></div>
+      </section>
+
+      <section id="home" aria-labelledby="home-heading">
+        <div class="section-head">
+          <p class="index">05</p>
+          <div>
+            <h2 id="home-heading">Home</h2>
+            <p class="lede">Open issues, deliveries, and renewal names with dates. <span id="home-example"></span></p>
+          </div>
+        </div>
+        <div class="home-grid">
+          <div>
+            <h3 class="subhead">Open issues</h3>
+            <div id="issue-list" class="stack"></div>
+          </div>
+          <div>
+            <h3 class="subhead">Deliveries and returns</h3>
+            <div id="delivery-list" class="stack"></div>
+          </div>
+          <div>
+            <h3 class="subhead">Renewals</h3>
+            <div id="renewal-list" class="stack"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="business" aria-labelledby="business-heading">
+        <div class="section-head">
+          <p class="index">06</p>
+          <div>
+            <h2 id="business-heading">Business</h2>
+            <p class="lede">Pipeline status. <span id="business-example"></span></p>
+          </div>
+        </div>
+        <div id="pipeline" class="pipeline"></div>
+      </section>
+
+      <section id="requests" aria-labelledby="requests-heading">
+        <div class="section-head">
+          <p class="index">07</p>
           <div>
             <h2 id="requests-heading">Requests &amp; outputs</h2>
             <p class="lede">Each ask, who owns it, and the page they filed.</p>
@@ -102,7 +187,7 @@
 
       <section id="trips" aria-labelledby="trips-heading">
         <div class="section-head">
-          <p class="index">03</p>
+          <p class="index">08</p>
           <div>
             <h2 id="trips-heading">Trips</h2>
             <p class="lede">Open the plan, or the maps list when a URL is on file.</p>
@@ -113,10 +198,10 @@
 
       <section id="fleet" aria-labelledby="fleet-heading">
         <div class="section-head">
-          <p class="index">04</p>
+          <p class="index">09</p>
           <div>
             <h2 id="fleet-heading">Fleet</h2>
-            <p class="lede">Who is working, idle, or blocked. Stale means no post in 24 hours.</p>
+            <p class="lede">Who is working, idle, or blocked. Stale means no post in 24 hours. A routine is flagged when it failed, or when it has no successful run in more than twice its interval.</p>
           </div>
           <div id="fleet-ring" class="ring-slot"></div>
         </div>
@@ -172,6 +257,6 @@
 
   <script src="vendor/chart.umd.min.js" defer></script>
   <script src="vendor/marked.umd.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js" type="module"></script>
 </body>
 </html>

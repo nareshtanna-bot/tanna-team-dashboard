@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { scanText } from '../lib/privacy.js';
+import { personalSeedHits, scanText } from '../lib/privacy.js';
 
 const root = join(import.meta.dirname, '..');
 
@@ -21,8 +21,12 @@ function filesIn(dir) {
   return found;
 }
 
-const targets = [join(root, 'status.json'), ...filesIn(join(root, 'agents')), ...filesIn(join(root, 'outputs'))]
-  .filter((path) => /\.(json|md)$/.test(path));
+const targets = [
+  join(root, 'status.json'),
+  ...filesIn(join(root, 'agents')),
+  ...filesIn(join(root, 'outputs')),
+  ...filesIn(join(root, 'sections'))
+].filter((path) => /\.(json|md)$/.test(path));
 
 let failed = false;
 for (const path of targets) {
@@ -37,6 +41,7 @@ for (const path of targets) {
     }
   }
   const hits = scanText(text);
+  if (path.endsWith('.json')) hits.push(...personalSeedHits(text));
   const seen = new Set();
   for (const hit of hits) {
     const key = `${hit.line}:${hit.rule}`;

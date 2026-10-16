@@ -1,4 +1,12 @@
+import { routineHealth, withLiveSections } from './lib/sections.js';
+
 const CATEGORIES = ['travel', 'school', 'home', 'golf', 'business', 'research'];
+const STAGES = [
+  ['research', 'Research'],
+  ['direction', 'Direction'],
+  ['building', 'Building'],
+  ['parked', 'Parked']
+];
 const REQUEST_LABEL = {
   queued: 'Queued',
   working: 'Working',
@@ -193,7 +201,7 @@ async function loadStatus() {
     const manifest = await fetch(`outputs/manifest.json?t=${Date.now()}`, { cache: 'no-store' });
     if (manifest.ok) data = applyManifest(data, await manifest.json());
   } catch { /* the seed requests still render */ }
-  return data;
+  return withLiveSections(data, {}, Date.now());
 }
 
 function requestsMatching() {
@@ -226,6 +234,161 @@ function openNeeds(data) {
   return (data?.needsYou || []).filter(
     (item) => item && !isClosedStatus(item.status) && !(item.id && closedIds.has(item.id))
   );
+}
+
+function exampleNote(section) {
+  if (!section || section.live === true || section.example === false) return 'Live post.';
+  return 'Example data, not a real record.';
+}
+
+function dayKey(value) {
+  return etDay(value);
+}
+
+function nextDays() {
+  const first = dayKey(new Date());
+  const [year, month, date] = first.split('-').map(Number);
+  const days = [];
+  for (let i = 0; i < 7; i += 1) {
+    const point = new Date(Date.UTC(year, month - 1, date + i, 16, 0, 0));
+    days.push(dayKey(point));
+  }
+  return days;
+}
+
+function clock(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    hour: 'numeric',
+    minute: '2-digit'
+  }).format(date);
+}
+
+function weekday(isoDay) {
+  const [year, month, date] = isoDay.split('-').map(Number);
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric'
+  }).format(new Date(Date.UTC(year, month - 1, date, 16, 0, 0)));
+}
+
+function renderWeek() {
+  const calendar = state.data?.calendar || {};
+  $('week-example').textContent = exampleNote(calendar);
+  const events = calendar.events || [];
+  const days = nextDays();
+  $('week-grid').innerHTML = days.map((day) => {
+    const items = events.filter((event) => dayKey(event.start) === day);
+    const body = items.length
+      ? items.map((event) => `<div class="slot${event.conflict ? ' conflict' : ''}">
+          <span class="meta ${escapeHtml(event.calendar || '')}">${escapeHtml(event.calendar === 'work' ? 'Work' : 'Family')}</span>
+          <strong>${escapeHtml(event.title || '')}</strong>
+          <span class="meta">${escapeHtml(clock(event.start))}${event.end ? `–${escapeHtml(clock(event.end))}` : ''}</span>
+          ${event.conflict ? chip('waiting', 'Conflict') : ''}
+          ${event.example ? '<span class="chip example">Example</span>' : ''}
+        </div>`).join('')
+      : '<p class="empty">Clear</p>';
+    return `<article class="day"><header><h3>${escapeHtml(weekday(day))}</h3></header>${body}</article>`;
+  }).join('');
+}
+
+function renderHealth() {
+  const health = state.data?.health || {};
+  $('health-example').textContent = exampleNote(health);
+  const points = health.weight || [];
+  $('weight-summary').textContent = points.length
+    ? `${points[0].lb} lb on ${points[0].date} → ${points[points.length - 1].lb} lb on ${points[points.length - 1].date}${health.example !== false ? ' · Example' : ''}`
+    : 'No weight points yet.';
+  const habits = health.habits || [];
+  $('habit-grid').innerHTML = habits.length
+    ? habits.map((habit) => {
+      const goal = 7;
+      return `<article class="habit">
+        ${ring(Math.min((habit.streak || 0) / goal, 1), String(habit.streak || 0), `${habit.name} streak ${habit.streak || 0}`)}
+        <div>
+          <h3>${escapeHtml(habit.name || '')}</h3>
+          <p class="meta">${escapeHtml(String(habit.streak || 0))} in a row${habit.example ? ' · Example' : ''}</p>
+        </div>
+      </article>`;
+    }).join('')
+    : '<p class="empty">No habits posted.</p>';
+  const visits = [...(health.appointments || [])].sort((a, b) => Date.parse(a.start || 0) - Date.parse(b.start || 0));
+  $('visit-list').innerHTML = visits.length
+    ? visits.map((visit) => `<article class="panel">
+        <div class="row">${chip('queued', 'Visit')}${visit.example ? '<span class="chip example">Example</span>' : ''}</div>
+        <h3>${escapeHtml(visit.title || 'Visit')}</h3>
+        <p class="meta">${visit.start ? escapeHtml(formatET(visit.start)) : ''}</p>
+      </article>`).join('')
+    : '<p class="empty">No visits on the calendar.</p>';
+}
+
+function renderKids() {
+  const kids = state.data?.kids || {};
+  $('kids-example').textContent = exampleNote(kids);
+  const schools = kids.applications || [];
+  $('school-grid').innerHTML = schools.map((school) => `<article class="school">
+      <div class="row">${chip('queued', school.stage || 'Open')}${school.example ? '<span class="chip example">Example</span>' : ''}</div>
+      <h3>${escapeHtml(school.school || '')}</h3>
+      <ul class="dates">${(school.dates || []).map((entry) => `<li><span class="meta">${escapeHtml(entry.date || '')}</span> ${escapeHtml(entry.label || '')}</li>`).join('')}</ul>
+    </article>`).join('') || '<p class="empty">No applications posted.</p>';
+  const activities = kids.activities || [];
+  $('activity-list').innerHTML = activities.length
+    ? activities.map((item) => `<article class="panel">
+        <div class="row">${item.example ? '<span class="chip example">Example</span>' : ''}</div>
+        <h3>${escapeHtml(item.name || '')}</h3>
+        <p class="meta">${escapeHtml(item.when || '')}</p>
+      </article>`).join('')
+    : '<p class="empty">No lessons posted.</p>';
+}
+
+function renderHome() {
+  const home = state.data?.home || {};
+  $('home-example').textContent = exampleNote(home);
+  const issues = home.issues || [];
+  $('issue-list').innerHTML = issues.length
+    ? issues.map((item) => `<article class="panel">
+        <div class="row">${chip(item.status === 'waiting' ? 'waiting' : 'working', item.status === 'waiting' ? 'Waiting' : 'Open')}${item.example ? '<span class="chip example">Example</span>' : ''}</div>
+        <h3>${escapeHtml(item.title || '')}</h3>
+        <p class="detail">${escapeHtml(item.detail || '')}</p>
+      </article>`).join('')
+    : '<p class="empty">No open issues.</p>';
+  const deliveries = home.deliveries || [];
+  $('delivery-list').innerHTML = deliveries.length
+    ? deliveries.map((item) => `<article class="panel">
+        <div class="row">${chip('queued', item.kind === 'return' ? 'Return' : 'Delivery')}${item.example ? '<span class="chip example">Example</span>' : ''}</div>
+        <h3>${escapeHtml(item.name || '')}</h3>
+        <p class="meta">${escapeHtml(item.date || '')}</p>
+      </article>`).join('')
+    : '<p class="empty">Nothing in transit.</p>';
+  const renewals = home.renewals || [];
+  $('renewal-list').innerHTML = renewals.length
+    ? renewals.map((item) => `<article class="panel">
+        <div class="row">${chip('queued', 'Renewal')}${item.example ? '<span class="chip example">Example</span>' : ''}</div>
+        <h3>${escapeHtml(item.name || '')}</h3>
+        <p class="meta">${escapeHtml(item.date || '')}</p>
+      </article>`).join('')
+    : '<p class="empty">No renewal dates.</p>';
+}
+
+function renderBusiness() {
+  const business = state.data?.business || {};
+  $('business-example').textContent = exampleNote(business);
+  const items = business.pipeline || [];
+  $('pipeline').innerHTML = STAGES.map(([id, label]) => {
+    const cards = items.filter((item) => item.stage === id);
+    return `<section class="stage">
+      <header><h3>${label}</h3><span class="meta">${cards.length}</span></header>
+      ${cards.length ? cards.map((item) => `<article class="slot">
+          <strong>${escapeHtml(item.name || '')}</strong>
+          <span class="detail">${escapeHtml(item.detail || '')}</span>
+          ${item.example ? '<span class="chip example">Example</span>' : ''}
+        </article>`).join('') : '<p class="empty">Empty</p>'}
+    </section>`;
+  }).join('');
 }
 
 function renderNeeds() {
@@ -326,7 +489,7 @@ function renderBots() {
 }
 
 function renderRoutines() {
-  const items = state.data?.routines || [];
+  const items = (state.data?.routines || []).map((item) => ({ ...item, healthFlag: item.healthFlag || routineHealth(item, Date.now()) }));
   const today = items.filter((item) => routineBucket(item) === 'today');
   const upcoming = items.filter((item) => routineBucket(item) !== 'today');
   const draw = (list) => {
@@ -334,6 +497,8 @@ function renderRoutines() {
     return list.map((item) => `<article class="routine">
       <div class="row">
         <span class="chip result ${escapeHtml(item.lastResult || 'attention')}">${escapeHtml(RESULT_LABEL[item.lastResult] || item.lastResult || 'No result')}</span>
+        ${item.healthFlag === 'failed' ? '<span class="chip flag failed">Failed</span>' : ''}
+        ${item.healthFlag === 'stalled' ? '<span class="chip flag stalled">Stalled</span>' : ''}
         ${item.example ? '<span class="chip example">Example</span>' : ''}
       </div>
       <h3>${escapeHtml(item.name)}</h3>
@@ -398,11 +563,13 @@ function paintChartsNow() {
   const requests = state.data.requests || [];
   const bots = state.data.bots || [];
   const activity = state.data.activity || [];
+  const weight = state.data.health?.weight || [];
   const sig = JSON.stringify({
     theme: currentTheme(),
     categories: CATEGORIES.map((key) => requests.filter((item) => item.category === key).length),
     bots: ['working', 'idle', 'blocked'].map((key) => bots.filter((bot) => bot.status === key).length),
-    days: activity.map((item) => etDay(item.at))
+    days: activity.map((item) => etDay(item.at)),
+    weight: weight.map((point) => `${point.date}:${point.lb}`)
   });
   if (sig === chartSig) return;
   chartSig = sig;
@@ -455,6 +622,33 @@ function paintChartsNow() {
   $('activity-summary').textContent = days.length
     ? days.map((day) => `${day.slice(5)} · ${byDay.get(day)}`).join('  ')
     : 'No dated activity yet.';
+  const weightNode = $('chart-weight');
+  if (weightNode) {
+    charts.push(new Chart(weightNode, {
+      type: 'line',
+      data: {
+        labels: weight.map((point) => point.date.slice(5)),
+        datasets: [{
+          data: weight.map((point) => point.lb),
+          borderColor: colors[0],
+          backgroundColor: colors[0],
+          tension: 0.3,
+          pointRadius: 3,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false } },
+          y: { ticks: { precision: 0 }, grid: { color: grid } }
+        }
+      }
+    }));
+  }
+
   charts.push(new Chart($('chart-activity'), {
     type: 'bar',
     data: {
@@ -478,6 +672,11 @@ function paint() {
   const when = data?.updatedLabel || (data?.updated ? formatET(data.updated) : 'No timestamp');
   $('updated-text').textContent = `Updated ${when} · ${sourceLabel(data)} · ${checkedLabel()}`;
   renderNeeds();
+  renderWeek();
+  renderHealth();
+  renderKids();
+  renderHome();
+  renderBusiness();
   renderFilters();
   renderRequests();
   renderTrips();

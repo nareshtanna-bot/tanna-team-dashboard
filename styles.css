@@ -248,11 +248,11 @@ h2 {
   color: var(--muted);
 }
 
-.needs-grid, .card-grid, .chart-row, .split {
+.needs-grid, .card-grid, .chart-row, .split, .home-grid, .pipeline, .week {
   display: grid;
   gap: 14px;
 }
-.need, .ask, .trip, .bot, .routine, .chart-card, .queue, .timeline {
+.need, .ask, .trip, .bot, .routine, .chart-card, .queue, .timeline, .day, .panel, .school, .stage {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -496,13 +496,50 @@ body.lock { overflow: hidden; }
   h1 { font-size: 2.15rem; }
 }
 
+.day, .panel, .school, .stage { padding: 14px; display: grid; gap: 8px; align-content: start; }
+.day header, .stage header { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.day h3, .school h3, .stage h3, .panel h3 { margin: 0; font-size: 1rem; }
+.slot {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: grid;
+  gap: 2px;
+  background: var(--bg);
+}
+.slot.conflict { border-color: var(--copper); background: var(--copper-soft); }
+.slot strong { font-size: 0.92rem; }
+.dates { margin: 0; padding-left: 18px; }
+.dates li { margin: 4px 0; }
+.family { color: var(--pine); }
+.work { color: var(--sea); }
+.habit {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 12px;
+}
+.pipeline { align-items: start; }
+.stage { background: var(--bg-2); }
+.flag.failed, .result.failed { background: var(--danger-soft); color: var(--danger); border-color: transparent; }
+.flag.stalled { background: var(--copper-soft); color: var(--copper); border-color: transparent; }
+
 @media (min-width: 800px) {
   .needs-grid { grid-template-columns: 1fr 1fr; }
-  .requests { grid-template-columns: 1fr 1fr; }
-  .chart-row, .split { grid-template-columns: 1fr 1fr; }
+  .requests, .habits, .schools { grid-template-columns: 1fr 1fr; }
+  .chart-row, .split, .home-grid { grid-template-columns: 1fr 1fr; }
+  .week { grid-template-columns: 1fr 1fr; }
+  .pipeline { grid-template-columns: 1fr 1fr; }
 }
 
 @media (min-width: 1100px) {
-  .trips, .fleet { grid-template-columns: 1fr 1fr 1fr; }
-  .needs-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .trips, .fleet, .needs-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .schools { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .home-grid, .habits { grid-template-columns: 1fr 1fr 1fr; }
+  .week { grid-template-columns: repeat(7, 1fr); }
+  .pipeline { grid-template-columns: repeat(4, 1fr); }
 }

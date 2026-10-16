@@ -536,7 +536,9 @@
       "nextRun": "2026-10-16T08:00:00-04:00",
       "lastResult": "ok",
       "detail": "Example seed, not a live run. Rollup noted the Oct 15 research landing on the board.",
-      "example": true
+      "example": true,
+      "intervalHours": 24,
+      "lastSuccess": "2026-10-15T08:10:00-04:00"
     },
     {
       "id": "porter-renewals",
@@ -547,7 +549,9 @@
       "nextRun": "2026-10-16T08:20:00-04:00",
       "lastResult": "attention",
       "detail": "Example seed, not a live run. One document is still missing from the renewal list.",
-      "example": true
+      "example": true,
+      "intervalHours": 24,
+      "lastSuccess": "2026-09-01T08:20:00-04:00"
     },
     {
       "id": "nomad-friday",
@@ -558,7 +562,9 @@
       "nextRun": "2026-10-17T07:30:00-04:00",
       "lastResult": "ok",
       "detail": "Example seed, not a live run. The open trip items are Pinehurst dates and the top-10 window.",
-      "example": true
+      "example": true,
+      "intervalHours": 168,
+      "lastSuccess": "2026-10-10T07:30:00-04:00"
     },
     {
       "id": "scout-monday",
@@ -569,6 +575,21 @@
       "nextRun": "2026-10-20T07:00:00-04:00",
       "lastResult": "attention",
       "detail": "Example seed, not a live run. The calendar clean is queued and is not on the decision strip.",
+      "example": true,
+      "intervalHours": 168,
+      "lastSuccess": "2026-09-01T07:00:00-04:00"
+    },
+    {
+      "id": "example-failed",
+      "name": "Example night check",
+      "owner": "Liv",
+      "schedule": "Daily",
+      "intervalHours": 24,
+      "lastRun": "2026-10-15T21:00:00-04:00",
+      "lastSuccess": "2026-10-14T21:00:00-04:00",
+      "nextRun": "2026-10-16T21:00:00-04:00",
+      "lastResult": "failed",
+      "detail": "Example seed, not a live run. The last run failed. No personal detail is stored here.",
       "example": true
     }
   ],
@@ -757,5 +778,310 @@
       "example": true,
       "output": ""
     }
-  ]
+  ],
+  "health": {
+    "example": true,
+    "weight": [
+      {
+        "date": "2026-09-04",
+        "lb": 190,
+        "example": true
+      },
+      {
+        "date": "2026-09-11",
+        "lb": 189,
+        "example": true
+      },
+      {
+        "date": "2026-09-18",
+        "lb": 188,
+        "example": true
+      },
+      {
+        "date": "2026-09-25",
+        "lb": 188,
+        "example": true
+      },
+      {
+        "date": "2026-10-02",
+        "lb": 187,
+        "example": true
+      },
+      {
+        "date": "2026-10-09",
+        "lb": 186,
+        "example": true
+      },
+      {
+        "date": "2026-10-16",
+        "lb": 186,
+        "example": true
+      }
+    ],
+    "appointments": [
+      {
+        "id": "ex-visit",
+        "title": "Example visit",
+        "start": "2026-10-21T09:00:00-04:00",
+        "end": "2026-10-21T09:30:00-04:00",
+        "example": true
+      },
+      {
+        "id": "ex-followup",
+        "title": "Example follow-up",
+        "start": "2026-11-04T15:00:00-05:00",
+        "end": "2026-11-04T15:20:00-05:00",
+        "example": true
+      }
+    ],
+    "habits": [
+      {
+        "id": "sauna",
+        "name": "Sauna",
+        "streak": 4,
+        "cadence": "week",
+        "example": true
+      },
+      {
+        "id": "walk",
+        "name": "Walk",
+        "streak": 2,
+        "cadence": "week",
+        "example": true
+      },
+      {
+        "id": "lights",
+        "name": "Lights out",
+        "streak": 0,
+        "cadence": "week",
+        "example": true
+      }
+    ]
+  },
+  "calendar": {
+    "example": true,
+    "events": [
+      {
+        "id": "ex-fam-16",
+        "title": "Example family block",
+        "start": "2026-10-16T09:00:00-04:00",
+        "end": "2026-10-16T10:00:00-04:00",
+        "calendar": "family",
+        "example": true
+      },
+      {
+        "id": "ex-work-16",
+        "title": "Example work block",
+        "start": "2026-10-16T09:30:00-04:00",
+        "end": "2026-10-16T10:30:00-04:00",
+        "calendar": "work",
+        "example": true
+      },
+      {
+        "id": "ex-fam-17",
+        "title": "Example practice",
+        "start": "2026-10-17T10:00:00-04:00",
+        "end": "2026-10-17T11:00:00-04:00",
+        "calendar": "family",
+        "example": true
+      },
+      {
+        "id": "ex-work-18",
+        "title": "Example focus block",
+        "start": "2026-10-18T13:00:00-04:00",
+        "end": "2026-10-18T15:00:00-04:00",
+        "calendar": "work",
+        "example": true
+      },
+      {
+        "id": "ex-fam-19",
+        "title": "Example lesson",
+        "start": "2026-10-19T16:00:00-04:00",
+        "end": "2026-10-19T17:00:00-04:00",
+        "calendar": "family",
+        "example": true
+      },
+      {
+        "id": "ex-work-20",
+        "title": "Example planning hour",
+        "start": "2026-10-20T11:00:00-04:00",
+        "end": "2026-10-20T12:00:00-04:00",
+        "calendar": "work",
+        "example": true
+      },
+      {
+        "id": "ex-fam-21",
+        "title": "Example weekend hold",
+        "start": "2026-10-21T18:00:00-04:00",
+        "end": "2026-10-21T20:00:00-04:00",
+        "calendar": "family",
+        "example": true
+      },
+      {
+        "id": "ex-work-22",
+        "title": "Example review",
+        "start": "2026-10-22T09:00:00-04:00",
+        "end": "2026-10-22T09:30:00-04:00",
+        "calendar": "work",
+        "example": true
+      }
+    ]
+  },
+  "kids": {
+    "example": true,
+    "applications": [
+      {
+        "id": "cary-academy",
+        "school": "Cary Academy",
+        "stage": "example",
+        "status": "open",
+        "dates": [
+          {
+            "label": "Example deadline",
+            "date": "2026-12-01"
+          }
+        ],
+        "example": true
+      },
+      {
+        "id": "durham-academy",
+        "school": "Durham Academy",
+        "stage": "example",
+        "status": "open",
+        "dates": [
+          {
+            "label": "Example visit",
+            "date": "2026-11-12"
+          }
+        ],
+        "example": true
+      },
+      {
+        "id": "ravenscroft",
+        "school": "Ravenscroft",
+        "stage": "example",
+        "status": "open",
+        "dates": [
+          {
+            "label": "Example inquiry",
+            "date": "2026-11-03"
+          }
+        ],
+        "example": true
+      },
+      {
+        "id": "duke-school",
+        "school": "Duke School",
+        "stage": "example",
+        "status": "open",
+        "dates": [
+          {
+            "label": "Example decision",
+            "date": "2027-03-01"
+          }
+        ],
+        "example": true
+      }
+    ],
+    "activities": [
+      {
+        "id": "ex-golf",
+        "name": "Example golf lesson",
+        "when": "Example Saturday",
+        "example": true
+      },
+      {
+        "id": "ex-activity",
+        "name": "Example weekday activity",
+        "when": "Example Wednesday",
+        "example": true
+      }
+    ]
+  },
+  "home": {
+    "example": true,
+    "issues": [
+      {
+        "id": "cary-setback",
+        "title": "Town of Cary setback / survey",
+        "status": "open",
+        "detail": "Example placeholder. No address, parcel id, or price is stored here.",
+        "example": true
+      },
+      {
+        "id": "sunroom-permit",
+        "title": "Sunroom permit",
+        "status": "open",
+        "detail": "Example placeholder. The filed memo stays separate from this card.",
+        "example": true
+      }
+    ],
+    "deliveries": [
+      {
+        "id": "ex-delivery",
+        "name": "Example package",
+        "kind": "delivery",
+        "date": "2026-10-18",
+        "example": true
+      },
+      {
+        "id": "ex-return",
+        "name": "Example return",
+        "kind": "return",
+        "date": "2026-10-20",
+        "example": true
+      }
+    ],
+    "renewals": [
+      {
+        "id": "ex-storage",
+        "name": "Example storage plan",
+        "date": "2026-11-02",
+        "example": true
+      },
+      {
+        "id": "ex-paper",
+        "name": "Example newspaper",
+        "date": "2026-11-15",
+        "example": true
+      }
+    ]
+  },
+  "business": {
+    "example": true,
+    "pipeline": [
+      {
+        "id": "ex-research",
+        "name": "Example research note",
+        "stage": "research",
+        "status": "open",
+        "detail": "Example only. No prices.",
+        "example": true
+      },
+      {
+        "id": "ex-direction",
+        "name": "Example direction",
+        "stage": "direction",
+        "status": "open",
+        "detail": "Example only. Alpaca stays a title on the decision strip.",
+        "example": true
+      },
+      {
+        "id": "ex-building",
+        "name": "Example build",
+        "stage": "building",
+        "status": "open",
+        "detail": "Example only.",
+        "example": true
+      },
+      {
+        "id": "ex-parked",
+        "name": "Example parked idea",
+        "stage": "parked",
+        "status": "open",
+        "detail": "Example only.",
+        "example": true
+      }
+    ]
+  }
 }

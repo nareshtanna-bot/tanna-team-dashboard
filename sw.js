@@ -1,9 +1,11 @@
-const CACHE = 'mission-control-v1';
+const CACHE = 'mission-control-v2';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './lib/sections.js',
+  './lib/privacy.js',
   './manifest.json',
   './status.json',
   './outputs/manifest.json',

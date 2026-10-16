@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { scanText } from '../lib/privacy.js';
 import { readFileSync } from 'node:fs';
+import { personalSeedHits, scanText } from '../lib/privacy.js';
+import { validateSectionPost, withLiveSections } from '../lib/sections.js';
 import { isClosedStatus, isStale, mergeStatus, openNeedsYou, validateAgentPost } from '../lib/status.js';
 import handler from '../api/status.js';
 
@@ -116,6 +117,58 @@ test('the seed decision strip is only the open items', () => {
   assert.equal(merged.requests.find((item) => item.id === 'business-ideas').status, 'done');
 });
 
+test('sauna is allowed and lab values, doses, and unlabeled calendars are not', () => {
+  assert.equal(scanText('Sauna streak is 4').length, 0);
+  assert.ok(scanText('LDL 140').some((hit) => hit.rule === 'health_term'));
+  assert.ok(scanText('take 10 mg nightly').some((hit) => hit.rule === 'health_term'));
+  assert.throws(() => validateSectionPost({
+    section: 'health',
+    habits: [{ id: 'bad', name: 'LDL check', streak: 1 }]
+  }), (error) => error.code === 'privacy');
+  assert.throws(() => validateSectionPost({
+    section: 'health',
+    appointments: [{ id: 'visit', title: 'Visit', start: '2026-11-02T09:00:00-05:00', diagnosis: 'omitted' }]
+  }), (error) => error.code === 'privacy');
+  const clean = validateSectionPost({
+    section: 'health',
+    habits: [{ id: 'sauna', name: 'Sauna', streak: 4, cadence: 'week' }]
+  });
+  assert.equal(clean.example, false);
+  assert.equal(clean.habits[0].name, 'Sauna');
+  const unlabeled = personalSeedHits({
+    calendar: { example: true, events: [{ id: 'real', title: 'A private appointment', start: '2026-10-16T09:00:00-04:00' }] }
+  });
+  assert.ok(unlabeled.some((hit) => hit.rule === 'unlabeled_personal'));
+  const committed = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
+  assert.equal(personalSeedHits(committed).length, 0);
+});
+
+test('done section items leave the open list and land on the timeline', () => {
+  const base = seed();
+  base.home = {
+    example: true,
+    issues: [
+      { id: 'open-one', title: 'Example open issue', status: 'open', example: true },
+      { id: 'done-one', title: 'Example finished permit', status: 'delivered', example: true }
+    ]
+  };
+  const merged = withLiveSections(mergeStatus(base, [], NOW), {}, NOW);
+  assert.deepEqual(merged.home.issues.map((item) => item.id), ['open-one']);
+  assert.ok(merged.activity.some((item) => item.id === 'done:done-one'));
+});
+
+test('the example week flags conflicts and stalled routines', () => {
+  const status = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
+  const merged = withLiveSections(mergeStatus(status, [], NOW), {}, NOW);
+  const overlap = merged.calendar.events.filter((event) => event.id === 'ex-fam-16' || event.id === 'ex-work-16');
+  assert.equal(overlap.length, 2);
+  assert.equal(overlap.every((event) => event.conflict), true);
+  assert.equal(merged.routines.find((item) => item.id === 'porter-renewals').healthFlag, 'stalled');
+  assert.equal(merged.routines.find((item) => item.id === 'example-failed').healthFlag, 'failed');
+  assert.equal(merged.routines.find((item) => item.id === 'sylvia-rollup').healthFlag, 'ok');
+  assert.equal(merged.needsYou.some((item) => isClosedStatus(item.status)), false);
+});
+
 test('posts with prices or health detail are rejected before storage', () => {
   assert.throws(() => validateAgentPost({ id: 'ledger', name: 'Ledger', status: 'idle', task: 'Spent $20' }), /privacy/);
   const clean = validateAgentPost({ id: 'timmy', name: 'Timmy', status: 'idle', task: 'Standing by' });
@@ -153,6 +206,33 @@ test('POST with the wrong secret is unauthorized', async () => {
   assert.equal(res.statusCode, 401);
   if (previous) process.env.BOT_STATUS_SECRET = previous;
   else delete process.env.BOT_STATUS_SECRET;
+});
+
+test('a health section post is stored only when Blob is configured', async () => {
+  const previous = process.env.BOT_STATUS_SECRET;
+  const blob = process.env.BLOB_READ_WRITE_TOKEN;
+  delete process.env.BLOB_READ_WRITE_TOKEN;
+  delete process.env.BLOB_STORE_ID;
+  process.env.BOT_STATUS_SECRET = 'test-secret-value';
+  const res = mockRes();
+  await handler({
+    method: 'POST',
+    headers: { 'x-bot-secret': 'test-secret-value' },
+    body: { section: 'health', habits: [{ id: 'sauna', name: 'Sauna', streak: 4 }] }
+  }, res);
+  assert.equal(res.statusCode, 503);
+  assert.equal(JSON.parse(res.body).error, 'storage_unconfigured');
+  const rejected = mockRes();
+  await handler({
+    method: 'POST',
+    headers: { 'x-bot-secret': 'test-secret-value' },
+    body: { section: 'health', habits: [{ id: 'bad', name: 'LDL 140', streak: 1 }] }
+  }, rejected);
+  assert.equal(rejected.statusCode, 400);
+  assert.equal(JSON.parse(rejected.body).error, 'privacy');
+  if (previous) process.env.BOT_STATUS_SECRET = previous;
+  else delete process.env.BOT_STATUS_SECRET;
+  if (blob) process.env.BLOB_READ_WRITE_TOKEN = blob;
 });
 
 test('POST of a clean agent explains the free-storage fallback when Blob is unset', async () => {
