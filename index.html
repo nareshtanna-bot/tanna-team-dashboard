@@ -16,6 +16,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="tasks.css" />
   <script>
     (function () {
       var q = new URLSearchParams(location.search).get('theme');
@@ -53,6 +54,7 @@
     </header>
 
     <nav class="jump" aria-label="Sections">
+      <a href="#tasks" class="jump-tasks">Tasks</a>
       <a href="#needs">Needs you</a>
       <a href="#money">Money</a>
       <a href="#week">Week</a>
@@ -64,6 +66,8 @@
       <a href="#trips">Trips</a>
       <a href="#fleet">Fleet</a>
     </nav>
+
+    <section id="tasks-tab" class="tasks-tab" aria-label="Tasks" hidden></section>
 
     <main>
       <section id="needs" aria-labelledby="needs-heading">
@@ -283,6 +287,13 @@
 
   <script src="vendor/chart.umd.min.js" defer></script>
   <script src="vendor/marked.umd.js" defer></script>
+  <button type="button" id="tk-fab" class="tk-fab" aria-label="Add a task" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+  </button>
+  <div id="tk-quick" class="tk-quick" hidden></div>
+  <div id="tk-toast" class="tk-toast" role="status" aria-live="polite" hidden></div>
+
   <script src="app.js" type="module"></script>
+  <script src="tasks.js" type="module"></script>
 </body>
 </html>
