@@ -92,13 +92,27 @@ export function blobStore(env = process.env) {
     kind: 'blob',
     configured: () => blobConfigured(env),
     async read() {
-      const { get } = await import('@vercel/blob');
+      const { get, head, BlobNotFoundError } = await import('@vercel/blob');
+      // The ETag comes from head() (the Blob API), the same source put() checks ifMatch against.
+      // If the document changes between head() and get(), the write fails the ifMatch check and retries,
+      // so an update is never lost.
+      let meta;
+      try {
+        meta = await head(key);
+      } catch (error) {
+        if (error instanceof BlobNotFoundError) return { doc: null, etag: null };
+        throw error;
+      }
       const file = await get(key, { access: blobAccess(env), useCache: false });
-      if (!file || file.statusCode !== 200 || !file.stream) return { doc: null, etag: null };
-      return { doc: JSON.parse(await readStream(file.stream)), etag: file.blob?.etag || null };
+      if (!file || file.statusCode !== 200 || !file.stream) {
+        const stale = new Error('conflict');
+        stale.code = 'conflict';
+        throw stale;
+      }
+      return { doc: JSON.parse(await readStream(file.stream)), etag: meta?.etag || file.blob?.etag || null };
     },
     async write(doc, etag) {
-      const { put } = await import('@vercel/blob');
+      const { put, BlobPreconditionFailedError } = await import('@vercel/blob');
       try {
         await put(key, JSON.stringify(doc), {
           access: blobAccess(env),
@@ -109,8 +123,9 @@ export function blobStore(env = process.env) {
           cacheControlMaxAge: 60
         });
       } catch (error) {
-        const name = String(error?.name || error?.constructor?.name || '');
-        if (/Precondition|AlreadyExists/i.test(name) || /precondition|already exists/i.test(String(error?.message))) {
+        const precondition = error instanceof BlobPreconditionFailedError;
+        if (precondition || /already exists/i.test(String(error?.message))) {
+          console.warn(`tasks: write conflict (${precondition ? 'etag' : 'exists'})`);
           const conflict = new Error('conflict');
           conflict.code = 'conflict';
           throw conflict;
@@ -171,7 +186,15 @@ export function createTasksHandler({ store: storeOption, env = process.env, now 
         const sort = query.sort || 'asc';
         const shared = query.shared === '1' || query.shared === 'true';
         const today = etDay(now());
-        const { doc: raw } = await store.read();
+        let raw = null;
+        for (let attempt = 0; attempt < 3; attempt += 1) {
+          try {
+            ({ doc: raw } = await store.read());
+            break;
+          } catch (error) {
+            if (error.code !== 'conflict' || attempt === 2) throw error;
+          }
+        }
         const doc = normalizeDoc(raw || emptyDoc(now()));
         const visible = shared ? doc.tasks.filter((task) => !task.private) : doc.tasks;
         const meta = { schema: doc.schema, updated: doc.updated, today, storage: store.kind, key: store.key, shared, counts: counts(doc.tasks, today, { shared }) };
@@ -256,7 +279,14 @@ export function createTasksHandler({ store: storeOption, env = process.env, now 
 
       for (let attempt = 0; attempt < 4; attempt += 1) {
         const at = now();
-        const { doc: raw, etag } = await store.read();
+        let raw;
+        let etag;
+        try {
+          ({ doc: raw, etag } = await store.read());
+        } catch (error) {
+          if (error.code === 'conflict') continue;
+          throw error;
+        }
         const doc = normalizeDoc(raw || emptyDoc(at));
         let result;
         try {
@@ -287,7 +317,8 @@ export function createTasksHandler({ store: storeOption, env = process.env, now 
         return;
       }
       send(res, 409, { ok: false, error: 'conflict', message: 'The task list changed while saving. Try again.' });
-    } catch {
+    } catch (error) {
+      console.error(`tasks: ${req.method} failed (${error?.name || 'error'})`);
       send(res, 500, { ok: false, error: 'tasks_failed' });
     }
   };
