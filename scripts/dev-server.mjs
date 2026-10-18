@@ -1,7 +1,11 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
+import { readFileSync } from 'node:fs';
 import handler from '../api/status.js';
+import tasksHandler, { createTasksHandler, memoryStore } from '../api/tasks.js';
+import { applyPost, emptyDoc } from '../lib/tasks.js';
+import { blobConfigured } from '../lib/status.js';
 
 const root = join(import.meta.dirname, '..');
 const port = Number(process.env.PORT || 8765);
@@ -22,9 +26,17 @@ function send(res, code, obj, extra = {}) {
   res.end(body);
 }
 
+// Without a Blob token, /api/tasks runs on an in-memory store seeded with the fake example tasks.
+function localTasks() {
+  const example = JSON.parse(readFileSync(join(root, 'fixtures', 'tasks.example.json'), 'utf8'));
+  const { doc } = applyPost(emptyDoc(), example, { source: 'manual' });
+  return createTasksHandler({ store: memoryStore(doc) });
+}
+const tasksRoute = blobConfigured() ? tasksHandler : localTasks();
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://127.0.0.1:${port}`);
-  if (url.pathname === '/api/status') {
+  if (url.pathname === '/api/status' || url.pathname === '/api/tasks') {
     const chunks = [];
     for await (const chunk of req) chunks.push(chunk);
     const raw = Buffer.concat(chunks).toString('utf8');
@@ -58,7 +70,8 @@ const server = createServer(async (req, res) => {
         return this;
       }
     };
-    await handler({ method: req.method, headers: req.headers, body }, vRes);
+    const route = url.pathname === '/api/tasks' ? tasksRoute : handler;
+    await route({ method: req.method, headers: req.headers, body, url: req.url, query: Object.fromEntries(url.searchParams) }, vRes);
     res.writeHead(vRes.statusCode || 200, {
       'content-type': 'application/json; charset=utf-8',
       'cache-control': 'no-store',
