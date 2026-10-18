@@ -1,0 +1,43 @@
+{
+  "format": "things-export/v1",
+  "example": true,
+  "note": "Fake Things export for the importer tests. Every row is made up.",
+  "exportedAt": "2026-10-18T12:00:00-04:00",
+  "areas": [
+    { "uuid": "EXAREA0000000000000001", "title": "Example Household", "tags": [] },
+    { "uuid": "EXAREA0000000000000002", "title": "Example Wellness", "tags": ["Health"] }
+  ],
+  "projects": [
+    {
+      "uuid": "EXPROJ0000000000000001",
+      "title": "Example garage cleanout",
+      "notes": "Fake project for the importer.",
+      "area": "EXAREA0000000000000001",
+      "status": "incomplete",
+      "start": "Anytime",
+      "start_date": null,
+      "deadline": "2026-11-15",
+      "tags": [],
+      "headings": [
+        { "uuid": "EXHEAD0000000000000001", "title": "Sort" },
+        { "uuid": "EXHEAD0000000000000002", "title": "Donate" }
+      ],
+      "created": "2026-09-01T10:00:00-04:00"
+    }
+  ],
+  "todos": [
+    { "uuid": "EXTODO0000000000000001", "title": "Example inbox item", "status": "incomplete", "start": "Inbox", "created": "2026-10-01T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000002", "title": "Example task for today", "notes": "Fake note.", "status": "incomplete", "start": "Anytime", "start_date": "2026-10-18", "tags": ["Errand"], "created": "2026-10-02T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000003", "title": "Example evening task", "status": "incomplete", "start": "Anytime", "start_date": "2026-10-18", "evening": true, "created": "2026-10-03T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000004", "title": "Example upcoming task", "status": "incomplete", "start": "Someday", "start_date": "2026-11-02", "deadline": "2026-11-05", "created": "2026-10-04T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000005", "title": "Example anytime task in a project", "status": "incomplete", "start": "Anytime", "project": "EXPROJ0000000000000001", "heading": "EXHEAD0000000000000001", "checklist": [
+      { "uuid": "EXCHK00000000000000001", "title": "Example first step", "status": "completed" },
+      { "uuid": "EXCHK00000000000000002", "title": "Example second step", "status": "incomplete" }
+    ], "created": "2026-10-05T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000006", "title": "Example someday idea", "status": "incomplete", "start": "Someday", "created": "2026-10-06T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000007", "title": "Example wellness reminder", "status": "incomplete", "start": "Anytime", "area": "EXAREA0000000000000002", "created": "2026-10-07T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000008", "title": "Example finished task", "status": "completed", "start": "Anytime", "stop_date": "2026-10-10T17:30:00-04:00", "created": "2026-10-08T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000009", "title": "Example canceled task", "status": "canceled", "start": "Anytime", "stop_date": "2026-10-11T08:00:00-04:00", "created": "2026-10-09T09:00:00-04:00" },
+    { "uuid": "EXTODO0000000000000010", "title": "Example trashed task", "status": "incomplete", "start": "Inbox", "trashed": true, "created": "2026-10-09T10:00:00-04:00" }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "example": true,
+  "note": "Fake example tasks for local preview, tests, and screenshots. Not real records.",
+  "areas": [
+    { "id": "ex-area-home", "title": "Example Home", "externalId": "example:area-home" },
+    { "id": "ex-area-work", "title": "Example Work", "externalId": "example:area-work" }
+  ],
+  "projects": [
+    {
+      "id": "ex-proj-garden",
+      "title": "Example spring garden",
+      "areaId": "ex-area-home",
+      "externalId": "example:proj-garden",
+      "headings": [{ "id": "ex-head-seeds", "title": "Seeds", "externalId": "example:head-seeds" }]
+    }
+  ],
+  "tasks": [
+    { "title": "Water the office fern", "when": "today", "tags": ["home"], "areaId": "ex-area-home", "externalId": "example:t1", "createdAt": "2026-10-03T13:00:00Z" },
+    { "title": "Draft agenda for the Friday team sync", "when": "today", "notes": "Three topics max. Leave ten minutes for questions.", "deadline": "2026-10-23", "tags": ["work"], "areaId": "ex-area-work", "externalId": "example:t2", "createdAt": "2026-10-05T13:00:00Z" },
+    { "title": "Call the bike shop about a tune-up", "when": "today", "tags": ["errand"], "externalId": "example:t3", "createdAt": "2026-10-07T13:00:00Z" },
+    { "title": "Book an annual checkup (example)", "when": "today", "category": "health", "externalId": "example:t4", "createdAt": "2026-10-09T13:00:00Z" },
+    { "title": "Read two chapters of a novel", "when": "evening", "tags": ["personal"], "externalId": "example:t5", "createdAt": "2026-10-11T13:00:00Z" },
+    { "title": "Plan a weekend pancake breakfast", "when": "evening", "checklist": ["Flour", "Blueberries", "Maple syrup"], "externalId": "example:t6", "createdAt": "2026-10-13T13:00:00Z" },
+    { "title": "Look into a low-light houseplant", "tags": ["home"], "externalId": "example:t7", "createdAt": "2026-10-15T13:00:00Z" },
+    { "title": "Sort the old vacation photos", "notes": "Start with the beach folder.", "externalId": "example:t8", "createdAt": "2026-10-17T13:00:00Z" },
+    { "title": "Review the example budget sheet", "category": "money", "deadline": "2026-10-30", "externalId": "example:t9", "createdAt": "2026-10-02T13:00:00Z" },
+    { "title": "Try the sample pasta recipe", "tags": ["cooking"], "checklist": ["Buy basil", "Boil water"], "externalId": "example:t10", "createdAt": "2026-10-04T13:00:00Z" },
+    { "title": "Pick seed packets for the garden", "when": "2026-10-24", "projectId": "ex-proj-garden", "headingId": "ex-head-seeds", "externalId": "example:t11", "createdAt": "2026-10-06T13:00:00Z" },
+    { "title": "Learn to juggle three balls", "when": "someday", "externalId": "example:t12", "createdAt": "2026-10-08T13:00:00Z" },
+    { "title": "Return the borrowed ladder", "when": "today", "status": "completed", "externalId": "example:t13", "createdAt": "2026-10-10T13:00:00Z" }
+  ]
+}
