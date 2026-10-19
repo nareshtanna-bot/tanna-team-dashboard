@@ -1,8 +1,6 @@
 {
   "framework": null,
   "installCommand": "npm install --omit=dev",
-  "buildCommand": "node scripts/build-icons.mjs",
-  "outputDirectory": ".",
   "headers": [
     {
       "source": "/sw.js",
