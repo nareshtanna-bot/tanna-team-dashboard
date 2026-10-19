@@ -1,9 +1,12 @@
-const CACHE = 'mission-control-v4';
+const CACHE = 'mission-control-v5';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './tasks.js',
+  './tasks.css',
+  './lib/tasks.js',
   './lib/sections.js',
   './lib/privacy.js',
   './manifest.json',
@@ -35,6 +38,8 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  if (url.pathname.endsWith('/api/tasks')) return;
 
   if (url.pathname.endsWith('/api/status') || url.pathname === '/api/status') {
     event.respondWith(fetch(request).catch(() => caches.match('./status.json')));

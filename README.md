@@ -142,6 +142,34 @@ The committed examples are labeled `"example": true`. The privacy check fails if
 
 If Blob is not configured the post returns `503` with `storage_unconfigured`. Commit `agents/<id>.json` instead. Pushing that path runs the merge action below. Do not commit a status file every minute.
 
+## Tasks
+
+The **Tasks** tab (first in the nav, `#tasks`) is a to-do list in the spirit of Things: Inbox and Today, with a This Evening section. Tap the round checkbox to complete a task; it moves to the Logbook. The floating **+** opens quick add: title, notes, when (Inbox, Today, This Evening, or a date), an optional deadline, tags, and a category or Private switch. Each list has a one-tap date sort (oldest or newest first), saved per list on the phone. Upcoming, Anytime, Someday, and Logbook are listed as coming soon.
+
+Tasks are one JSON document in the private Blob store, never in git: `tasks/tasks.json` on production and `tasks/preview/tasks.json` on every other deployment (override with `TASKS_BLOB_KEY`), so a preview never touches the real list.
+
+- `GET /api/tasks` returns `areas`, `projects`, `tasks`, and `meta.counts`. `?view=inbox|today|upcoming|anytime|someday|logbook&sort=asc|desc` returns one list sorted by date (start date, else deadline, else created; the Logbook sorts by completion). Today also returns `sections.day` and `sections.evening`. `?shared=1` leaves out private tasks.
+- `POST /api/tasks` creates a task, or takes a batch `{ areas, projects, tasks }` from an importer. A record whose `externalId` is already stored is updated, not duplicated.
+- `PATCH /api/tasks?id=<id>` changes fields; `{ "complete": true }` completes, `{ "complete": false }` reopens.
+
+The page writes without a secret: the request has to come from the page itself (`Sec-Fetch-Site: same-origin`), behind Vercel SSO. A bot sends `x-bot-secret` and the bypass header, like `/api/status`. A wrong secret is always 401.
+
+```bash
+curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/tasks" \
+  -H "content-type: application/json" \
+  -H "x-bot-secret: $BOT_STATUS_SECRET" \
+  -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+  -d '{ "title": "Pick a weekend for the example trip", "when": "today", "tags": ["family"], "createdBy": "Sylvia" }'
+```
+
+Fields: `title` (required), `notes`, `when` (`inbox`, `today`, `evening`, `anytime`, `someday`, or `YYYY-MM-DD`), `deadline`, `tags`, `checklist`, `category`, `private`, `externalId`, `createdBy`. `source` is `bot` for a secret post (`things-import` when the body says so) and `manual` from the page.
+
+**Private tasks.** `category` of `health` or `money` always sets `private: true`, and any task can set `private` itself. Naresh's own views show them, with a lock. Anything shown to someone else must use `?shared=1`. Private tasks may hold health or money wording because they live only in Blob; secrets are still rejected. The privacy check fails if a task document, or a task list not marked `"example": true`, is committed.
+
+Things import: see [docs/tasks-import-plan.md](docs/tasks-import-plan.md) and `scripts/import-things.mjs` (dry run by default).
+
+`npm start` without a Blob token serves `/api/tasks` from memory, seeded with the fake tasks in `fixtures/tasks.example.json`.
+
 ## Outputs
 
 Filed pages live at `outputs/<date>-<slug>.md`, indexed by `outputs/manifest.json`. A request’s `output` field is that path. Tap the card to read it.

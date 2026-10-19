@@ -25,7 +25,8 @@ const targets = [
   join(root, 'status.json'),
   ...filesIn(join(root, 'agents')),
   ...filesIn(join(root, 'outputs')),
-  ...filesIn(join(root, 'sections'))
+  ...filesIn(join(root, 'sections')),
+  ...filesIn(join(root, 'fixtures'))
 ].filter((path) => /\.(json|md)$/.test(path));
 
 let failed = false;
@@ -48,6 +49,34 @@ for (const path of targets) {
     if (seen.has(key)) continue;
     seen.add(key);
     console.error(`${path}:${hit.line} ${hit.rule}`);
+    failed = true;
+  }
+}
+
+// The live task list lives only in Blob. A committed task document, or a task list not marked
+// as example data, fails the check.
+function repoJson(dir) {
+  const found = [];
+  for (const name of readdirSync(dir)) {
+    if (['node_modules', '.git', 'vendor', '.vercel'].includes(name)) continue;
+    const path = join(dir, name);
+    const stat = statSync(path);
+    if (stat.isDirectory()) found.push(...repoJson(path));
+    else if (name.endsWith('.json')) found.push(path);
+  }
+  return found;
+}
+for (const path of repoJson(root)) {
+  let data;
+  try {
+    data = JSON.parse(readFileSync(path, 'utf8'));
+  } catch {
+    continue;
+  }
+  if (!data || typeof data !== 'object' || Array.isArray(data)) continue;
+  const taskList = Array.isArray(data.tasks) || Array.isArray(data.todos);
+  if (data.schema === 'mission-control-tasks/v1' || (taskList && data.example !== true)) {
+    console.error(`${path}:1 committed_tasks`);
     failed = true;
   }
 }
