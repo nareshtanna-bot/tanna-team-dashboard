@@ -114,7 +114,7 @@ export function writeIcons(dir = join(import.meta.dirname, '..', 'icons')) {
   writeFileSync(join(dir, 'icon-maskable-512.png'), draw(512, { fullBleed: true, ringScale: 0.2 }));
 }
 
-// Runs locally and as the Vercel build step (vercel.json buildCommand), so deployed icons always match this file.
+// Run locally (node scripts/build-icons.mjs) and commit the PNGs in icons/.
 if (process.argv[1] && import.meta.filename === process.argv[1]) {
   writeIcons();
   console.log('icons written');
