@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mission Control">
-  <rect width="64" height="64" rx="16" fill="#164a3a"/>
-  <circle cx="32" cy="32" r="16" fill="none" stroke="#f3efe6" stroke-width="3"/>
-  <circle cx="32" cy="32" r="4" fill="#c46a3a"/>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f6b4a"/><stop offset="1" stop-color="#103a2d"/></linearGradient></defs>
+  <rect width="64" height="64" rx="14.4" fill="url(#g)"/>
+  <circle cx="32" cy="32" r="16" fill="none" stroke="#f3efe6" stroke-width="3.3"/>
+  <circle cx="32" cy="32" r="4.6" fill="#cc703e"/>
 </svg>

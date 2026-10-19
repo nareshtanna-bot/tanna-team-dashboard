@@ -112,9 +112,11 @@ async function load(force = false) {
     state.meta = body.meta || null;
     state.error = '';
   } catch (error) {
-    state.error = error.message === 'storage_unconfigured'
-      ? 'Task storage is not connected on this deployment.'
-      : 'Tasks could not be loaded. Pull to refresh or try again.';
+    state.error = navigator.onLine === false
+      ? 'You are offline. Tasks load from the network only, so they will appear when you are back online.'
+      : error.message === 'storage_unconfigured'
+        ? 'Task storage is not connected on this deployment.'
+        : 'Tasks could not be loaded. Pull to refresh or try again. If it keeps failing, your sign-in may have expired: reload the app.';
   }
   state.loaded = true;
   render();
@@ -331,6 +333,10 @@ async function submitSheet(event) {
     category: data.get('category') || null,
     private: data.get('private') === 'on'
   };
+  if (navigator.onLine === false) {
+    toast('You are offline. Your task is still in the form; add it when you are back online.');
+    return;
+  }
   const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
   try {
@@ -423,6 +429,7 @@ function bind() {
   $('tk-fab').addEventListener('click', openSheet);
   window.addEventListener('hashchange', showTab);
   document.addEventListener('visibilitychange', () => { if (!document.hidden && location.hash === '#tasks') load(); });
+  window.addEventListener('online', () => { if (location.hash === '#tasks') load(true); });
 }
 
 bind();
