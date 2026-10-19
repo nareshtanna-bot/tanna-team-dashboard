@@ -50,50 +50,72 @@ function png(width, height, rgba) {
 }
 
 function mix(a, b, t) {
-  return a.map((channel, i) => Math.round(channel + (b[i] - channel) * t));
+  return a.map((channel, i) => channel + (b[i] - channel) * t);
 }
 
-function draw(size, { inset = 0, maskable = false } = {}) {
+/*
+ * Original Mission Control mark: a cream ring with a copper center on a pine gradient.
+ * fullBleed icons (apple-touch-icon, maskable) fill the square; iOS, macOS, and Android apply their own mask,
+ * and a transparent corner would otherwise show as black. "any" icons get rounded corners.
+ * 4x4 supersampling keeps the edges smooth.
+ */
+export function draw(size, { fullBleed = false, ringScale = 0.25 } = {}) {
   const pixels = Buffer.alloc(size * size * 4);
-  const pine = [22, 74, 58];
-  const deep = [14, 48, 38];
+  const top = [31, 107, 74];
+  const bottom = [16, 58, 45];
   const cream = [243, 239, 230];
-  const copper = [196, 106, 58];
-  const cx = (size - 1) / 2;
-  const cy = (size - 1) / 2;
-  const radius = size * (maskable ? 0.28 : 0.34);
-  const ring = size * 0.045;
+  const copper = [204, 112, 62];
+  const c = size / 2;
+  const corner = size * 0.225;
+  const ringR = size * ringScale;
+  const ringW = size * 0.052;
+  const dotR = size * 0.072;
+  const S = 4;
   for (let y = 0; y < size; y += 1) {
     for (let x = 0; x < size; x += 1) {
-      const nx = (x + 0.5) / size;
-      const ny = (y + 0.5) / size;
-      const dx = Math.abs(nx - 0.5) * size;
-      const dy = Math.abs(ny - 0.5) * size;
-      const box = Math.max(dx, dy) - (size / 2 - size * 0.18 - inset);
-      const corner = Math.hypot(Math.max(dx - (size / 2 - size * 0.18 - inset - size * 0.18), 0), Math.max(dy - (size / 2 - size * 0.18 - inset - size * 0.18), 0));
-      const outside = Math.max(box, 0) === 0 ? box : corner - size * 0.18;
-      const cover = maskable ? 1 : Math.max(0, Math.min(1, 0.8 - outside));
-      const dist = Math.hypot(x - cx, y - cy);
-      const ringBand = Math.max(0, 1 - Math.abs(dist - radius) / ring);
-      const dot = Math.max(0, 1 - Math.hypot(x - cx, y - cy * 0 + (y - cy)) / (size * 0.055));
-      let color = mix(deep, pine, ny);
-      color = mix(color, cream, Math.min(1, ringBand));
-      color = mix(color, copper, Math.min(1, dot));
-      const alpha = Math.round(cover * 255);
+      let acc = [0, 0, 0];
+      let alpha = 0;
+      for (let sy = 0; sy < S; sy += 1) {
+        for (let sx = 0; sx < S; sx += 1) {
+          const px = x + (sx + 0.5) / S;
+          const py = y + (sy + 0.5) / S;
+          let inside = true;
+          if (!fullBleed) {
+            const qx = Math.max(Math.abs(px - c) - (c - corner), 0);
+            const qy = Math.max(Math.abs(py - c) - (c - corner), 0);
+            inside = Math.hypot(qx, qy) <= corner;
+          }
+          if (!inside) continue;
+          let color = mix(top, bottom, (px + py) / (2 * size));
+          const d = Math.hypot(px - c, py - c);
+          if (Math.abs(d - ringR) <= ringW / 2) color = cream;
+          if (d <= dotR) color = copper;
+          acc = acc.map((v, i) => v + color[i]);
+          alpha += 1;
+        }
+      }
       const i = (y * size + x) * 4;
-      pixels[i] = color[0];
-      pixels[i + 1] = color[1];
-      pixels[i + 2] = color[2];
-      pixels[i + 3] = alpha;
+      const n = alpha || 1;
+      pixels[i] = Math.round(acc[0] / n);
+      pixels[i + 1] = Math.round(acc[1] / n);
+      pixels[i + 2] = Math.round(acc[2] / n);
+      pixels[i + 3] = Math.round((alpha / (S * S)) * 255);
     }
   }
   return png(size, size, pixels);
 }
 
-const dir = join(import.meta.dirname, '..', 'icons');
-mkdirSync(dir, { recursive: true });
-writeFileSync(join(dir, 'apple-touch-icon.png'), draw(180));
-writeFileSync(join(dir, 'icon-192.png'), draw(192));
-writeFileSync(join(dir, 'icon-512.png'), draw(512));
-writeFileSync(join(dir, 'icon-maskable-512.png'), draw(512, { maskable: true }));
-console.log('icons written');
+export function writeIcons(dir = join(import.meta.dirname, '..', 'icons')) {
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'apple-touch-icon.png'), draw(180, { fullBleed: true }));
+  writeFileSync(join(dir, 'icon-192.png'), draw(192));
+  writeFileSync(join(dir, 'icon-512.png'), draw(512));
+  // Maskable: keep the mark inside the 80% safe circle.
+  writeFileSync(join(dir, 'icon-maskable-512.png'), draw(512, { fullBleed: true, ringScale: 0.2 }));
+}
+
+// Runs locally and as the Vercel build step (vercel.json buildCommand), so deployed icons always match this file.
+if (process.argv[1] && import.meta.filename === process.argv[1]) {
+  writeIcons();
+  console.log('icons written');
+}
