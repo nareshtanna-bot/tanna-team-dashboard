@@ -1,14 +1,21 @@
-const CACHE = 'mission-control-v5';
+/*
+ * Offline shell for the installed app (iPhone Home Screen, Mac Dock).
+ * - App files (HTML, CSS, JS, icons, the committed example seed) are cached so the app opens offline.
+ * - Every /api/* request is network-only and is never written to the cache. Live tasks, money,
+ *   health, and section data only ever come from the network.
+ * - Redirected responses (for example a Vercel sign-in redirect) and non-same-origin responses are never cached.
+ */
+const CACHE = 'mission-control-v6';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
+  './tasks.css',
   './app.js',
   './tasks.js',
-  './tasks.css',
-  './lib/tasks.js',
   './lib/sections.js',
   './lib/privacy.js',
+  './lib/tasks.js',
   './manifest.json',
   './status.json',
   './outputs/manifest.json',
@@ -33,28 +40,32 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+function cacheable(response) {
+  return Boolean(response && response.ok && response.type === 'basic' && !response.redirected);
+}
+
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (url.pathname.endsWith('/api/tasks')) return;
+  // Data: network only, never cached. The page shows its own offline message.
+  if (url.pathname.includes('/api/')) return;
 
-  if (url.pathname.endsWith('/api/status') || url.pathname === '/api/status') {
-    event.respondWith(fetch(request).catch(() => caches.match('./status.json')));
-    return;
-  }
-
+  // App files: network first, cached copy offline. The cache key drops the query string
+  // (the page adds ?t= to bust caches), so one copy is kept per file.
+  const key = url.origin + url.pathname;
   event.respondWith(
     fetch(request)
       .then((response) => {
-        if (response && response.ok) {
+        if (cacheable(response)) {
           const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
+          caches.open(CACHE).then((cache) => cache.put(key, copy));
         }
         return response;
       })
-      .catch(() => caches.match(request).then((cached) => cached || caches.match('./index.html')))
+      .catch(() => caches.match(key, { ignoreSearch: true })
+        .then((cached) => cached || (request.mode === 'navigate' ? caches.match('./index.html') : Response.error())))
   );
 });

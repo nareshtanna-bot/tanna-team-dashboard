@@ -140,9 +140,11 @@ function applyTheme(mode, persist = true) {
   if (mode === 'auto') delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = mode;
   if (persist) localStorage.setItem('mission-theme', mode);
-  const dark = currentTheme() === 'dark';
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = dark ? '#141614' : '#efeae2';
+  // Pinned theme: both theme-color metas take that color. Auto: each meta keeps its own media color.
+  document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+    if (mode === 'light' || mode === 'dark') meta.content = mode === 'dark' ? '#141614' : '#efeae2';
+    else meta.content = meta.dataset.auto || meta.content;
+  });
   const button = $('theme-toggle');
   const label = mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light';
   button.textContent = `Theme · ${label}`;

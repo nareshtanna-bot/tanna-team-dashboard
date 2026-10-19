@@ -6,13 +6,27 @@ Live site: **https://tanna-team-dashboard.vercel.app/** (Vercel SSO, same as bef
 
 Repo: https://github.com/nareshtanna-bot/tanna-team-dashboard
 
-## Install on an iPhone
+## Install on an iPhone or a Mac
 
-1. Open the live URL in Safari and sign in with Vercel.
-2. Share → **Add to Home Screen**.
-3. Name: **Mission**. It opens full screen, without the Safari chrome.
+**iPhone (iOS 17.2 or later):**
 
-The manifest, apple touch icon, and service worker are what make that install work. Data refreshes about every 60 seconds, when the app is opened or comes back to the foreground, and when you pull down from the top. The header shows when the status was updated and when this phone last checked.
+1. Open https://tanna-team-dashboard.vercel.app in Safari and sign in with Vercel. Load the page once, signed in.
+2. Share → **Add to Home Screen**. Name: **Mission**. Leave **Open as Web App** on.
+3. Open Mission from the Home Screen. It runs full screen, without the Safari chrome. If it asks you to sign in, do it there once. The Vercel sign-in page opens in a sheet inside the app and returns you to Mission.
+
+**Mac (macOS Sonoma 14 or later, Safari 17 or later):**
+
+1. Open the same URL in Safari and sign in with Vercel.
+2. **File → Add to Dock** (or Share → Add to Dock). Name: **Mission**.
+3. Mission opens in its own window and has its own Dock icon. Safari copies its cookies when you create the app, so you stay signed in.
+
+The app keeps its own cookies apart from Safari after you install it. Signing out of Vercel in Safari does not sign the app out, and the reverse is true too. When the Vercel session ends, reload the app and sign in again inside it.
+
+The manifest, apple touch icon, and service worker make the install work. The service worker caches only the app files (HTML, CSS, JS, icons, and the committed example status), so the app still opens offline. Every `/api/*` request goes to the network only and is never cached. Tasks, money, and health data are never stored on the device by the service worker. Offline, the Tasks tab says so rather than showing old data.
+
+Data refreshes about every 60 seconds, when the app opens or comes back to the foreground, and when you pull down from the top. The header shows when the status was last updated and when this device last checked.
+
+Icons are original and come from `node scripts/build-icons.mjs`.
 
 ## What the page is
 
