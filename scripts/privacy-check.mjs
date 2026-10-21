@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { personalSeedHits, scanText } from '../lib/privacy.js';
+import { headlineHits } from '../lib/headlines.js';
 
 const root = join(import.meta.dirname, '..');
 
@@ -42,7 +43,10 @@ for (const path of targets) {
     }
   }
   const hits = scanText(text);
-  if (path.endsWith('.json')) hits.push(...personalSeedHits(text));
+  if (path.endsWith('.json')) {
+    hits.push(...personalSeedHits(text));
+    try { hits.push(...headlineHits(JSON.parse(text))); } catch { /* invalid JSON is reported above */ }
+  }
   const seen = new Set();
   for (const hit of hits) {
     const key = `${hit.line}:${hit.rule}`;
