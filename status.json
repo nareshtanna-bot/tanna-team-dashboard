@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-15T19:40:00-04:00",
-  "updatedLabel": "Oct 15, 2026 · 7:40 PM ET",
+  "updated": "2026-10-20T21:45:00-04:00",
+  "updatedLabel": "Oct 20, 2026 · 9:45 PM ET",
   "source": "seed",
   "money": {
     "example": true,
@@ -32,7 +32,7 @@
     {
       "id": "data-broker-opt-outs",
       "title": "Remaining data-broker opt-outs",
-      "detail": "The other broker opt-outs are still open. PeopleConnect is the one that needs a date of birth or a skip.",
+      "detail": "Open; none started. Each opt-out needs Naresh's OK before Porter files it.",
       "bot": "Porter",
       "status": "waiting",
       "output": ""
@@ -64,7 +64,7 @@
     {
       "id": "shaan-reading-list",
       "title": "A Shaan version of the reading list",
-      "detail": "Write the reading list as a version for Shaan. The current list is not that version yet.",
+      "detail": "Ready for review. Note: award notes still unverified.",
       "bot": "Sage",
       "status": "waiting",
       "output": ""
@@ -74,6 +74,22 @@
       "title": "Merge PR #1 (Mission Control)",
       "detail": "The Mission Control pull request is open. Merging it is the remaining step. GitHub access for the repo is already done.",
       "bot": "Sylvia",
+      "status": "done",
+      "output": "Superseded: #1 merged into main (f96fe46); main now at #7"
+    },
+    {
+      "id": "meta-glasses-github",
+      "title": "Meta glasses to Sylvia via GitHub",
+      "detail": "Waiting on Naresh to start. Then Timmy wires the glasses interactions through GitHub to Sylvia.",
+      "bot": "Timmy",
+      "status": "waiting",
+      "output": ""
+    },
+    {
+      "id": "fireplace-voice",
+      "title": "Fireplace voice on/off (Skytech, Shelly 1 + IFTTT)",
+      "detail": "Waiting on Naresh's photo of the receiver. Then Porter plans the Shelly 1 + IFTTT voice on/off.",
+      "bot": "Porter",
       "status": "waiting",
       "output": ""
     }
@@ -85,9 +101,9 @@
       "request": "Which Saturday outbound to hold. Morning award or afternoon. Hotel stays. Cancel nothing until named.",
       "date": "2026-09-23",
       "owner": "Nomad",
-      "status": "queued",
+      "status": "done",
       "category": "travel",
-      "output": ""
+      "output": "Stale, per Nomad"
     },
     {
       "id": "calendar-clean",
@@ -95,17 +111,17 @@
       "request": "Clear the family-calendar conflicts for the NYC weekend, but only after Naresh names what goes.",
       "date": "2026-09-23",
       "owner": "Scout",
-      "status": "queued",
+      "status": "done",
       "category": "school",
-      "output": ""
+      "output": "Stale, per Scout"
     },
     {
       "id": "education-goals",
       "title": "Education goals",
-      "request": "Lock the kids’ education goals so Sage can leave the blocked state.",
+      "request": "Waiting on Naresh. Sage drafted proposed goals for review.",
       "date": "2026-09-23",
       "owner": "Sage",
-      "status": "queued",
+      "status": "waiting",
       "category": "school",
       "output": ""
     },
@@ -115,9 +131,9 @@
       "request": "Outlook Calendar needs to be connected again before Reed can see work meetings.",
       "date": "2026-09-23",
       "owner": "Reed",
-      "status": "queued",
+      "status": "done",
       "category": "home",
-      "output": ""
+      "output": "Outlook calendar live, read-only; work email will not be connected"
     },
     {
       "id": "renewals",
@@ -125,9 +141,9 @@
       "request": "Keep the living renewal list current. One auto-policy document is still missing.",
       "date": "2026-09-23",
       "owner": "Porter",
-      "status": "queued",
+      "status": "done",
       "category": "home",
-      "output": ""
+      "output": "Live, per Porter"
     },
     {
       "id": "sunroom",
@@ -162,7 +178,7 @@
     {
       "id": "future-trips",
       "title": "Future family trips",
-      "request": "A living wishlist. Add ideas here as they come up.",
+      "request": "Orlando flights and park tickets, wishlist, ski plans.",
       "date": "2026-10-15",
       "owner": "Nomad",
       "status": "working",
@@ -202,7 +218,7 @@
     {
       "id": "data-broker-opt-outs",
       "title": "Remaining data-broker opt-outs",
-      "request": "Finish the broker opt-outs that are still open.",
+      "request": "Open; none started. Each opt-out needs Naresh's OK before Porter files it.",
       "date": "2026-10-15",
       "owner": "Porter",
       "status": "waiting",
@@ -242,7 +258,7 @@
     {
       "id": "shaan-reading-list",
       "title": "A Shaan version of the reading list",
-      "request": "Write the reading list as a version for Shaan.",
+      "request": "Ready for review. Note: award notes still unverified.",
       "date": "2026-10-15",
       "owner": "Sage",
       "status": "waiting",
@@ -255,9 +271,9 @@
       "request": "Merge the Mission Control pull request. GitHub access is already done.",
       "date": "2026-10-15",
       "owner": "Sylvia",
-      "status": "waiting",
+      "status": "done",
       "category": "research",
-      "output": ""
+      "output": "Superseded: #1 merged into main (f96fe46); main now at #7"
     },
     {
       "id": "pr-maps",
@@ -307,6 +323,26 @@
       "owner": "Sylvia",
       "status": "done",
       "category": "business",
+      "output": ""
+    },
+    {
+      "id": "meta-glasses-github",
+      "title": "Meta glasses to Sylvia via GitHub",
+      "request": "Waiting on Naresh to start. Then Timmy wires the glasses interactions through GitHub to Sylvia.",
+      "date": "2026-10-20",
+      "owner": "Timmy",
+      "status": "waiting",
+      "category": "home",
+      "output": ""
+    },
+    {
+      "id": "fireplace-voice",
+      "title": "Fireplace voice on/off (Skytech, Shelly 1 + IFTTT)",
+      "request": "Waiting on Naresh's photo of the receiver. Then Porter plans the Shelly 1 + IFTTT voice on/off.",
+      "date": "2026-10-20",
+      "owner": "Porter",
+      "status": "waiting",
+      "category": "home",
       "output": ""
     }
   ],
@@ -508,7 +544,7 @@
       "name": "Sage",
       "role": "Kids education",
       "does": "Holds the education plan once the goals are locked.",
-      "status": "blocked",
+      "status": "active",
       "task": "A Shaan version of the reading list is still open.",
       "next": "Write that version once Naresh asks for the pass.",
       "lastActivity": "2026-09-23T12:00:00-04:00"
@@ -646,13 +682,19 @@
       "id": "q-shaan",
       "title": "A Shaan version of the reading list",
       "owner": "Sage",
-      "after": "That version can be filed"
+      "after": "Naresh reviews it"
     },
     {
-      "id": "q-pr",
-      "title": "Merge PR #1 (Mission Control)",
-      "owner": "Sylvia",
-      "after": "The new board can replace the live site"
+      "id": "q-meta-glasses",
+      "title": "Meta glasses to Sylvia via GitHub",
+      "owner": "Timmy",
+      "after": "Glasses interactions reach Sylvia through GitHub"
+    },
+    {
+      "id": "q-fireplace",
+      "title": "Fireplace voice on/off (Skytech, Shelly 1 + IFTTT)",
+      "owner": "Porter",
+      "after": "The fireplace can turn on and off by voice"
     }
   ],
   "activity": [
@@ -1023,14 +1065,14 @@
         "id": "cary-setback",
         "title": "Town of Cary setback / survey",
         "status": "open",
-        "detail": "Example placeholder. No address, parcel id, or price is stored here.",
+        "detail": "Structure is ~24 ft from rear line vs 30 ft required, so the Town wants a redone survey (Oct 14 memo)",
         "example": true
       },
       {
         "id": "sunroom-permit",
         "title": "Sunroom permit",
         "status": "open",
-        "detail": "Example placeholder. The filed memo stays separate from this card.",
+        "detail": "Odyssey sunroom, estimate unsigned, financing on hold",
         "example": true
       }
     ],

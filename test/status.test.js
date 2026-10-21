@@ -97,7 +97,8 @@ test('the seed decision strip is only the open items', () => {
     'Top-10 trip window',
     'Business direction / Alpaca',
     'A Shaan version of the reading list',
-    'Merge PR #1 (Mission Control)'
+    'Meta glasses to Sylvia via GitHub',
+    'Fireplace voice on/off (Skytech, Shelly 1 + IFTTT)'
   ]);
   for (const item of merged.needsYou) assert.equal(isClosedStatus(item.status), false);
   const doneTitles = [
