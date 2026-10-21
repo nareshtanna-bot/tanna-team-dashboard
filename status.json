@@ -1060,22 +1060,7 @@
   },
   "home": {
     "example": true,
-    "issues": [
-      {
-        "id": "cary-setback",
-        "title": "Town of Cary setback / survey",
-        "status": "open",
-        "detail": "Structure is ~24 ft from rear line vs 30 ft required, so the Town wants a redone survey (Oct 14 memo)",
-        "example": true
-      },
-      {
-        "id": "sunroom-permit",
-        "title": "Sunroom permit",
-        "status": "open",
-        "detail": "Odyssey sunroom, estimate unsigned, financing on hold",
-        "example": true
-      }
-    ],
+    "issues": [],
     "deliveries": [
       {
         "id": "ex-delivery",
