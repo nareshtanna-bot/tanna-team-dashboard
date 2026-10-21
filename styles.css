@@ -583,3 +583,7 @@ body.lock { overflow: hidden; }
   html { -webkit-tap-highlight-color: transparent; }
   nav a, button { -webkit-touch-callout: none; }
 }
+
+.headline-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.headline-list li { line-height: 1.35; }
+.headline-list a { font-weight: 600; }
