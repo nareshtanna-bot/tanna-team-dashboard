@@ -42,8 +42,8 @@
       "title": "Pinehurst dates",
       "detail": "The one-night plan is filed and done. The weekend is not locked. The draft was Sat Nov 28. Nothing is booked.",
       "bot": "Nomad",
-      "status": "waiting",
-      "output": ""
+      "status": "done",
+      "output": "Deferred to 2027; nothing booked in 2026"
     },
     {
       "id": "top10-window",
@@ -103,7 +103,7 @@
       "owner": "Nomad",
       "status": "done",
       "category": "travel",
-      "output": "Stale, per Nomad"
+      "output": "Stale, per Nomad; trip already happened"
     },
     {
       "id": "calendar-clean",
@@ -231,9 +231,9 @@
       "request": "Lock the weekend. The plan is already filed. Nothing is booked.",
       "date": "2026-10-15",
       "owner": "Nomad",
-      "status": "waiting",
+      "status": "done",
       "category": "golf",
-      "output": ""
+      "output": "Deferred to 2027; nothing booked in 2026"
     },
     {
       "id": "top10-window",
@@ -659,12 +659,6 @@
       "title": "Remaining data-broker opt-outs",
       "owner": "Porter",
       "after": "The broker list can close"
-    },
-    {
-      "id": "q-pinehurst",
-      "title": "Pinehurst dates",
-      "owner": "Nomad",
-      "after": "The filed plan can be held or dropped"
     },
     {
       "id": "q-window",

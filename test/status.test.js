@@ -93,7 +93,6 @@ test('the seed decision strip is only the open items', () => {
   assert.deepEqual(merged.needsYou.map((item) => item.title), [
     'Date of birth for the PeopleConnect opt-out, or skip it',
     'Remaining data-broker opt-outs',
-    'Pinehurst dates',
     'Top-10 trip window',
     'Business direction / Alpaca',
     'A Shaan version of the reading list',
