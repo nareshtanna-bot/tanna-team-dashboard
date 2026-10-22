@@ -26,7 +26,7 @@
       "title": "Date of birth for the PeopleConnect opt-out, or skip it",
       "detail": "PeopleConnect asks for a date of birth. Give it, or skip that opt-out. The date itself stays off this board.",
       "bot": "Porter",
-      "status": "waiting",
+      "status": "done",
       "output": ""
     },
     {
@@ -66,16 +66,8 @@
       "title": "A Shaan version of the reading list",
       "detail": "Ready for review. Note: award notes still unverified.",
       "bot": "Sage",
-      "status": "waiting",
-      "output": ""
-    },
-    {
-      "id": "merge-pr-1",
-      "title": "Merge PR #1 (Mission Control)",
-      "detail": "The Mission Control pull request is open. Merging it is the remaining step. GitHub access for the repo is already done.",
-      "bot": "Sylvia",
       "status": "done",
-      "output": "Superseded: #1 merged into main (f96fe46); main now at #7"
+      "output": "Sage finished, Naresh approved"
     },
     {
       "id": "meta-glasses-github",
@@ -121,9 +113,9 @@
       "request": "Waiting on Naresh. Sage drafted proposed goals for review.",
       "date": "2026-09-23",
       "owner": "Sage",
-      "status": "waiting",
+      "status": "done",
       "category": "school",
-      "output": ""
+      "output": "Written and approved, one goal dropped"
     },
     {
       "id": "outlook",
@@ -211,7 +203,7 @@
       "request": "PeopleConnect asks for a date of birth. Give it, or skip that opt-out. The date stays off this board.",
       "date": "2026-10-15",
       "owner": "Porter",
-      "status": "waiting",
+      "status": "done",
       "category": "home",
       "output": ""
     },
@@ -261,19 +253,9 @@
       "request": "Ready for review. Note: award notes still unverified.",
       "date": "2026-10-15",
       "owner": "Sage",
-      "status": "waiting",
-      "category": "school",
-      "output": ""
-    },
-    {
-      "id": "merge-pr-1",
-      "title": "Merge PR #1 (Mission Control)",
-      "request": "Merge the Mission Control pull request. GitHub access is already done.",
-      "date": "2026-10-15",
-      "owner": "Sylvia",
       "status": "done",
-      "category": "research",
-      "output": "Superseded: #1 merged into main (f96fe46); main now at #7"
+      "category": "school",
+      "output": "Sage finished, Naresh approved"
     },
     {
       "id": "pr-maps",
@@ -652,7 +634,8 @@
       "id": "q-dob",
       "title": "Date of birth for the PeopleConnect opt-out, or skip it",
       "owner": "Porter",
-      "after": "Then that opt-out can be filed or dropped"
+      "after": "Then that opt-out can be filed or dropped",
+      "status": "done"
     },
     {
       "id": "q-brokers",
@@ -676,7 +659,8 @@
       "id": "q-shaan",
       "title": "A Shaan version of the reading list",
       "owner": "Sage",
-      "after": "Naresh reviews it"
+      "after": "Naresh reviews it",
+      "status": "done"
     },
     {
       "id": "q-meta-glasses",
