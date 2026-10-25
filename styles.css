@@ -366,6 +366,16 @@ h2 {
 }
 .bot-top, .routine { align-items: start; }
 .bot-top { display: flex; justify-content: space-between; gap: 8px; }
+.heartbeat {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
 .monogram {
   width: 42px;
   height: 42px;
