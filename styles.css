@@ -371,6 +371,10 @@ h2 {
   color: var(--ink);
   line-height: 1.45;
   overflow-wrap: anywhere;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 .monogram {
   width: 42px;

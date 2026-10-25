@@ -7,6 +7,8 @@ import {
   blobConfigured,
   loadLiveStatus,
   parseHeartbeat,
+  readSeed,
+  rosterBot,
   validateAgentPost
 } from '../lib/status.js';
 
@@ -78,11 +80,16 @@ function errorBody(error) {
   };
 }
 
+function isRecord(doc) {
+  return Boolean(doc) && typeof doc === 'object' && !Array.isArray(doc);
+}
+
 /*
  * Read the bot record, merge, and write with the Blob etag. A conflict retries the merge
- * so a full status post or another heartbeat is not lost.
+ * so a full status post or another heartbeat is not lost. No Blob record and no seed-roster
+ * card means the id is unknown: do not create a file.
  */
-async function writeHeartbeat(store, parsed, now) {
+async function writeHeartbeat(store, parsed, now, roster) {
   for (let attempt = 0; attempt < 4; attempt += 1) {
     let doc;
     let etag;
@@ -92,7 +99,13 @@ async function writeHeartbeat(store, parsed, now) {
       if (error.code === 'conflict') continue;
       throw error;
     }
-    const stored = applyHeartbeat(doc, parsed, now());
+    const base = isRecord(doc) ? doc : roster;
+    if (!base) {
+      const error = new Error('unknown_bot');
+      error.code = 'unknown_bot';
+      throw error;
+    }
+    const stored = applyHeartbeat(base, parsed, now());
     try {
       await store.write(stored, etag);
       return stored;
@@ -110,7 +123,8 @@ export function createStatusHandler({
   env = process.env,
   now = () => new Date(),
   agentStore = null,
-  load = loadLiveStatus
+  load = loadLiveStatus,
+  seed = readSeed
 } = {}) {
   return async function handler(req, res) {
     try {
@@ -160,9 +174,14 @@ export function createStatusHandler({
             return;
           }
           try {
-            const stored = await writeHeartbeat(store, parsed, now);
+            const roster = rosterBot(parsed.id, seed());
+            const stored = await writeHeartbeat(store, parsed, now, roster);
             send(res, 200, { ok: true, id: stored.id, stored: 'blob', at: stored.lastRun });
           } catch (error) {
+            if (error.code === 'unknown_bot') {
+              send(res, 404, { ok: false, error: 'unknown_bot' });
+              return;
+            }
             if (error.code === 'conflict') {
               send(res, 409, { ok: false, error: 'conflict', message: 'The bot record changed while saving. Try again.' });
               return;

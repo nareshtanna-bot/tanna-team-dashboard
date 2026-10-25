@@ -10,7 +10,7 @@
   "lastRun": "2026-10-25T12:00:00.000Z",
   "heartbeat": {
     "at": "2026-10-25T12:00:00.000Z",
-    "line": "Routine finished. Board is current.",
-    "state": "ok"
+    "line": "Last routine failed.",
+    "state": "failed"
   }
 }

@@ -84,7 +84,7 @@ test('a heartbeat merges and preserves existing fields', async () => {
   });
 });
 
-test('a heartbeat clears staleness and a missing record gets a minimal card', async () => {
+test('a heartbeat clears staleness', async () => {
   assert.equal(isStale(existingBot().lastActivity, NOW.getTime()), true);
   const store = memoryStore(existingBot());
   const { status } = await post(handlerFor(store), {
@@ -111,20 +111,44 @@ test('a heartbeat clears staleness and a missing record gets a minimal card', as
   assert.equal(bot.heartbeat.line, 'Routine finished. Board is current.');
   assert.equal(bot.heartbeat.state, null);
   assert.equal(bot.lastRun, NOW.toISOString());
+});
 
-  const fresh = memoryStore(null);
-  const created = await post(handlerFor(fresh), {
+test('an unknown bot is not created', async () => {
+  const store = memoryStore(null);
+  const { status, body } = await post(handlerFor(store), {
     heartbeat: true,
-    id: 'example-bot',
-    status: 'First run.'
+    id: 'ghost-bot',
+    status: 'First run.',
+    state: 'ok'
   });
-  assert.equal(created.status, 200);
-  const card = fresh.peek();
-  assert.equal(card.name, 'example-bot');
-  assert.equal(card.role, undefined);
-  assert.equal(card.task, undefined);
-  assert.equal(card.heartbeat.line, 'First run.');
-  assert.equal(isStale(card.lastActivity, NOW.getTime()), false);
+  assert.equal(status, 404);
+  assert.deepEqual(body, { ok: false, error: 'unknown_bot' });
+  assert.equal(store.peek(), null);
+  const seed = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
+  const merged = mergeStatus(seed, [], NOW);
+  assert.equal(merged.bots.some((bot) => bot.id === 'ghost-bot'), false);
+});
+
+test('a roster bot with no blob record is stamped onto its existing card', async () => {
+  const seed = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
+  const roster = seed.bots.find((bot) => bot.id === 'nomad');
+  const store = memoryStore(null);
+  const { status } = await post(handlerFor(store), {
+    heartbeat: true,
+    id: 'nomad',
+    status: 'Routine finished. Board is current.',
+    state: 'ok'
+  });
+  assert.equal(status, 200);
+  const saved = store.peek();
+  assert.equal(saved.name, roster.name);
+  assert.equal(saved.role, roster.role);
+  assert.equal(saved.task, roster.task);
+  assert.equal(saved.heartbeat.line, 'Routine finished. Board is current.');
+  const merged = mergeStatus(seed, [saved], NOW);
+  assert.equal(merged.bots.length, seed.bots.length);
+  assert.equal(merged.bots.filter((bot) => bot.id === 'nomad').length, 1);
+  assert.equal(merged.bots.find((bot) => bot.id === 'nomad').stale, false);
 });
 
 test('a bad id is rejected', async () => {
@@ -210,8 +234,8 @@ test('the heartbeat fixture is a clean bot card', () => {
   const bot = normalizeBot(agent);
   assert.equal(bot.id, 'example-bot');
   assert.equal(bot.name, 'Example Bot');
-  assert.equal(bot.heartbeat.line, 'Routine finished. Board is current.');
-  assert.equal(bot.heartbeat.state, 'ok');
+  assert.equal(bot.heartbeat.line, 'Last routine failed.');
+  assert.equal(bot.heartbeat.state, 'failed');
   assert.equal(isStale(bot.lastActivity, Date.parse('2026-10-25T12:30:00.000Z')), false);
   assert.equal(scanText(JSON.stringify(agent)).length, 0);
 });

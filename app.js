@@ -118,6 +118,24 @@ function chip(kind, label) {
   return `<span class="chip status ${escapeHtml(kind)}"><span class="dot" aria-hidden="true"></span>${escapeHtml(label)}</span>`;
 }
 
+const HEARTBEAT_CHIP = {
+  ok: '<span class="chip result ok">Ok</span>',
+  failed: '<span class="chip result failed">Failed</span>',
+  working: chip('working', 'Working'),
+  idle: chip('idle', 'Idle'),
+  blocked: chip('blocked', 'Blocked')
+};
+
+function sameClock(left, right) {
+  if (!left || !right) return false;
+  const a = Date.parse(left);
+  const b = Date.parse(right);
+  if (!Number.isNaN(a) && a === b) return true;
+  const aLabel = formatET(left);
+  const bLabel = formatET(right);
+  return aLabel !== 'time unknown' && aLabel === bLabel;
+}
+
 function ring(percent, center, label) {
   const r = 32;
   const c = 2 * Math.PI * r;
@@ -519,9 +537,9 @@ function renderBots() {
       </div>
       <p class="does">${escapeHtml(bot.does || '')}</p>
       <p class="task"><span class="who">Now. </span>${escapeHtml(bot.task || 'Nothing posted.')}</p>
-      ${bot.heartbeat?.line ? `<p class="heartbeat">${escapeHtml(bot.heartbeat.line)}</p>` : ''}
+      ${bot.heartbeat?.line ? `<p class="heartbeat">${HEARTBEAT_CHIP[bot.heartbeat.state] || ''}${escapeHtml(bot.heartbeat.line)}</p>` : ''}
       ${bot.lastRun ? `<p class="meta">Last run ${escapeHtml(formatET(bot.lastRun))}</p>` : ''}
-      <p class="meta">${escapeHtml(ago(bot.lastActivity))} · ${bot.lastActivity ? escapeHtml(formatET(bot.lastActivity)) : 'no timestamp'}</p>
+      ${sameClock(bot.lastRun, bot.lastActivity) ? '' : `<p class="meta">${escapeHtml(ago(bot.lastActivity))} · ${bot.lastActivity ? escapeHtml(formatET(bot.lastActivity)) : 'no timestamp'}</p>`}
     </article>`).join('');
 }
 

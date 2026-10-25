@@ -1,8 +1,8 @@
 # Heartbeat
 
-A routine can stamp its fleet card without posting a full status file. The card shows the one-line status and `Last run <time ET>`. The server sets `lastActivity` to its own clock, so a heartbeat within 24 hours clears the Stale chip.
+A routine can stamp its fleet card without posting a full status file. The card shows the one-line status, a state chip, and `Last run <time ET>`. `failed` uses the failed chip; `ok` uses the ok chip. When that run time is the same moment as the card's last activity, the activity line is left off. The server sets `lastActivity` to its own clock, so a heartbeat within 24 hours clears the Stale chip.
 
-The write merges into the private Blob record at `agents/<id>.json`. Every other field on that record stays. If the bot has no record yet, the server creates one and uses the id as the name.
+The write merges into the private Blob record at `agents/<id>.json`. Every other field on that record stays. The id has to be a bot that already has a card: a Blob record at `agents/<id>.json`, or a bot in the seed roster (`status.json`, the list `mergeStatus` starts from). Anything else is rejected and no file is created. A roster bot with no Blob file yet is stamped onto that existing card.
 
 `status` in this body is the one line on the card. It does not change the working / idle / blocked chip. That chip stays whatever the last full status post set.
 
@@ -25,7 +25,7 @@ Body:
 ```json
 {
   "heartbeat": true,
-  "id": "example-bot",
+  "id": "nomad",
   "status": "Routine finished. Board is current.",
   "state": "ok"
 }
@@ -50,16 +50,17 @@ curl -sS -X POST "https://tanna-team-dashboard.vercel.app/api/status" \
   -H "content-type: application/json" \
   -H "x-bot-secret: $(cat "$BOT_STATUS_SECRET_FILE")" \
   -H "x-vercel-protection-bypass: $(cat "$VERCEL_BYPASS_FILE")" \
-  -d '{"heartbeat":true,"id":"example-bot","status":"Routine finished. Board is current.","state":"ok"}'
+  -d '{"heartbeat":true,"id":"nomad","status":"Routine finished. Board is current.","state":"ok"}'
 ```
 
 The two `$(cat ...)` substitutions are the header values. The command does not print them.
 
 ## Responses
 
-- **200** — merged. `{ "ok": true, "id": "example-bot", "stored": "blob", "at": "<server time>" }`.
+- **200** — merged. `{ "ok": true, "id": "nomad", "stored": "blob", "at": "<server time>" }`.
 - **400** — the id is invalid, the line is missing or longer than 140 characters, `state` is not one of the five values, the body is not JSON, or the line fails the privacy check. Privacy looks like `{ "ok": false, "error": "privacy", "rules": ["dollar_amount"], "message": "Post rejected by the privacy check." }`. `rules` names the rule. The matched text is not returned.
 - **401** — `x-bot-secret` is missing or wrong. `{ "ok": false, "error": "unauthorized" }`.
+- **404** — the id is not a Blob record and not on the seed roster. `{ "ok": false, "error": "unknown_bot" }`. No card is created.
 
 If `BOT_STATUS_SECRET` or the Blob token is not set, the response is **503**. If the record changes while the merge is saving, the response is **409**. Send the same heartbeat again.
 
