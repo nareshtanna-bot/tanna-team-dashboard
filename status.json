@@ -22,28 +22,12 @@
   },
   "needsYou": [
     {
-      "id": "peopleconnect-dob",
-      "title": "Date of birth for the PeopleConnect opt-out, or skip it",
-      "detail": "PeopleConnect asks for a date of birth. Give it, or skip that opt-out. The date itself stays off this board.",
-      "bot": "Porter",
-      "status": "done",
-      "output": ""
-    },
-    {
       "id": "data-broker-opt-outs",
       "title": "Remaining data-broker opt-outs",
       "detail": "Open; none started. Each opt-out needs Naresh's OK before Porter files it.",
       "bot": "Porter",
       "status": "waiting",
       "output": ""
-    },
-    {
-      "id": "pinehurst-dates",
-      "title": "Pinehurst dates",
-      "detail": "The one-night plan is filed and done. The weekend is not locked. The draft was Sat Nov 28. Nothing is booked.",
-      "bot": "Nomad",
-      "status": "done",
-      "output": "Deferred to 2027; nothing booked in 2026"
     },
     {
       "id": "top10-window",
@@ -60,14 +44,6 @@
       "bot": "Rick",
       "status": "waiting",
       "output": ""
-    },
-    {
-      "id": "shaan-reading-list",
-      "title": "A Shaan version of the reading list",
-      "detail": "Ready for review. Note: award notes still unverified.",
-      "bot": "Sage",
-      "status": "done",
-      "output": "Sage finished, Naresh approved"
     },
     {
       "id": "meta-glasses-github",
@@ -526,7 +502,7 @@
       "name": "Sage",
       "role": "Kids education",
       "does": "Holds the education plan once the goals are locked.",
-      "status": "active",
+      "status": "working",
       "task": "A Shaan version of the reading list is still open.",
       "next": "Write that version once Naresh asks for the pass.",
       "lastActivity": "2026-09-23T12:00:00-04:00"
@@ -799,6 +775,56 @@
       "output": ""
     },
     {
+      "id": "done:nyc-flight",
+      "at": "2026-09-23T12:00:00-04:00",
+      "bot": "Nomad",
+      "title": "NYC weekend flight choice",
+      "detail": "Which Saturday outbound to hold. Morning award or afternoon. Hotel stays. Cancel nothing until named.",
+      "example": false,
+      "output": "Stale, per Nomad; trip already happened",
+      "status": "done"
+    },
+    {
+      "id": "done:calendar-clean",
+      "at": "2026-09-23T12:00:00-04:00",
+      "bot": "Scout",
+      "title": "NYC calendar clean",
+      "detail": "Clear the family-calendar conflicts for the NYC weekend, but only after Naresh names what goes.",
+      "example": false,
+      "output": "Stale, per Scout",
+      "status": "done"
+    },
+    {
+      "id": "done:education-goals",
+      "at": "2026-09-23T12:00:00-04:00",
+      "bot": "Sage",
+      "title": "Education goals",
+      "detail": "Waiting on Naresh. Sage drafted proposed goals for review.",
+      "example": false,
+      "output": "Written and approved, one goal dropped",
+      "status": "done"
+    },
+    {
+      "id": "done:outlook",
+      "at": "2026-09-23T12:00:00-04:00",
+      "bot": "Reed",
+      "title": "Reconnect work calendar",
+      "detail": "Outlook Calendar needs to be connected again before Reed can see work meetings.",
+      "example": false,
+      "output": "Outlook calendar live, read-only; work email will not be connected",
+      "status": "done"
+    },
+    {
+      "id": "done:renewals",
+      "at": "2026-09-23T12:00:00-04:00",
+      "bot": "Porter",
+      "title": "Renewal list",
+      "detail": "Keep the living renewal list current. One auto-policy document is still missing.",
+      "example": false,
+      "output": "Live, per Porter",
+      "status": "done"
+    },
+    {
       "id": "ex-scout",
       "at": "2026-09-22T09:00:00-04:00",
       "bot": "Scout",
@@ -815,6 +841,36 @@
       "detail": "Example entry. No build was started.",
       "example": true,
       "output": ""
+    },
+    {
+      "id": "done:peopleconnect-dob",
+      "at": "",
+      "bot": "Porter",
+      "title": "Date of birth for the PeopleConnect opt-out, or skip it",
+      "detail": "PeopleConnect asks for a date of birth. Give it, or skip that opt-out. The date itself stays off this board.",
+      "example": false,
+      "output": "",
+      "status": "done"
+    },
+    {
+      "id": "done:pinehurst-dates",
+      "at": "",
+      "bot": "Nomad",
+      "title": "Pinehurst dates",
+      "detail": "The one-night plan is filed and done. The weekend is not locked. The draft was Sat Nov 28. Nothing is booked.",
+      "example": false,
+      "output": "Deferred to 2027; nothing booked in 2026",
+      "status": "done"
+    },
+    {
+      "id": "done:shaan-reading-list",
+      "at": "",
+      "bot": "Sage",
+      "title": "A Shaan version of the reading list",
+      "detail": "Ready for review. Note: award notes still unverified.",
+      "example": false,
+      "output": "Sage finished, Naresh approved",
+      "status": "done"
     }
   ],
   "health": {
