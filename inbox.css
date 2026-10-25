@@ -1,0 +1,51 @@
+/* Interactive Needs-you cards (inbox.js). Uses the theme variables, so light and dark both work. */
+.inbox-card { display: grid; gap: 10px; margin-top: 6px; }
+.inbox-status:empty { display: none; }
+.inbox-status { display: grid; gap: 6px; margin: 0; justify-items: start; }
+.inbox-answer, .inbox-note { color: var(--muted); font-size: 0.92rem; overflow-wrap: anywhere; }
+.inbox-note { color: var(--ink); }
+.inbox-form { display: grid; gap: 10px; }
+.inbox-form[hidden] { display: none; }
+.inbox-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.inbox-choice, .inbox-submit, .inbox-mic {
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  padding: 0 16px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.inbox-choice[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.inbox-choice.approve[aria-pressed="true"] { background: var(--pine); color: var(--on-pine); border-color: var(--pine); }
+.inbox-choice.decline[aria-pressed="true"] { background: var(--danger); color: var(--surface); border-color: var(--danger); }
+.inbox-reply { display: flex; gap: 8px; align-items: stretch; }
+.inbox-text {
+  flex: 1;
+  min-width: 0;
+  min-height: 64px;
+  resize: vertical;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 16px; /* 16px stops iOS from zooming on focus */
+}
+.inbox-mic { width: 52px; padding: 0; display: inline-grid; place-items: center; }
+.inbox-mic.recording { background: var(--danger); color: var(--surface); border-color: var(--danger); animation: inbox-pulse 1.2s ease-in-out infinite; }
+@keyframes inbox-pulse { 50% { box-shadow: 0 0 0 6px var(--danger-soft); } }
+@media (prefers-reduced-motion: reduce) { .inbox-mic.recording { animation: none; } }
+.inbox-hint { margin: 0; color: var(--muted); font-size: 0.88rem; }
+.inbox-hint:empty { display: none; }
+.inbox-submit { background: var(--pine); color: var(--on-pine); border-color: var(--pine); justify-self: start; min-width: 120px; }
+.inbox-submit:disabled { opacity: 0.6; cursor: progress; }
+.inbox-choice:focus-visible, .inbox-submit:focus-visible, .inbox-mic:focus-visible, .inbox-text:focus-visible { outline: 3px solid var(--sea); outline-offset: 2px; }
+@media (max-width: 520px) {
+  .inbox-submit { justify-self: stretch; }
+  .inbox-choice { flex: 1 1 auto; }
+}
