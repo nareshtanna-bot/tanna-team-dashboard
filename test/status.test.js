@@ -197,7 +197,10 @@ test('money posts keep figures on the API and out of git', () => {
   });
   assert.deepEqual(feed.goal, { target_date: '2036-01-01' });
   assert.deepEqual(feed.net_worth_trend, [{ date: '2026-10-16', pct: 25 }]);
-  assert.equal(/target_usd|net_worth_usd|source|200|\b50\b/.test(JSON.stringify(feed)), false);
+  // receivedAt is the server clock. Its digits (seconds :50, millis 200) are not money figures.
+  const { receivedAt, ...stored } = feed;
+  assert.equal(typeof receivedAt, 'string');
+  assert.equal(/target_usd|net_worth_usd|source|200|\b50\b/.test(JSON.stringify(stored)), false);
   assert.equal(validateSectionPost(feed).net_worth_trend[0].pct, 25);
   assert.equal(moneySeries({
     example: false,
