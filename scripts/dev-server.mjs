@@ -6,6 +6,8 @@ import handler from '../api/status.js';
 import tasksHandler, { createTasksHandler, memoryStore } from '../api/tasks.js';
 import { applyPost, emptyDoc } from '../lib/tasks.js';
 import { blobConfigured } from '../lib/status.js';
+import { memoryStore as inboxMemory } from '../lib/blob-store.js';
+import { createInboxHandler } from '../lib/inbox-handler.js';
 
 const root = join(import.meta.dirname, '..');
 const port = Number(process.env.PORT || 8765);
@@ -33,10 +35,14 @@ function localTasks() {
   return createTasksHandler({ store: memoryStore(doc) });
 }
 const tasksRoute = blobConfigured() ? tasksHandler : localTasks();
+// Without a Blob token, /api/inbox runs on an in-memory store.
+const inboxRoute = createInboxHandler(blobConfigured() ? {} : { store: inboxMemory() });
+const inboxPath = /^\/api\/inbox(?:\/([A-Za-z0-9_-]+))?\/?$/;
 
 const server = createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://127.0.0.1:${port}`);
-  if (url.pathname === '/api/status' || url.pathname === '/api/tasks') {
+  const inboxMatch = inboxPath.exec(url.pathname);
+  if (url.pathname === '/api/status' || url.pathname === '/api/tasks' || inboxMatch) {
     const chunks = [];
     for await (const chunk of req) chunks.push(chunk);
     const raw = Buffer.concat(chunks).toString('utf8');
@@ -70,8 +76,10 @@ const server = createServer(async (req, res) => {
         return this;
       }
     };
-    const route = url.pathname === '/api/tasks' ? tasksRoute : handler;
-    await route({ method: req.method, headers: req.headers, body, url: req.url, query: Object.fromEntries(url.searchParams) }, vRes);
+    const route = inboxMatch ? inboxRoute : url.pathname === '/api/tasks' ? tasksRoute : handler;
+    const query = Object.fromEntries(url.searchParams);
+    if (inboxMatch?.[1]) query.id = inboxMatch[1];
+    await route({ method: req.method, headers: req.headers, body, url: req.url, query }, vRes);
     res.writeHead(vRes.statusCode || 200, {
       'content-type': 'application/json; charset=utf-8',
       'cache-control': 'no-store',

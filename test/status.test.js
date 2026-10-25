@@ -91,13 +91,11 @@ test('the seed decision strip is only the open items', () => {
   const status = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
   const merged = mergeStatus(status, [], NOW);
   assert.deepEqual(merged.needsYou.map((item) => item.title), [
-    'Date of birth for the PeopleConnect opt-out, or skip it',
     'Remaining data-broker opt-outs',
-    'Pinehurst dates',
     'Top-10 trip window',
     'Business direction / Alpaca',
-    'A Shaan version of the reading list',
-    'Merge PR #1 (Mission Control)'
+    'Meta glasses to Sylvia via GitHub',
+    'Fireplace voice on/off (Skytech, Shelly 1 + IFTTT)'
   ]);
   for (const item of merged.needsYou) assert.equal(isClosedStatus(item.status), false);
   const doneTitles = [

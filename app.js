@@ -1,5 +1,6 @@
 import { moneySeries, routineHealth, withLiveSections } from './lib/sections.js';
 import { headlinesMarkup } from './lib/headlines.js';
+import { cardActions, decorateNeeds, initInbox } from './inbox.js';
 
 const CATEGORIES = ['travel', 'school', 'home', 'golf', 'business', 'research'];
 const STAGES = [
@@ -452,8 +453,10 @@ function renderNeeds() {
       <h3>${escapeHtml(item.title)}</h3>
       <p class="detail">${escapeHtml(item.detail || '')}</p>
       ${open}
+      ${cardActions(item)}
     </article>`;
   }).join('');
+  decorateNeeds();
 }
 
 function renderFilters() {
@@ -963,6 +966,7 @@ function bind() {
 
 applyTheme(state.theme, false);
 bind();
+initInbox($('needs-list'));
 refresh({ force: true }).then(hashRoute);
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});

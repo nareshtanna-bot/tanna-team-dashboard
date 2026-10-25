@@ -217,3 +217,28 @@ Open http://127.0.0.1:8765 — add `?theme=dark` or `?theme=light` to pin the th
 5. Toggle Theme. Auto follows the system. Add to Home Screen on an iPhone and confirm it opens standalone.
 6. `POST /api/status` with a wrong secret returns 401. With the right secret and no Blob token, the body is `storage_unconfigured`. A body that contains a price returns 400 and `privacy`.
 7. Add a clean `agents/nomad.json` on a branch and run `node scripts/merge-status.mjs`. `status.json` gains that bot. Put a dollar amount in the file and `node scripts/privacy-check.mjs` exits 1.
+
+## Inbox: answering Needs-you cards
+
+Every Needs-you card has Approve, Decline, any `options` the bot listed on the item (strings or `{ id, label }`), a reply box, and a mic. The mic uses the browser's speech recognition with a live, editable transcript. On iPhone (Safari or the Home Screen app) it focuses the reply box instead; tap the dictation mic on the keyboard. Submitting saves to the inbox and the card shows "Answered, waiting on <bot>", then the bot's `picked_up` / `done` status and note.
+
+Answers live in the private Blob store (`inbox/inbox.json` in production, `inbox/preview/inbox.json` elsewhere), never in git. Money figures, health/lab/medication text, and secrets are rejected with a message.
+
+Bots authenticate with `Authorization: Bearer $MC_INBOX_TOKEN` (Vercel env var) plus the protection bypass header. No or wrong token is 401.
+
+```sh
+# New answers
+curl -s "$SITE/api/inbox?status=new" \
+  -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+  -H "Authorization: Bearer $MC_INBOX_TOKEN"
+# -> {"ok":true,"items":[{"id","card","bot","text","choice","created_at","status","result_note","updated_at"}]}
+
+# Pick up, then finish (result_note up to 280 characters)
+curl -s -X PATCH "$SITE/api/inbox/$ID" \
+  -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+  -H "Authorization: Bearer $MC_INBOX_TOKEN" \
+  -H 'content-type: application/json' \
+  -d '{"status":"done","result_note":"Skipped that opt-out."}'
+```
+
+`POST /api/inbox` comes from the page (same-origin, behind the gate) or a bot with the token.
