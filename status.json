@@ -405,7 +405,9 @@
       "status": "working",
       "task": "Holding the open decisions. Finished items are on the timeline.",
       "next": "Merge of PR #1 is the board item still waiting on Naresh.",
-      "lastActivity": "2026-10-15T19:40:00-04:00"
+      "lastActivity": "2026-10-15T19:40:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "timmy",
@@ -415,7 +417,9 @@
       "status": "idle",
       "task": "Standing by for a build.",
       "next": "Wait until a site or tool is routed over.",
-      "lastActivity": "2026-10-15T19:25:00-04:00"
+      "lastActivity": "2026-10-15T19:25:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "nomad",
@@ -425,7 +429,9 @@
       "status": "working",
       "task": "Pinehurst, Bermuda, and the RDU shortlist are filed. Pinehurst dates and the top-10 window are still open.",
       "next": "Wait for those two decisions.",
-      "lastActivity": "2026-10-15T18:45:00-04:00"
+      "lastActivity": "2026-10-15T18:45:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "rick",
@@ -435,7 +441,9 @@
       "status": "working",
       "task": "Sunroom memo is filed. The online-business re-rank is delivered.",
       "next": "Wait for a business direction.",
-      "lastActivity": "2026-10-15T19:00:00-04:00"
+      "lastActivity": "2026-10-15T19:00:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "deniro",
@@ -445,7 +453,9 @@
       "status": "idle",
       "task": "Standing by.",
       "next": "Wait for a titled ask.",
-      "lastActivity": "2026-09-23T18:00:00-04:00"
+      "lastActivity": "2026-09-23T18:00:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "ledger",
@@ -455,7 +465,9 @@
       "status": "idle",
       "task": "Scoreboard title is current. Figures stay off this board.",
       "next": "Wait for a titled ask.",
-      "lastActivity": "2026-09-23T19:10:00-04:00"
+      "lastActivity": "2026-09-23T19:10:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "moore",
@@ -465,7 +477,9 @@
       "status": "idle",
       "task": "Standing by.",
       "next": "Wait for an escalation Sylvia routes.",
-      "lastActivity": "2026-09-20T12:00:00-04:00"
+      "lastActivity": "2026-09-20T12:00:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "liv",
@@ -475,7 +489,9 @@
       "status": "idle",
       "task": "Check-in routine is on the calendar.",
       "next": "Next check-in on the usual cadence.",
-      "lastActivity": "2026-09-23T08:31:00-04:00"
+      "lastActivity": "2026-09-23T08:31:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "qualy",
@@ -485,7 +501,9 @@
       "status": "idle",
       "task": "Standing by.",
       "next": "Review the next pack Sylvia sends.",
-      "lastActivity": "2026-09-18T15:00:00-04:00"
+      "lastActivity": "2026-09-18T15:00:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "gadget",
@@ -495,7 +513,9 @@
       "status": "idle",
       "task": "Ray-Ban glasses order is placed. Confirmation numbers stay off this board.",
       "next": "Wait for the next gear job.",
-      "lastActivity": "2026-10-15T19:35:00-04:00"
+      "lastActivity": "2026-10-15T19:35:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "sage",
@@ -505,7 +525,9 @@
       "status": "working",
       "task": "A Shaan version of the reading list is still open.",
       "next": "Write that version once Naresh asks for the pass.",
-      "lastActivity": "2026-09-23T12:00:00-04:00"
+      "lastActivity": "2026-09-23T12:00:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "reed",
@@ -515,7 +537,9 @@
       "status": "blocked",
       "task": "Outlook Calendar still needs a reconnect.",
       "next": "Reconnect Outlook, then lock the work-EA lane.",
-      "lastActivity": "2026-09-23T14:00:00-04:00"
+      "lastActivity": "2026-09-23T14:00:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "porter",
@@ -525,7 +549,9 @@
       "status": "working",
       "task": "Renewal list was in progress. One document is still missing.",
       "next": "File the missing auto-policy document.",
-      "lastActivity": "2026-10-15T19:30:00-04:00"
+      "lastActivity": "2026-10-15T19:30:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     },
     {
       "id": "scout",
@@ -535,7 +561,9 @@
       "status": "blocked",
       "task": "Calendar clean is queued. It is not on the decision strip.",
       "next": "Apply edits when a clean is named.",
-      "lastActivity": "2026-09-23T16:00:00-04:00"
+      "lastActivity": "2026-09-23T16:00:00-04:00",
+      "lastRun": null,
+      "heartbeat": null
     }
   ],
   "routines": [
