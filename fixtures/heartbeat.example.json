@@ -1,0 +1,16 @@
+{
+  "id": "example-bot",
+  "name": "Example Bot",
+  "role": "Routine",
+  "does": "Stamps its card when a routine finishes.",
+  "status": "idle",
+  "task": "Standing by.",
+  "next": "",
+  "lastActivity": "2026-10-25T12:00:00.000Z",
+  "lastRun": "2026-10-25T12:00:00.000Z",
+  "heartbeat": {
+    "at": "2026-10-25T12:00:00.000Z",
+    "line": "Last routine failed.",
+    "state": "failed"
+  }
+}

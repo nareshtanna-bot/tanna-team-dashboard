@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import handler from '../api/status.js';
 import tasksHandler, { createTasksHandler, memoryStore } from '../api/tasks.js';
 import { applyPost, emptyDoc } from '../lib/tasks.js';
-import { blobConfigured } from '../lib/status.js';
+import { blobConfigured, normalizeBot } from '../lib/status.js';
 import { memoryStore as inboxMemory } from '../lib/blob-store.js';
 import { createInboxHandler } from '../lib/inbox-handler.js';
 
@@ -38,6 +38,21 @@ const tasksRoute = blobConfigured() ? tasksHandler : localTasks();
 // Without a Blob token, /api/inbox runs on an in-memory store.
 const inboxRoute = createInboxHandler(blobConfigured() ? {} : { store: inboxMemory() });
 const inboxPath = /^\/api\/inbox(?:\/([A-Za-z0-9_-]+))?\/?$/;
+
+// Local preview only. Stamps the fixture bot as just-run so the card is not Stale.
+function overlayHeartbeatFixture(text) {
+  const status = JSON.parse(text);
+  const agent = JSON.parse(readFileSync(join(root, 'fixtures/heartbeat.example.json'), 'utf8'));
+  const bot = normalizeBot(agent);
+  if (!bot) return text;
+  const at = new Date().toISOString();
+  bot.lastActivity = at;
+  bot.lastRun = at;
+  if (bot.heartbeat) bot.heartbeat = { ...bot.heartbeat, at };
+  const bots = (status.bots || []).filter((item) => item.id !== bot.id);
+  bots.push(bot);
+  return JSON.stringify({ ...status, bots });
+}
 
 const server = createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://127.0.0.1:${port}`);
@@ -80,12 +95,16 @@ const server = createServer(async (req, res) => {
     const query = Object.fromEntries(url.searchParams);
     if (inboxMatch?.[1]) query.id = inboxMatch[1];
     await route({ method: req.method, headers: req.headers, body, url: req.url, query }, vRes);
+    let payload = vRes.body || '';
+    if (process.env.HEARTBEAT_FIXTURE === '1' && url.pathname === '/api/status' && req.method === 'GET' && vRes.statusCode === 200 && payload) {
+      payload = overlayHeartbeatFixture(payload);
+    }
     res.writeHead(vRes.statusCode || 200, {
       'content-type': 'application/json; charset=utf-8',
       'cache-control': 'no-store',
       ...vRes.headers
     });
-    res.end(vRes.body || '');
+    res.end(payload);
     return;
   }
 
