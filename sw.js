@@ -18,6 +18,7 @@ const ASSETS = [
   './lib/sections.js',
   './lib/privacy.js',
   './lib/tasks.js',
+  './lib/headlines.js',
   './manifest.json',
   './status.json',
   './outputs/manifest.json',

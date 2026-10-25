@@ -1,4 +1,5 @@
 import { moneySeries, routineHealth, withLiveSections } from './lib/sections.js';
+import { headlinesMarkup } from './lib/headlines.js';
 import { cardActions, decorateNeeds, initInbox } from './inbox.js';
 
 const CATEGORIES = ['travel', 'school', 'home', 'golf', 'business', 'research'];
@@ -425,6 +426,17 @@ function renderMoney() {
   $('money-summary').textContent = [latestLabel, series.caption, money.example !== false ? 'Example' : ''].filter(Boolean).join(' · ');
 }
 
+function renderHeadlines() {
+  const panel = $('headlines');
+  if (!panel) return;
+  const section = state.data?.headlines;
+  const markup = headlinesMarkup(section);
+  panel.hidden = !markup;
+  $('headline-list').innerHTML = markup;
+  const when = section?.fetched_at || section?.receivedAt;
+  $('headlines-meta').textContent = markup && when ? `Fetched ${formatET(when)}` : '';
+}
+
 function renderBusiness() {
   const business = state.data?.business || {};
   $('business-example').textContent = exampleNote(business);
@@ -761,6 +773,7 @@ function paint() {
   renderHealth();
   renderKids();
   renderHome();
+  renderHeadlines();
   renderBusiness();
   renderFilters();
   renderRequests();

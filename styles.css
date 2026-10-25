@@ -593,3 +593,13 @@ body.lock { overflow: hidden; }
   html { -webkit-tap-highlight-color: transparent; }
   nav a, button { -webkit-touch-callout: none; }
 }
+
+.headline-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.headline-list li {
+  display: grid;
+  gap: 2px;
+  line-height: 1.4;
+  padding: 12px 0;
+}
+.headline-list li + li { border-top: 1px solid var(--line); }
+.headline-list a { font-weight: 600; text-underline-offset: 3px; }
