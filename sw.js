@@ -5,7 +5,7 @@
  *   health, and section data only ever come from the network.
  * - Redirected responses (for example a Vercel sign-in redirect) and non-same-origin responses are never cached.
  */
-const CACHE = 'mission-control-v7';
+const CACHE = 'mission-control-v8';
 const ASSETS = [
   './',
   './index.html',

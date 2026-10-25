@@ -519,6 +519,8 @@ function renderBots() {
       </div>
       <p class="does">${escapeHtml(bot.does || '')}</p>
       <p class="task"><span class="who">Now. </span>${escapeHtml(bot.task || 'Nothing posted.')}</p>
+      ${bot.heartbeat?.line ? `<p class="heartbeat">${escapeHtml(bot.heartbeat.line)}</p>` : ''}
+      ${bot.lastRun ? `<p class="meta">Last run ${escapeHtml(formatET(bot.lastRun))}</p>` : ''}
       <p class="meta">${escapeHtml(ago(bot.lastActivity))} · ${bot.lastActivity ? escapeHtml(formatET(bot.lastActivity)) : 'no timestamp'}</p>
     </article>`).join('');
 }

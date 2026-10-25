@@ -1,6 +1,14 @@
 import { timingSafeEqual } from 'node:crypto';
+import { jsonBlobStore } from '../lib/blob-store.js';
 import { validateSectionPost } from '../lib/sections.js';
-import { blobAccess, blobConfigured, loadLiveStatus, validateAgentPost } from '../lib/status.js';
+import {
+  applyHeartbeat,
+  blobAccess,
+  blobConfigured,
+  loadLiveStatus,
+  parseHeartbeat,
+  validateAgentPost
+} from '../lib/status.js';
 
 function send(res, code, obj) {
   const body = JSON.stringify(obj);
@@ -14,8 +22,8 @@ function send(res, code, obj) {
   res.end(body);
 }
 
-function secretOk(headerValue) {
-  const expected = process.env.BOT_STATUS_SECRET || '';
+function secretOk(headerValue, env) {
+  const expected = env.BOT_STATUS_SECRET || '';
   if (!expected || headerValue == null) return false;
   const left = Buffer.from(String(headerValue));
   const right = Buffer.from(expected);
@@ -36,15 +44,15 @@ async function readBody(req) {
   return raw ? JSON.parse(raw) : {};
 }
 
-async function storeJson(path, payload) {
-  if (!blobConfigured()) {
+async function storeJson(path, payload, env) {
+  if (!blobConfigured(env)) {
     const error = new Error('storage_unconfigured');
     error.code = 'storage_unconfigured';
     throw error;
   }
   const { put } = await import('@vercel/blob');
   await put(path, JSON.stringify(payload), {
-    access: blobAccess(),
+    access: blobAccess(env),
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: 'application/json',
@@ -52,81 +60,153 @@ async function storeJson(path, payload) {
   });
 }
 
-async function storeAgent(agent) {
-  await storeJson(`agents/${agent.id}.json`, agent);
+async function storeAgent(agent, env) {
+  await storeJson(`agents/${agent.id}.json`, agent, env);
 }
 
-async function storeSection(section) {
-  await storeJson(`sections/${section.section}.json`, section);
+async function storeSection(section, env) {
+  await storeJson(`sections/${section.section}.json`, section, env);
 }
 
-export default async function handler(req, res) {
-  try {
-    if (req.method === 'GET') {
-      const status = await loadLiveStatus();
-      send(res, 200, status);
-      return;
+function errorBody(error) {
+  const privacy = error.code === 'privacy';
+  return {
+    ok: false,
+    error: privacy ? 'privacy' : (error.code || 'invalid_body'),
+    rules: privacy ? [...new Set((error.hits || []).map((hit) => hit.rule))] : undefined,
+    message: privacy ? 'Post rejected by the privacy check.' : error.message
+  };
+}
+
+/*
+ * Read the bot record, merge, and write with the Blob etag. A conflict retries the merge
+ * so a full status post or another heartbeat is not lost.
+ */
+async function writeHeartbeat(store, parsed, now) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    let doc;
+    let etag;
+    try {
+      ({ doc, etag } = await store.read());
+    } catch (error) {
+      if (error.code === 'conflict') continue;
+      throw error;
     }
-    if (req.method === 'POST') {
-      const header = req.headers?.['x-bot-secret'] || req.headers?.get?.('x-bot-secret');
-      if (!process.env.BOT_STATUS_SECRET) {
-        send(res, 503, {
-          ok: false,
-          error: 'secret_unconfigured',
-          message: 'Set BOT_STATUS_SECRET on the Vercel project before accepting posts.'
-        });
+    const stored = applyHeartbeat(doc, parsed, now());
+    try {
+      await store.write(stored, etag);
+      return stored;
+    } catch (error) {
+      if (error.code === 'conflict') continue;
+      throw error;
+    }
+  }
+  const error = new Error('conflict');
+  error.code = 'conflict';
+  throw error;
+}
+
+export function createStatusHandler({
+  env = process.env,
+  now = () => new Date(),
+  agentStore = null,
+  load = loadLiveStatus
+} = {}) {
+  return async function handler(req, res) {
+    try {
+      if (req.method === 'GET') {
+        const status = await load({ env });
+        send(res, 200, status);
         return;
       }
-      if (!secretOk(header)) {
-        send(res, 401, { ok: false, error: 'unauthorized' });
-        return;
-      }
-      let body;
-      try {
-        body = await readBody(req);
-      } catch {
-        send(res, 400, { ok: false, error: 'invalid_body', message: 'Body must be JSON.' });
-        return;
-      }
-      const sectionPost = body && typeof body === 'object' && !Array.isArray(body) && body.section;
-      let stored;
-      try {
-        stored = sectionPost ? validateSectionPost(body) : validateAgentPost(body);
-      } catch (error) {
-        const privacy = error.code === 'privacy';
-        send(res, 400, {
-          ok: false,
-          error: privacy ? 'privacy' : (error.code || 'invalid_body'),
-          rules: privacy ? [...new Set((error.hits || []).map((hit) => hit.rule))] : undefined,
-          message: privacy ? 'Post rejected by the privacy check.' : error.message
-        });
-        return;
-      }
-      try {
-        if (sectionPost) await storeSection(stored);
-        else await storeAgent(stored);
-      } catch (error) {
-        if (error.code === 'storage_unconfigured') {
+      if (req.method === 'POST') {
+        const header = req.headers?.['x-bot-secret'] || req.headers?.get?.('x-bot-secret');
+        if (!env.BOT_STATUS_SECRET) {
           send(res, 503, {
             ok: false,
-            error: 'storage_unconfigured',
-            message: sectionPost
-              ? 'No Vercel Blob token is configured. Health, calendar, kids, home, business, and money posts stay in Blob only. Do not commit them.'
-              : 'No Vercel Blob token is configured. Commit agents/<id>.json on main instead. GET /api/status reads GitHub when it can, and the committed status.json is always the fallback. Blob on the Hobby plan has a free allowance; do not turn on a paid plan for this.'
+            error: 'secret_unconfigured',
+            message: 'Set BOT_STATUS_SECRET on the Vercel project before accepting posts.'
           });
           return;
         }
-        send(res, 502, { ok: false, error: 'store_failed' });
+        if (!secretOk(header, env)) {
+          send(res, 401, { ok: false, error: 'unauthorized' });
+          return;
+        }
+        let body;
+        try {
+          body = await readBody(req);
+        } catch {
+          send(res, 400, { ok: false, error: 'invalid_body', message: 'Body must be JSON.' });
+          return;
+        }
+        if (body && typeof body === 'object' && !Array.isArray(body) && body.heartbeat === true) {
+          let parsed;
+          try {
+            parsed = parseHeartbeat(body);
+          } catch (error) {
+            send(res, 400, errorBody(error));
+            return;
+          }
+          const store = agentStore
+            ? agentStore(parsed.id)
+            : jsonBlobStore(`agents/${parsed.id}.json`, env, 'heartbeat');
+          if (!store.configured()) {
+            send(res, 503, {
+              ok: false,
+              error: 'storage_unconfigured',
+              message: 'No Vercel Blob token is configured. A heartbeat merges into the bot record in Blob.'
+            });
+            return;
+          }
+          try {
+            const stored = await writeHeartbeat(store, parsed, now);
+            send(res, 200, { ok: true, id: stored.id, stored: 'blob', at: stored.lastRun });
+          } catch (error) {
+            if (error.code === 'conflict') {
+              send(res, 409, { ok: false, error: 'conflict', message: 'The bot record changed while saving. Try again.' });
+              return;
+            }
+            send(res, 502, { ok: false, error: 'store_failed' });
+          }
+          return;
+        }
+        const sectionPost = body && typeof body === 'object' && !Array.isArray(body) && body.section;
+        let stored;
+        try {
+          stored = sectionPost ? validateSectionPost(body) : validateAgentPost(body);
+        } catch (error) {
+          send(res, 400, errorBody(error));
+          return;
+        }
+        try {
+          if (sectionPost) await storeSection(stored, env);
+          else await storeAgent(stored, env);
+        } catch (error) {
+          if (error.code === 'storage_unconfigured') {
+            send(res, 503, {
+              ok: false,
+              error: 'storage_unconfigured',
+              message: sectionPost
+                ? 'No Vercel Blob token is configured. Health, calendar, kids, home, business, and money posts stay in Blob only. Do not commit them.'
+                : 'No Vercel Blob token is configured. Commit agents/<id>.json on main instead. GET /api/status reads GitHub when it can, and the committed status.json is always the fallback. Blob on the Hobby plan has a free allowance; do not turn on a paid plan for this.'
+            });
+            return;
+          }
+          send(res, 502, { ok: false, error: 'store_failed' });
+          return;
+        }
+        send(res, 200, sectionPost
+          ? { ok: true, section: stored.section, stored: 'blob' }
+          : { ok: true, id: stored.id, stored: 'blob' });
         return;
       }
-      send(res, 200, sectionPost
-        ? { ok: true, section: stored.section, stored: 'blob' }
-        : { ok: true, id: stored.id, stored: 'blob' });
-      return;
+      res.setHeader?.('allow', 'GET, POST');
+      send(res, 405, { ok: false, error: 'method_not_allowed' });
+    } catch {
+      send(res, 500, { ok: false, error: 'status_failed' });
     }
-    res.setHeader?.('allow', 'GET, POST');
-    send(res, 405, { ok: false, error: 'method_not_allowed' });
-  } catch {
-    send(res, 500, { ok: false, error: 'status_failed' });
-  }
+  };
 }
+
+export default createStatusHandler();
