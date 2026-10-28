@@ -147,3 +147,17 @@ test('every precached asset exists', () => {
   assert.ok(assets.length > 10);
   for (const asset of assets) assert.ok(existsSync(new URL(asset, root)), asset);
 });
+
+test('offline cache is the next version above main and includes headlines plus inbox assets', () => {
+  const source = read('sw.js');
+  assert.match(source, /const CACHE = 'mission-control-v10'/);
+  for (const asset of ["'./lib/headlines.js'", "'./inbox.css'", "'./inbox.js'"]) {
+    assert.ok(source.includes(asset), asset);
+  }
+});
+
+test('package.json has no build script, so Vercel serves the static root', () => {
+  const pkg = JSON.parse(read('package.json'));
+  assert.equal(pkg.scripts.build, undefined);
+  assert.match(pkg.scripts.verify, /lint && npm run check && npm test/);
+});
