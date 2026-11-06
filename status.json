@@ -6,14 +6,14 @@
     "example": true,
     "schema": "mission-control-money-card/v1",
     "owner": "Example",
-    "updated": "2026-10-16T12:00:00-04:00",
+    "updated": "2026-11-06T09:00:00-05:00",
     "goal": {
       "target_date": "2036-01-01",
       "example": true
     },
     "net_worth_trend": [
       {
-        "date": "2026-10-16",
+        "date": "2026-11-06",
         "example": true
       }
     ],
@@ -88,7 +88,7 @@
       "id": "ledger",
       "name": "Ledger",
       "role": "Wealth ops",
-      "does": "Keeps the household scoreboard under DeNiro. Figures stay off this board.",
+      "does": "Keeps the scoreboard under DeNiro. Figures stay off this board.",
       "status": "idle",
       "task": "Standing by. This card is the public seed.",
       "next": "Live status is posted to the private board.",
@@ -100,7 +100,7 @@
       "id": "moore",
       "name": "Dr. Moore",
       "role": "Senior medical",
-      "does": "Takes escalations from Sylvia. Case detail stays off this board except as a title.",
+      "does": "Takes escalations from Sylvia. Case detail stays off this board.",
       "status": "idle",
       "task": "Standing by. This card is the public seed.",
       "next": "Live status is posted to the private board.",
@@ -135,8 +135,8 @@
     {
       "id": "gadget",
       "name": "Inspector Gadget",
-      "role": "Devices and gear",
-      "does": "Troubleshoots household devices and gear when a job is routed over.",
+      "role": "Compliance",
+      "does": "Checks fleet posts for compliance. Case detail stays off this board.",
       "status": "idle",
       "task": "Standing by. This card is the public seed.",
       "next": "Live status is posted to the private board.",
@@ -148,7 +148,7 @@
       "id": "sage",
       "name": "Sage",
       "role": "Kids education",
-      "does": "Holds the education plan once the goals are locked.",
+      "does": "Holds the education plan.",
       "status": "idle",
       "task": "Standing by. This card is the public seed.",
       "next": "Live status is posted to the private board.",
@@ -172,7 +172,7 @@
       "id": "porter",
       "name": "Porter",
       "role": "Home and admin",
-      "does": "Runs renewals, the house list, and admin follow-ups.",
+      "does": "Runs renewals and admin follow-ups.",
       "status": "idle",
       "task": "Standing by. This card is the public seed.",
       "next": "Live status is posted to the private board.",
@@ -184,7 +184,7 @@
       "id": "scout",
       "name": "Scout",
       "role": "Family ops",
-      "does": "Watches the family calendar and school logistics.",
+      "does": "Watches the family calendar.",
       "status": "idle",
       "task": "Standing by. This card is the public seed.",
       "next": "Live status is posted to the private board.",
@@ -199,52 +199,52 @@
       "name": "Fleet rollup",
       "owner": "Sylvia",
       "schedule": "Daily, morning",
-      "lastRun": "2026-10-15T08:10:00-04:00",
-      "nextRun": "2026-10-16T08:00:00-04:00",
+      "lastRun": "2026-11-06T09:00:00-05:00",
+      "nextRun": "2026-11-07T09:00:00-05:00",
       "lastResult": "ok",
       "detail": "Example seed, not a live run.",
       "example": true,
       "intervalHours": 24,
-      "lastSuccess": "2026-10-15T08:10:00-04:00"
+      "lastSuccess": "2026-11-06T09:00:00-05:00"
     },
     {
       "id": "porter-renewals",
-      "name": "Renewal watch",
+      "name": "Example daily check",
       "owner": "Porter",
       "schedule": "Daily",
-      "lastRun": "2026-10-15T08:20:00-04:00",
-      "nextRun": "2026-10-16T08:20:00-04:00",
+      "lastRun": "2026-11-06T09:00:00-05:00",
+      "nextRun": "2026-11-07T09:00:00-05:00",
       "lastResult": "attention",
-      "detail": "Example seed, not a live run.",
+      "detail": "Example seed, not a live run. No successful run is on file.",
       "example": true,
       "intervalHours": 24,
-      "lastSuccess": "2026-09-01T08:20:00-04:00"
+      "lastSuccess": null
     },
     {
       "id": "nomad-friday",
-      "name": "Friday flight decision pack",
+      "name": "Example Friday check",
       "owner": "Nomad",
       "schedule": "Fridays",
-      "lastRun": "2026-10-10T07:30:00-04:00",
-      "nextRun": "2026-10-17T07:30:00-04:00",
+      "lastRun": "2026-11-06T09:00:00-05:00",
+      "nextRun": "2026-11-13T09:00:00-05:00",
       "lastResult": "ok",
       "detail": "Example seed, not a live run.",
       "example": true,
       "intervalHours": 168,
-      "lastSuccess": "2026-10-10T07:30:00-04:00"
+      "lastSuccess": "2026-11-06T09:00:00-05:00"
     },
     {
       "id": "scout-monday",
-      "name": "Family calendar scan",
+      "name": "Example Monday check",
       "owner": "Scout",
       "schedule": "Mondays",
-      "lastRun": "2026-10-13T07:00:00-04:00",
-      "nextRun": "2026-10-20T07:00:00-04:00",
+      "lastRun": "2026-11-06T09:00:00-05:00",
+      "nextRun": "2026-11-13T09:00:00-05:00",
       "lastResult": "attention",
       "detail": "Example seed, not a live run.",
       "example": true,
       "intervalHours": 168,
-      "lastSuccess": "2026-09-01T07:00:00-04:00"
+      "lastSuccess": "2026-11-06T09:00:00-05:00"
     },
     {
       "id": "example-failed",
@@ -252,9 +252,9 @@
       "owner": "Liv",
       "schedule": "Daily",
       "intervalHours": 24,
-      "lastRun": "2026-10-15T21:00:00-04:00",
-      "lastSuccess": "2026-10-14T21:00:00-04:00",
-      "nextRun": "2026-10-16T21:00:00-04:00",
+      "lastRun": "2026-11-06T09:00:00-05:00",
+      "lastSuccess": "2026-11-06T09:00:00-05:00",
+      "nextRun": "2026-11-07T09:00:00-05:00",
       "lastResult": "failed",
       "detail": "Example seed, not a live run. The last run failed. No personal detail is stored here.",
       "example": true
@@ -274,78 +274,42 @@
   ],
   "health": {
     "example": true,
-    "weight": [
-      {
-        "date": "2026-09-04",
-        "lb": 190,
-        "example": true
-      },
-      {
-        "date": "2026-09-11",
-        "lb": 189,
-        "example": true
-      },
-      {
-        "date": "2026-09-18",
-        "lb": 188,
-        "example": true
-      },
-      {
-        "date": "2026-09-25",
-        "lb": 188,
-        "example": true
-      },
-      {
-        "date": "2026-10-02",
-        "lb": 187,
-        "example": true
-      },
-      {
-        "date": "2026-10-09",
-        "lb": 186,
-        "example": true
-      },
-      {
-        "date": "2026-10-16",
-        "lb": 186,
-        "example": true
-      }
-    ],
+    "weight": [],
     "appointments": [
       {
         "id": "ex-visit",
         "title": "Example visit",
-        "start": "2026-10-21T09:00:00-04:00",
-        "end": "2026-10-21T09:30:00-04:00",
+        "start": "2026-11-06T09:00:00-05:00",
+        "end": "2026-11-06T09:30:00-05:00",
         "example": true
       },
       {
         "id": "ex-followup",
         "title": "Example follow-up",
-        "start": "2026-11-04T15:00:00-05:00",
-        "end": "2026-11-04T15:20:00-05:00",
+        "start": "2026-11-13T15:00:00-05:00",
+        "end": "2026-11-13T15:30:00-05:00",
         "example": true
       }
     ],
     "habits": [
       {
-        "id": "sauna",
-        "name": "Sauna",
-        "streak": 4,
+        "id": "example-a",
+        "name": "Example habit A",
+        "streak": 1,
         "cadence": "week",
         "example": true
       },
       {
-        "id": "walk",
-        "name": "Walk",
+        "id": "example-b",
+        "name": "Example habit B",
         "streak": 2,
         "cadence": "week",
         "example": true
       },
       {
-        "id": "lights",
-        "name": "Lights out",
-        "streak": 0,
+        "id": "example-c",
+        "name": "Example habit C",
+        "streak": 3,
         "cadence": "week",
         "example": true
       }
@@ -357,64 +321,64 @@
       {
         "id": "ex-fam-16",
         "title": "Example family block",
-        "start": "2026-10-16T09:00:00-04:00",
-        "end": "2026-10-16T10:00:00-04:00",
+        "start": "2026-11-06T09:00:00-05:00",
+        "end": "2026-11-06T10:00:00-05:00",
         "calendar": "family",
         "example": true
       },
       {
         "id": "ex-work-16",
         "title": "Example work block",
-        "start": "2026-10-16T09:30:00-04:00",
-        "end": "2026-10-16T10:30:00-04:00",
+        "start": "2026-11-06T09:30:00-05:00",
+        "end": "2026-11-06T10:30:00-05:00",
         "calendar": "work",
         "example": true
       },
       {
         "id": "ex-fam-17",
-        "title": "Example practice",
-        "start": "2026-10-17T10:00:00-04:00",
-        "end": "2026-10-17T11:00:00-04:00",
+        "title": "Example block",
+        "start": "2026-11-07T10:00:00-05:00",
+        "end": "2026-11-07T11:00:00-05:00",
         "calendar": "family",
         "example": true
       },
       {
         "id": "ex-work-18",
         "title": "Example focus block",
-        "start": "2026-10-18T13:00:00-04:00",
-        "end": "2026-10-18T15:00:00-04:00",
+        "start": "2026-11-08T13:00:00-05:00",
+        "end": "2026-11-08T15:00:00-05:00",
         "calendar": "work",
         "example": true
       },
       {
         "id": "ex-fam-19",
-        "title": "Example lesson",
-        "start": "2026-10-19T16:00:00-04:00",
-        "end": "2026-10-19T17:00:00-04:00",
+        "title": "Example block",
+        "start": "2026-11-09T16:00:00-05:00",
+        "end": "2026-11-09T17:00:00-05:00",
         "calendar": "family",
         "example": true
       },
       {
         "id": "ex-work-20",
         "title": "Example planning hour",
-        "start": "2026-10-20T11:00:00-04:00",
-        "end": "2026-10-20T12:00:00-04:00",
+        "start": "2026-11-10T11:00:00-05:00",
+        "end": "2026-11-10T12:00:00-05:00",
         "calendar": "work",
         "example": true
       },
       {
         "id": "ex-fam-21",
-        "title": "Example weekend hold",
-        "start": "2026-10-21T18:00:00-04:00",
-        "end": "2026-10-21T20:00:00-04:00",
+        "title": "Example block",
+        "start": "2026-11-11T18:00:00-05:00",
+        "end": "2026-11-11T20:00:00-05:00",
         "calendar": "family",
         "example": true
       },
       {
         "id": "ex-work-22",
         "title": "Example review",
-        "start": "2026-10-22T09:00:00-04:00",
-        "end": "2026-10-22T09:30:00-04:00",
+        "start": "2026-11-12T09:00:00-05:00",
+        "end": "2026-11-12T09:30:00-05:00",
         "calendar": "work",
         "example": true
       }
@@ -424,53 +388,53 @@
     "example": true,
     "applications": [
       {
-        "id": "cary-academy",
-        "school": "Cary Academy",
+        "id": "example-school-a",
+        "school": "Example school A",
         "stage": "example",
         "status": "open",
         "dates": [
           {
-            "label": "Example deadline",
-            "date": "2026-12-01"
+            "label": "Example date",
+            "date": "2026-12-06"
           }
         ],
         "example": true
       },
       {
-        "id": "durham-academy",
-        "school": "Durham Academy",
+        "id": "example-school-b",
+        "school": "Example school B",
         "stage": "example",
         "status": "open",
         "dates": [
           {
-            "label": "Example visit",
-            "date": "2026-11-12"
+            "label": "Example date",
+            "date": "2027-01-06"
           }
         ],
         "example": true
       },
       {
-        "id": "ravenscroft",
-        "school": "Ravenscroft",
+        "id": "example-school-c",
+        "school": "Example school C",
         "stage": "example",
         "status": "open",
         "dates": [
           {
-            "label": "Example inquiry",
-            "date": "2026-11-03"
+            "label": "Example date",
+            "date": "2027-02-06"
           }
         ],
         "example": true
       },
       {
-        "id": "duke-school",
-        "school": "Duke School",
+        "id": "example-school-d",
+        "school": "Example school D",
         "stage": "example",
         "status": "open",
         "dates": [
           {
-            "label": "Example decision",
-            "date": "2027-03-01"
+            "label": "Example date",
+            "date": "2027-03-06"
           }
         ],
         "example": true
@@ -478,15 +442,15 @@
     ],
     "activities": [
       {
-        "id": "ex-golf",
-        "name": "Example golf lesson",
-        "when": "Example Saturday",
+        "id": "example-activity-a",
+        "name": "Example activity A",
+        "when": "Example day",
         "example": true
       },
       {
-        "id": "ex-activity",
-        "name": "Example weekday activity",
-        "when": "Example Wednesday",
+        "id": "example-activity-b",
+        "name": "Example activity B",
+        "when": "Example day",
         "example": true
       }
     ]
@@ -499,28 +463,28 @@
         "id": "ex-delivery",
         "name": "Example package",
         "kind": "delivery",
-        "date": "2026-10-18",
+        "date": "2026-11-06",
         "example": true
       },
       {
         "id": "ex-return",
         "name": "Example return",
         "kind": "return",
-        "date": "2026-10-20",
+        "date": "2026-11-07",
         "example": true
       }
     ],
     "renewals": [
       {
-        "id": "ex-storage",
-        "name": "Example storage plan",
-        "date": "2026-11-02",
+        "id": "ex-renewal-a",
+        "name": "Example renewal A",
+        "date": "2026-12-06",
         "example": true
       },
       {
-        "id": "ex-paper",
-        "name": "Example newspaper",
-        "date": "2026-11-15",
+        "id": "ex-renewal-b",
+        "name": "Example renewal B",
+        "date": "2027-01-06",
         "example": true
       }
     ]

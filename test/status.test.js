@@ -101,6 +101,12 @@ test('the public fallback has no open Needs you items', () => {
   assert.equal(status.updatedLabel, formatET(status.updated));
   assert.equal(merged.updatedLabel, status.updatedLabel);
   assert.ok(status.bots.some((bot) => bot.id === 'nomad'));
+  assert.equal(status.bots.find((bot) => bot.id === 'gadget').role, 'Compliance');
+  assert.deepEqual(status.health.weight, []);
+  assert.deepEqual(status.health.habits.map((item) => item.name), ['Example habit A', 'Example habit B', 'Example habit C']);
+  assert.deepEqual(status.kids.applications.map((item) => item.school), ['Example school A', 'Example school B', 'Example school C', 'Example school D']);
+  assert.deepEqual(status.kids.activities.map((item) => item.name), ['Example activity A', 'Example activity B']);
+  assert.equal(status.money.updated, '2026-11-06T09:00:00-05:00');
   assert.ok(status.activity.every((item) => item.example === true));
   const stale = [
     'Remaining data-broker opt-outs',
