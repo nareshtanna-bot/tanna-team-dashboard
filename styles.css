@@ -251,6 +251,8 @@ h2 {
 .needs-grid, .card-grid, .chart-row, .split, .home-grid, .pipeline, .week {
   display: grid;
   gap: 14px;
+  /* Shrink under a canvas or textarea min-content size so phone widths stay in the viewport. */
+  grid-template-columns: minmax(0, 1fr);
 }
 .need, .ask, .trip, .bot, .routine, .chart-card, .queue, .timeline, .day, .panel, .school, .stage {
   background: var(--surface);
@@ -331,10 +333,11 @@ h2 {
 }
 @keyframes blink { 50% { opacity: 0.35; } }
 
-.chart-card { padding: 16px; display: grid; gap: 8px; }
+.chart-card { padding: 16px; display: grid; gap: 8px; min-width: 0; }
 .chart-copy h3 { margin: 0; font-size: 1rem; }
 .chart-copy p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
-.chart-frame { position: relative; height: 220px; }
+.chart-frame { position: relative; height: 220px; min-width: 0; }
+.chart-frame canvas { max-width: 100%; }
 .chart-frame.short { height: 200px; }
 .ring-slot { width: 84px; }
 .ring { width: 84px; height: 84px; display: block; }
@@ -534,7 +537,7 @@ body.lock { overflow: hidden; }
   padding: 12px;
 }
 .pipeline { align-items: start; }
-.money-card { display: grid; gap: 14px; align-items: stretch; }
+.money-card { display: grid; gap: 14px; align-items: stretch; grid-template-columns: minmax(0, 1fr); }
 .example-badge {
   grid-column: 1 / -1;
   margin: 0;
