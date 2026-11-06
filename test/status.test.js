@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { personalSeedHits, scanText } from '../lib/privacy.js';
 import { moneySeries, validateSectionPost, withLiveSections } from '../lib/sections.js';
-import { isClosedStatus, isStale, mergeStatus, openNeedsYou, validateAgentPost } from '../lib/status.js';
+import { formatET, isClosedStatus, isStale, mergeStatus, openNeedsYou, validateAgentPost } from '../lib/status.js';
 import handler from '../api/status.js';
 
 const NOW = new Date('2026-10-15T23:16:00Z');
@@ -87,32 +87,44 @@ test('a bot with no recent post is stale after 24 hours', () => {
   assert.equal(isStale(null, NOW.getTime()), true);
 });
 
-test('the seed decision strip is only the open items', () => {
+test('the public fallback has no open Needs you items', () => {
   const status = JSON.parse(readFileSync(new URL('../status.json', import.meta.url), 'utf8'));
   const merged = mergeStatus(status, [], NOW);
-  assert.deepEqual(merged.needsYou.map((item) => item.title), [
+  assert.deepEqual(status.needsYou, []);
+  assert.deepEqual(merged.needsYou, []);
+  assert.deepEqual(status.requests, []);
+  assert.deepEqual(status.queue, []);
+  assert.deepEqual(status.trips, []);
+  assert.equal(status.source, 'seed');
+  assert.equal(status.updated, '2026-11-06T09:00:00-05:00');
+  assert.equal(status.updatedLabel, 'Nov 6, 2026 · 9:00 AM ET');
+  assert.equal(status.updatedLabel, formatET(status.updated));
+  assert.equal(merged.updatedLabel, status.updatedLabel);
+  assert.ok(status.bots.some((bot) => bot.id === 'nomad'));
+  assert.equal(status.bots.find((bot) => bot.id === 'gadget').role, 'Compliance');
+  assert.deepEqual(status.health.weight, []);
+  assert.deepEqual(status.health.habits.map((item) => item.name), ['Example habit A', 'Example habit B', 'Example habit C']);
+  assert.deepEqual(status.kids.applications.map((item) => item.school), ['Example school A', 'Example school B', 'Example school C', 'Example school D']);
+  assert.deepEqual(status.kids.activities.map((item) => item.name), ['Example activity A', 'Example activity B']);
+  assert.equal(status.money.updated, '2026-11-06T09:00:00-05:00');
+  assert.ok(status.activity.every((item) => item.example === true));
+  const stale = [
     'Remaining data-broker opt-outs',
     'Top-10 trip window',
     'Business direction / Alpaca',
     'Meta glasses to Sylvia via GitHub',
-    'Fireplace voice on/off (Skytech, Shelly 1 + IFTTT)'
-  ]);
-  for (const item of merged.needsYou) assert.equal(isClosedStatus(item.status), false);
-  const doneTitles = [
-    'Puerto Rico Google Maps list',
-    'Ray-Ban glasses order',
-    'Do Not Call registry',
-    'Mission Control GitHub access',
-    'Grok plan question'
+    'Fireplace voice on/off'
   ];
-  for (const title of doneTitles) {
-    assert.equal(merged.needsYou.some((item) => item.title === title), false);
-    assert.equal(merged.requests.find((item) => item.title === title).status, 'done');
-    assert.ok(merged.activity.some((item) => item.title === title));
-  }
-  assert.equal(merged.needsYou.some((item) => /re-rank/i.test(item.title)), false);
-  assert.ok(merged.activity.some((item) => /re-rank/i.test(item.title)));
-  assert.equal(merged.requests.find((item) => item.id === 'business-ideas').status, 'done');
+  const blob = JSON.stringify({
+    needsYou: status.needsYou,
+    requests: status.requests,
+    queue: status.queue,
+    trips: status.trips,
+    activity: status.activity,
+    bots: status.bots
+  });
+  for (const title of stale) assert.equal(blob.includes(title), false);
+  assert.equal(merged.needsYou.some((item) => isClosedStatus(item.status)), false);
 });
 
 test('sauna is allowed and lab values, doses, and unlabeled calendars are not', () => {
